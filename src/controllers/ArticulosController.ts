@@ -44,10 +44,10 @@ class ArticulosController {
 
 	public async getArticulosByProfesor(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo WHERE AP.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos  FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 			const respuesta3 = await pool.query('SELECT * FROM archivoyarticulo WHERE idArticulo=?', respuesta[i].idArticulo)
 			respuesta[i].archivos = respuesta3
@@ -58,10 +58,10 @@ class ArticulosController {
 
 	public async getArticulosByInstituto(req: Request, res: Response): Promise<void> {
 		const { idInstituto } = req.params
-		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=AP.idProfesor WHERE P.idInstituto=${idInstituto}`)
+		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto}`)
 		// Obtener los profesores participantes y archivos subidos
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 		}
 
@@ -70,10 +70,10 @@ class ArticulosController {
 
 	public async getArticulosByInstitutoByFecha(req: Request, res: Response): Promise<void> {
 		const { idInstituto, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=AP.idProfesor WHERE P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 		}
 
@@ -82,10 +82,10 @@ class ArticulosController {
 
 	public async getTodoPorInsituto(req: Request, res: Response): Promise<void> {
 		const { idInstituto, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=AP.idProfesor WHERE AP.pos=1 AND P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE PA.pos=1 AND P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 		}
 
@@ -93,10 +93,10 @@ class ArticulosController {
 	}
 	
 	public async getTodoDivididoInstituto(req: Request, res: Response): Promise<void> {
-		let respuesta = await pool.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=AP.idProfesor AND AP.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 ORDER BY I.idInstituto;`)
+		let respuesta = await pool.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 ORDER BY I.idInstituto;`)
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 		}
 
@@ -105,10 +105,10 @@ class ArticulosController {
 
 	public async getTodoDivididoInstitutoPorFecha(req: Request, res: Response): Promise<void> {
 		const { fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo AP ON AP.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=AP.idProfesor AND AP.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 AND A.fechaedicion>='${fechaIni}' AND A.fechaedicion<='${fechaFin}' ORDER BY I.idInstituto;`)
+		let respuesta = await pool.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 AND A.fechaedicion>='${fechaIni}' AND A.fechaedicion<='${fechaFin}' ORDER BY I.idInstituto;`)
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo AP ON AP.idProfesor=P.idProfesor WHERE AP.idArticulo=? ORDER BY AP.pos', respuesta[i].idArticulo)
+			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].profesores = respuesta2
 		}
 
