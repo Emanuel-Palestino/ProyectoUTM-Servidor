@@ -66,7 +66,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos  FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
                 const respuesta3 = yield database_1.default.query('SELECT * FROM archivoyarticulo WHERE idArticulo=?', respuesta[i].idArticulo);
                 respuesta[i].archivos = respuesta3;
             }
@@ -80,7 +80,7 @@ class ArticulosController {
             // Obtener los profesores participantes y archivos subidos
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
         });
@@ -92,7 +92,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
         });
@@ -104,7 +104,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
         });
@@ -115,7 +115,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
         });
@@ -127,7 +127,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-                respuesta[i].profesores = respuesta2;
+                respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
         });
