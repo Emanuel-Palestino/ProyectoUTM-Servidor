@@ -13,6 +13,7 @@ import ArticulosRoutes from './routes/ArticulosRoutes'
 import ArchivoYArticuloRoutes from './routes/ArchivoYArticuloRoutes'
 import EventosRoutes from './routes/EventosRoutes'
 import ActividadesRoutes from './routes/ActividadesRoutes'
+import TutoradosRoutes from './routes/TutoradosRoutes'
 
 class Server {
 
@@ -44,6 +45,7 @@ class Server {
 		this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes)
 		this.app.use('/api/eventos', EventosRoutes)
 		this.app.use('/api/actividades', ActividadesRoutes)
+		this.app.use('/api/tutorados', TutoradosRoutes)
 	}
 
 	start(): void {
