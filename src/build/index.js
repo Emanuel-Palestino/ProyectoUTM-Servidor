@@ -17,6 +17,8 @@ const ArticulosRoutes_1 = __importDefault(require("./routes/ArticulosRoutes"));
 const ArchivoYArticuloRoutes_1 = __importDefault(require("./routes/ArchivoYArticuloRoutes"));
 const EventosRoutes_1 = __importDefault(require("./routes/EventosRoutes"));
 const ActividadesRoutes_1 = __importDefault(require("./routes/ActividadesRoutes"));
+const TesistasRoutes_1 = __importDefault(require("./routes/TesistasRoutes"));
+const ProfesorYTesisRoutes_1 = __importDefault(require("./routes/ProfesorYTesisRoutes"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -42,6 +44,8 @@ class Server {
         this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes_1.default);
         this.app.use('/api/eventos', EventosRoutes_1.default);
         this.app.use('/api/actividades', ActividadesRoutes_1.default);
+        this.app.use('/api/tesistas', TesistasRoutes_1.default);
+        this.app.use('/api/profesorYTesis', ProfesorYTesisRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
