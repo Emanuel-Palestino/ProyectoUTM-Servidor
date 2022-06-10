@@ -37,19 +37,19 @@ class ActividadesController {
 
 	public async getActividadesByProfesor(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE A.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE A.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 
 	public async getActividadesByInstituto(req: Request, res: Response): Promise<void> {
 		const { idInstituto, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idInstituto=${idInstituto} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idInstituto=${idInstituto} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 
 	public async getActividadesByCarrera(req: Request, res: Response): Promise<void> {
 		const { idCarrera, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idCarrera=${idCarrera} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idCarrera=${idCarrera} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 
