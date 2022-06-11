@@ -13,6 +13,7 @@ import ArticulosRoutes from './routes/ArticulosRoutes'
 import ArchivoYArticuloRoutes from './routes/ArchivoYArticuloRoutes'
 import EventosRoutes from './routes/EventosRoutes'
 import ActividadesRoutes from './routes/ActividadesRoutes'
+import RevisorRoutes from './routes/RevisorRoutes'
 import comisionesRoutes from './routes/ComisionesRoutes'
 import ProfesorYComisionRoutes from './routes/ProfesorYComisionRoutes'
 import TesistasRoutes from './routes/TesistasRoutes'
@@ -52,6 +53,7 @@ class Server {
 		this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes)
 		this.app.use('/api/eventos', EventosRoutes)
 		this.app.use('/api/actividades', ActividadesRoutes)
+		this.app.use('/api/revisor', RevisorRoutes)
 		this.app.use('/api/comisiones', comisionesRoutes);
 		this.app.use('/api/profesorYComision', ProfesorYComisionRoutes);
 		this.app.use('/api/tesistas',TesistasRoutes)
