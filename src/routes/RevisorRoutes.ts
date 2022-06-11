@@ -11,10 +11,10 @@ class RevisorRoutes {
 
 	config() : void {
 		this.router.get('/', revisorController.list)
-		this.router.get('/:id', revisorController.listOne)
-		this.router.post('/create/:idProfesor', revisorController.create)
-		this.router.delete('/delete/:idArticulo', revisorController.delete) 
-		this.router.put('/update/:idArticulo', revisorController.update)
+		this.router.get('/:idRevisor', revisorController.listOne)
+		this.router.post('/create', revisorController.create)
+		this.router.delete('/delete/:idRevisor', revisorController.delete) 
+		this.router.put('/update/:idRevisor', revisorController.update)
 	}
 
 }
