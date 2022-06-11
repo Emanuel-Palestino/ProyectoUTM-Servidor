@@ -9,10 +9,10 @@ class TesistasRoutes {
     }
     config() {
         this.router.get('/', ProfesorYTesisController_1.profesorYTesisController.list);
-        this.router.get('/:id', ProfesorYTesisController_1.profesorYTesisController.listOne);
+        this.router.get('/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.listOne);
         this.router.post('/create', ProfesorYTesisController_1.profesorYTesisController.create);
-        this.router.delete('/delete/:id', ProfesorYTesisController_1.profesorYTesisController.delete);
-        this.router.put('/update/:id', ProfesorYTesisController_1.profesorYTesisController.update);
+        this.router.delete('/delete/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.delete);
+        this.router.put('/update/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.update);
     }
 }
 const tesistasRoutes = new TesistasRoutes();

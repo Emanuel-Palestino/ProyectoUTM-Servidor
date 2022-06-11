@@ -11,10 +11,10 @@ class TesistasRoutes {
 
 	config() : void {
 		this.router.get('/',profesorYTesisController.list );
-		this.router.get('/:id',profesorYTesisController.listOne);
+		this.router.get('/:idTesis/:idProfesor',profesorYTesisController.listOne);
 		this.router.post('/create', profesorYTesisController.create);
-		this.router.delete('/delete/:id', profesorYTesisController.delete);
-		this.router.put('/update/:id',profesorYTesisController.update);
+		this.router.delete('/delete/:idTesis/:idProfesor', profesorYTesisController.delete);
+		this.router.put('/update/:idTesis/:idProfesor',profesorYTesisController.update);
     }
 
 }

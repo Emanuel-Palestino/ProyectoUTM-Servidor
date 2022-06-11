@@ -5,14 +5,12 @@ class TesistasController {
     public async list(req: Request, res: Response ): Promise<void>
 	{
 		const respuesta = await pool.query('SELECT * FROM tesistas order by idTesis');
-		console.log(respuesta);
 		res.json( respuesta );
 	}
 	public async listOne(req: Request, res: Response): Promise <void>{
 		const {id} = req.params;
 		let consulta='SELECT * FROM tesistas WHERE idTesis = '+id;
 		const respuesta = await pool.query(consulta); 
-		console.log(consulta);
 		if(respuesta.length>0){
 			res.json(respuesta[0]);
 			return ;
@@ -31,10 +29,9 @@ class TesistasController {
 	}
 	public async update(req: Request, res: Response): Promise<void> {
 		const { id } = req.params;
-		console.log(req.params);
 		const resp = await pool.query("UPDATE tesistas set ? WHERE idTesis= ?", [req.body, id]);
 		res.json(resp);
-		}
+	}
 }
 
 export const tesistasController = new TesistasController()

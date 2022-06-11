@@ -18,16 +18,13 @@ class ProfesorYTesisController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM profesorYTesis order by idTesis');
-            console.log(respuesta);
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            let consulta = 'SELECT * FROM profesorYTesis WHERE idTesis = ' + id;
-            const respuesta = yield database_1.default.query(consulta);
-            console.log(consulta);
+            const { idTesis, idProfesor } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYTesis WHERE idTesis =${idTesis} AND idProfesor=${idProfesor}`);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -43,16 +40,15 @@ class ProfesorYTesisController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYTesis WHERE idTesis = ${id}`);
+            const { idTesis, idProfesor } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM profesorYTesis WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            console.log(req.params);
-            const resp = yield database_1.default.query("UPDATE profesorYTesis set ? WHERE idTesis= ?", [req.body, id]);
+            const { idTesis, idProfesor } = req.params;
+            const resp = yield database_1.default.query(`UPDATE profesorYTesis set ? WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`, [req.body, idTesis, idProfesor]);
             res.json(resp);
         });
     }

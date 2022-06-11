@@ -2,39 +2,34 @@ import { Request, Response } from 'express'
 import pool from '../database'
 
 class ProfesorYTesisController {
-    public async list(req: Request, res: Response ): Promise<void>
-	{
+	public async list(req: Request, res: Response): Promise<void> {
 		const respuesta = await pool.query('SELECT * FROM profesorYTesis order by idTesis');
-		console.log(respuesta);
-		res.json( respuesta );
+		res.json(respuesta);
 	}
-	public async listOne(req: Request, res: Response): Promise <void>{
-		const {id} = req.params;
-		let consulta='SELECT * FROM profesorYTesis WHERE idTesis = '+id;
-		const respuesta = await pool.query(consulta); 
-		console.log(consulta);
-		if(respuesta.length>0){
+	public async listOne(req: Request, res: Response): Promise<void> {
+		const { idTesis, idProfesor } = req.params;
+		const respuesta = await pool.query(`SELECT * FROM profesorYTesis WHERE idTesis =${idTesis} AND idProfesor=${idProfesor}`);
+		if (respuesta.length > 0) {
 			res.json(respuesta[0]);
-			return ;
+			return;
 		}
-		res.status(404).json({'mensaje': 'profesorYTesis no encontrado'});
+		res.status(404).json({ 'mensaje': 'profesorYTesis no encontrado' });
 	}
-	public async create (req:Request, res:Response): Promise <void>{
-		const resp= await pool.query ("INSERT INTO profesorYTesis set ?", [req.body]);
+	public async create(req: Request, res: Response): Promise<void> {
+		const resp = await pool.query("INSERT INTO profesorYTesis set ?", [req.body]);
 		res.json(resp);
 	}
-	
-	public async delete (req:Request, res:Response): Promise <void>{
-		const {id} = req.params
-		const resp= await pool.query (`DELETE FROM profesorYTesis WHERE idTesis = ${id}`);
+
+	public async delete(req: Request, res: Response): Promise<void> {
+		const { idTesis, idProfesor } = req.params
+		const resp = await pool.query(`DELETE FROM profesorYTesis WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`);
 		res.json(resp);
 	}
 	public async update(req: Request, res: Response): Promise<void> {
-		const { id } = req.params;
-		console.log(req.params);
-		const resp = await pool.query("UPDATE profesorYTesis set ? WHERE idTesis= ?", [req.body, id]);
+		const { idTesis, idProfesor } = req.params;
+		const resp = await pool.query(`UPDATE profesorYTesis set ? WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`, [req.body, idTesis, idProfesor]);
 		res.json(resp);
-		}
+	}
 }
 
 export const profesorYTesisController = new ProfesorYTesisController()
