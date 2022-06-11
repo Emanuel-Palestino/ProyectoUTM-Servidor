@@ -15,7 +15,6 @@ class CarrerasRouter {
 		this.router.post('/create', carrerasController.create)
 		this.router.delete('/delete/:idCarrera', carrerasController.delete)
 		this.router.put('/update/:idCarrera', carrerasController.update)
-		this.router.get('/getCarrerasByInstituto/:idInstituto', carrerasController.getCarrerasByInstituto)
 	}
 
 }
