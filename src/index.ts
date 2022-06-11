@@ -22,6 +22,7 @@ import ProyectosRoutes from './routes/ProyectosRoutes'
 import ProfesorYProyectoRoutes from './routes/ProfesorYProyectoRoutes'
 import ExternosProyectoRoutes from './routes/ExternosProyectoRoutes'
 import TutoradosRoutes from './routes/TutoradosRoutes'
+import MateriasRoutes from './routes/MateriasRoutes'
 
 class Server {
 
@@ -62,6 +63,7 @@ class Server {
 		this.app.use('/api/profesorYproyecto',ProfesorYProyectoRoutes )
 		this.app.use('/api/externosProyecto',ExternosProyectoRoutes )
 		this.app.use('/api/tutorados', TutoradosRoutes)
+		this.app.use('/api/materias', MateriasRoutes);
 	}
 
 	start(): void {
