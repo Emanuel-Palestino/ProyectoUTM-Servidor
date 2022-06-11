@@ -55,21 +55,21 @@ class EventosController {
     getEventosByProfesor(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
     getEventosByInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idInstituto=${idInstituto} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idInstituto=${idInstituto} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
     getEventosByCarrera(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idCarrera=${idCarrera} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idCarrera=${idCarrera} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
