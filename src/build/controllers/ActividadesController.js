@@ -40,36 +40,36 @@ class ActividadesController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idEvento } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM actividades WHERE idActividad=${idEvento}`);
+            const { idActividad } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM actividades WHERE idActividad=${idActividad}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idEvento } = req.params;
-            const resp = yield database_1.default.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idEvento]);
+            const { idActividad } = req.params;
+            const resp = yield database_1.default.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idActividad]);
             res.json(resp);
         });
     }
     getActividadesByProfesor(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE A.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE A.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
     getActividadesByInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idInstituto=${idInstituto} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idInstituto=${idInstituto} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
     getActividadesByCarrera(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor, P.apellidoPaterno, P.apellidoMaterno FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idCarrera=${idCarrera} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.*, P.nombreProfesor FROM actividades as A INNER JOIN profesores P ON P.idProfesor=A.idProfesor WHERE P.idCarrera=${idCarrera} AND A.inicio>='${fechaIni}' AND A.inicio<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
