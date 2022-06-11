@@ -9,9 +9,9 @@ class PatentesRoutes
 	}
 	config() : void
 	{
+		this.router.post('/create', patentesController.create);
 		this.router.get('/',patentesController.list );
 		this.router.get('/:id',patentesController.listOne);
-		this.router.post('/create', patentesController.create);
 		this.router.delete('/delete/:id', patentesController.delete);
 		this.router.put('/actualizar/:id',patentesController.actualizar);
 	}

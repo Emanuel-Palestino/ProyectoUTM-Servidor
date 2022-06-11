@@ -32,7 +32,7 @@ class ExternosPatenteController {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'tutorado no encontrado' });
+            res.status(404).json({ 'mensaje': 'Externo no encontrado' });
         });
     }
     create(req, res) {

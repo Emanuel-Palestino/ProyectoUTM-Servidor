@@ -35,6 +35,7 @@ class PatentesController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.body);
             const resp = yield database_1.default.query("INSERT INTO patentes set ?", [req.body]);
             res.json(resp);
         });
