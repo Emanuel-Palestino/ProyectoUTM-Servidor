@@ -16,7 +16,6 @@ class CarrerasRouter {
 		this.router.delete('/delete/:idCarrera', carrerasController.delete)
 		this.router.put('/update/:idCarrera', carrerasController.update)
 	}
-
 }
 
 const carrerasRouter = new CarrerasRouter()
