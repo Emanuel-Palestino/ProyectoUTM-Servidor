@@ -17,6 +17,8 @@ const ArticulosRoutes_1 = __importDefault(require("./routes/ArticulosRoutes"));
 const ArchivoYArticuloRoutes_1 = __importDefault(require("./routes/ArchivoYArticuloRoutes"));
 const EventosRoutes_1 = __importDefault(require("./routes/EventosRoutes"));
 const ActividadesRoutes_1 = __importDefault(require("./routes/ActividadesRoutes"));
+const ComisionesRoutes_1 = __importDefault(require("./routes/ComisionesRoutes"));
+const ProfesorYComisionRoutes_1 = __importDefault(require("./routes/ProfesorYComisionRoutes"));
 const TesistasRoutes_1 = __importDefault(require("./routes/TesistasRoutes"));
 const ProfesorYTesisRoutes_1 = __importDefault(require("./routes/ProfesorYTesisRoutes"));
 const ProyectosRoutes_1 = __importDefault(require("./routes/ProyectosRoutes"));
@@ -48,6 +50,8 @@ class Server {
         this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes_1.default);
         this.app.use('/api/eventos', EventosRoutes_1.default);
         this.app.use('/api/actividades', ActividadesRoutes_1.default);
+        this.app.use('/api/comisiones', ComisionesRoutes_1.default);
+        this.app.use('/api/profesorYComision', ProfesorYComisionRoutes_1.default);
         this.app.use('/api/tesistas', TesistasRoutes_1.default);
         this.app.use('/api/profesorYTesis', ProfesorYTesisRoutes_1.default);
         this.app.use('/api/proyectos', ProyectosRoutes_1.default);
