@@ -24,14 +24,14 @@ class ActividadesController {
 	}
 
 	public async delete(req:Request, res: Response): Promise<void> {
-		const { idEvento } = req.params
-		const resp = await pool.query(`DELETE FROM actividades WHERE idActividad=${idEvento}`)
+		const { idActividad } = req.params
+		const resp = await pool.query(`DELETE FROM actividades WHERE idActividad=${idActividad}`)
 		res.json(resp)
 	}
 
 	public async update(req: Request, res: Response): Promise<void> {
-		const { idEvento } = req.params
-		const resp = await pool.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idEvento])
+		const { idActividad } = req.params
+		const resp = await pool.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idActividad])
 		res.json(resp)
 	}
 

@@ -40,15 +40,15 @@ class ActividadesController {
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idEvento } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM actividades WHERE idActividad=${idEvento}`);
+            const { idActividad } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM actividades WHERE idActividad=${idActividad}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idEvento } = req.params;
-            const resp = yield database_1.default.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idEvento]);
+            const { idActividad } = req.params;
+            const resp = yield database_1.default.query('UPDATE actividades set ? WHERE idActividad=?', [req.body, idActividad]);
             res.json(resp);
         });
     }
