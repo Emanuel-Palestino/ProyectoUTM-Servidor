@@ -15,6 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.carrerasController = void 0;
 const database_1 = __importDefault(require("../database"));
 class CarrerasController {
+    create(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const resp = yield database_1.default.query('INSERT INTO carreras SET ?', [req.body]);
+            res.json(resp);
+        });
+    }
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM carreras order by codigoCarrera');
@@ -23,8 +29,8 @@ class CarrerasController {
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM carreras WHERE idCarrera = ?', [id]);
+            const { idCarrera } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM carreras WHERE idCarrera = ?', [idCarrera]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -32,16 +38,10 @@ class CarrerasController {
             res.status(404).json({ 'mensaje': 'Carrera no encontrada' });
         });
     }
-    getCarrerasByInstituto(req, res) {
+    update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idInstituto } = req.params;
-            const resp = yield database_1.default.query('SELECT * FROM carreras WHERE idInstituto = ?', idInstituto);
-            res.json(resp);
-        });
-    }
-    create(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO carreras SET ?', [req.body]);
+            const { idCarrera } = req.params;
+            const resp = yield database_1.default.query('UPDATE carreras set ? WHERE idCarrera=?', [req.body, idCarrera]);
             res.json(resp);
         });
     }
@@ -49,13 +49,6 @@ class CarrerasController {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera } = req.params;
             const resp = yield database_1.default.query(`DELETE FROM carreras WHERE idCarrera=${idCarrera}`);
-            res.json(resp);
-        });
-    }
-    update(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera } = req.params;
-            const resp = yield database_1.default.query('UPDATE carreras set ? WHERE idCarrera=?', [req.body, idCarrera]);
             res.json(resp);
         });
     }
