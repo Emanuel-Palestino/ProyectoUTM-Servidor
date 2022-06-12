@@ -13,6 +13,9 @@ import ArticulosRoutes from './routes/ArticulosRoutes'
 import ArchivoYArticuloRoutes from './routes/ArchivoYArticuloRoutes'
 import EventosRoutes from './routes/EventosRoutes'
 import ActividadesRoutes from './routes/ActividadesRoutes'
+import PatentesRoutes from './routes/PatentesRoutes'
+import ProfesorYPatenteRoutes from './routes/ProfesorYPatenteRoutes'
+import ExternosPatenteRoutes from './routes/ExternosPatenteRoutes'
 import RevisorRoutes from './routes/RevisorRoutes'
 import comisionesRoutes from './routes/ComisionesRoutes'
 import ProfesorYComisionRoutes from './routes/ProfesorYComisionRoutes'
@@ -54,6 +57,9 @@ class Server {
 		this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes)
 		this.app.use('/api/eventos', EventosRoutes)
 		this.app.use('/api/actividades', ActividadesRoutes)
+		this.app.use('/api/patentes',PatentesRoutes)
+		this.app.use('/api/profesorYPatente',ProfesorYPatenteRoutes)
+		this.app.use('/api/externosPatente',ExternosPatenteRoutes)
 		this.app.use('/api/revisor', RevisorRoutes)
 		this.app.use('/api/comisiones', comisionesRoutes);
 		this.app.use('/api/profesorYComision', ProfesorYComisionRoutes);
