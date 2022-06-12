@@ -13,6 +13,19 @@ import ArticulosRoutes from './routes/ArticulosRoutes'
 import ArchivoYArticuloRoutes from './routes/ArchivoYArticuloRoutes'
 import EventosRoutes from './routes/EventosRoutes'
 import ActividadesRoutes from './routes/ActividadesRoutes'
+import PatentesRoutes from './routes/PatentesRoutes'
+import ProfesorYPatenteRoutes from './routes/ProfesorYPatenteRoutes'
+import ExternosPatenteRoutes from './routes/ExternosPatenteRoutes'
+import RevisorRoutes from './routes/RevisorRoutes'
+import comisionesRoutes from './routes/ComisionesRoutes'
+import ProfesorYComisionRoutes from './routes/ProfesorYComisionRoutes'
+import TesistasRoutes from './routes/TesistasRoutes'
+import ProfesorYTesisRoutes from './routes/ProfesorYTesisRoutes'
+import ProyectosRoutes from './routes/ProyectosRoutes'
+import ProfesorYProyectoRoutes from './routes/ProfesorYProyectoRoutes'
+import ExternosProyectoRoutes from './routes/ExternosProyectoRoutes'
+import TutoradosRoutes from './routes/TutoradosRoutes'
+import MateriasRoutes from './routes/MateriasRoutes'
 
 class Server {
 
@@ -44,6 +57,19 @@ class Server {
 		this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes)
 		this.app.use('/api/eventos', EventosRoutes)
 		this.app.use('/api/actividades', ActividadesRoutes)
+		this.app.use('/api/patentes',PatentesRoutes)
+		this.app.use('/api/profesorYPatente',ProfesorYPatenteRoutes)
+		this.app.use('/api/externosPatente',ExternosPatenteRoutes)
+		this.app.use('/api/revisor', RevisorRoutes)
+		this.app.use('/api/comisiones', comisionesRoutes);
+		this.app.use('/api/profesorYComision', ProfesorYComisionRoutes);
+		this.app.use('/api/tesistas',TesistasRoutes)
+		this.app.use('/api/profesorYTesis',ProfesorYTesisRoutes)
+		this.app.use('/api/proyectos',ProyectosRoutes )
+		this.app.use('/api/profesorYproyecto',ProfesorYProyectoRoutes )
+		this.app.use('/api/externosProyecto',ExternosProyectoRoutes )
+		this.app.use('/api/tutorados', TutoradosRoutes)
+		this.app.use('/api/materias', MateriasRoutes);
 	}
 
 	start(): void {
