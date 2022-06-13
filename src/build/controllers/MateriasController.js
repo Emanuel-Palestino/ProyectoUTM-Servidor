@@ -15,34 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.materiasController = void 0;
 const database_1 = __importDefault(require("../database"));
 class MateriasController {
-    list(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM materias ORDER BY nombreMateria');
-            res.json(respuesta);
-        });
-    }
-    listOne(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM materias WHERE idMateria = ?', [id]);
-            if (respuesta.length > 0) {
-                res.json(respuesta[0]);
-                return;
-            }
-            res.status(404).json({ 'mensaje': 'Materia no encontrado' });
-        });
-    }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const resp = yield database_1.default.query('INSERT INTO materias SET ?', [req.body]);
             res.json(resp);
         });
     }
-    delete(req, res) {
+    list(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const respuesta = yield database_1.default.query('SELECT * FROM materias');
+            res.json(respuesta);
+        });
+    }
+    listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idMateria } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM materias WHERE idMateria=${idMateria}`);
-            res.json(resp);
+            const respuesta = yield database_1.default.query('SELECT * FROM materias WHERE idMateria = ?', [idMateria]);
+            if (respuesta.length > 0) {
+                res.json(respuesta[0]);
+                return;
+            }
+            res.status(404).json({ 'mensaje': 'materias no encontrada' });
         });
     }
     update(req, res) {
@@ -52,15 +45,11 @@ class MateriasController {
             res.json(resp);
         });
     }
-    getMateriasByCarrera(req, res) {
+    delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera } = req.params;
-            const resp = yield database_1.default.query('SELECT nombreMateria FROM materias WHERE idCarrera=?', idCarrera);
-            if (resp.length > 0) {
-                res.json(resp[0]);
-                return;
-            }
-            res.status(404).json({ 'mensaje': 'Materia no encontrada' });
+            const { idMateria } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM materias WHERE idMateria=${idMateria}`);
+            res.json(resp);
         });
     }
 }
