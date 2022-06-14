@@ -23,8 +23,8 @@ class InstitutosController {
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM institutos WHERE idInstituto = ?', [id]);
+            const { idInstituto } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM institutos WHERE idInstituto = ?', [idInstituto]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;

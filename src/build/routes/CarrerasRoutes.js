@@ -9,7 +9,7 @@ class CarrerasRouter {
     }
     config() {
         this.router.get('/', CarrerasController_1.carrerasController.list);
-        this.router.get('/:id', CarrerasController_1.carrerasController.listOne);
+        this.router.get('/:idCarrera', CarrerasController_1.carrerasController.listOne);
         this.router.post('/create', CarrerasController_1.carrerasController.create);
         this.router.delete('/delete/:idCarrera', CarrerasController_1.carrerasController.delete);
         this.router.put('/update/:idCarrera', CarrerasController_1.carrerasController.update);

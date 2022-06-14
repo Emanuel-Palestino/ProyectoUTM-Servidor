@@ -11,7 +11,7 @@ class InstitutosRoutes {
 
 	config() : void {
 		this.router.get('/', institutosController.list)
-		this.router.get('/:id', institutosController.listOne)
+		this.router.get('/:idInstituto', institutosController.listOne)
 		this.router.post('/create', institutosController.create)
 		this.router.delete('/delete/:idInstituto', institutosController.delete)
 		this.router.put('/update/:idInstituto', institutosController.update)
