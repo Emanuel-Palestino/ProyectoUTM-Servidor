@@ -73,5 +73,12 @@ class ActividadesController {
             res.json(respuesta);
         });
     }
+    listActividadesByProfesorByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respuesta = yield database_1.default.query(`SELECT * FROM actividades  WHERE idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`);
+            res.json(respuesta);
+        });
+    }
 }
 exports.actividadesController = new ActividadesController();

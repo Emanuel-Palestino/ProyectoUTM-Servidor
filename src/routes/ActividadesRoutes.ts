@@ -18,6 +18,7 @@ class ActividadesRoutes {
 		this.router.get('/actividadesByProfesor/:idProfesor/:fechaIni/:fechaFin', actividadesController.getActividadesByProfesor)
 		this.router.get('/actividadesByInstituto/:idInstituto/:fechaIni/:fechaFin', actividadesController.getActividadesByInstituto)
 		this.router.get('/actividadesByCarrera/:idCarrera/:fechaIni/:fechaFin', actividadesController.getActividadesByCarrera)
+		this.router.get('/listActividadesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', actividadesController.listActividadesByProfesorByPeriodo)
 	}
 
 }
