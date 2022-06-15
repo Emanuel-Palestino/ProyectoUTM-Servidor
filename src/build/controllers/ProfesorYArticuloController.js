@@ -78,5 +78,24 @@ class ProfesorYArticuloController {
             res.status(404).json({ 'mensaje': 'Articulos no encontrados' });
         });
     }
+    createExterno(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo, pos } = req.params;
+            const resp = yield database_1.default.query('INSERT INTO externosAPA SET ?', [req.body]);
+            console.log(resp.insertId);
+            let hoy = new Date();
+            let dato = {
+                idProfesor: resp.insertId,
+                idArticulo: idArticulo,
+                pos: pos,
+                validado: 1,
+                fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
+                esInterno: 1,
+            };
+            console.log(dato);
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
+            res.json(resp2);
+        });
+    }
 }
 exports.profesorYArticuloController = new ProfesorYArticuloController();

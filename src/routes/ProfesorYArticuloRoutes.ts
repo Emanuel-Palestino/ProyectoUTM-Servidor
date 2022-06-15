@@ -17,6 +17,7 @@ class ProfesorYArticuloRoutes {
 		this.router.put('/update/:idArticuloYProfesor', profesorYArticuloController.update)
 		this.router.get('/profesoresByArticulo/:idArticulo', profesorYArticuloController.profesoresByArticulo)
 		this.router.get('/articulosByCarrera/:idCarrera', profesorYArticuloController.articulosByCarrera)
+		this.router.post('/createExterno/:idArticulo/:pos', profesorYArticuloController.createExterno)
 	}
 
 }

@@ -59,6 +59,23 @@ class ProfesorYArticuloController {
 		res.status(404).json({ 'mensaje': 'Articulos no encontrados' })
 	}
 
+	public async createExterno(req:Request, res: Response): Promise<void> {
+		const { idArticulo, pos } = req.params
+		const resp = await pool.query('INSERT INTO externosAPA SET ?', [req.body])
+		console.log(resp.insertId);
+		let hoy = new Date();
+		let dato = {
+			idProfesor: resp.insertId,
+			idArticulo: idArticulo,
+			pos: pos,
+			validado: 1,
+			fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
+			esInterno: 1,
+		}
+		console.log(dato);
+		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
+		res.json(resp2)
+	}
 }
 
 export const profesorYArticuloController = new ProfesorYArticuloController()
