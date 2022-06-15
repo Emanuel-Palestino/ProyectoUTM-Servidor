@@ -76,6 +76,22 @@ class ProfesorYArticuloController {
 		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
 		res.json(resp2)
 	}
+
+	public async addAutoresUTM(req: Request, res: Response): Promise<void> {
+		const {idArticulo} = req.params
+		let profesores = req.body
+		let resp: any;
+		console.log(profesores)
+
+		let hoy = new Date();
+		let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
+		for(var i=0; i<profesores.length;i++){
+			resp = await pool.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`)
+		}
+		res.json(resp)
+	}
+
+
 }
 
 export const profesorYArticuloController = new ProfesorYArticuloController()

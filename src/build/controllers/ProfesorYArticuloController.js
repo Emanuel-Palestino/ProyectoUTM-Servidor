@@ -97,5 +97,19 @@ class ProfesorYArticuloController {
             res.json(resp2);
         });
     }
+    addAutoresUTM(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo } = req.params;
+            let profesores = req.body;
+            let resp;
+            console.log(profesores);
+            let hoy = new Date();
+            let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
+            for (var i = 0; i < profesores.length; i++) {
+                resp = yield database_1.default.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`);
+            }
+            res.json(resp);
+        });
+    }
 }
 exports.profesorYArticuloController = new ProfesorYArticuloController();
