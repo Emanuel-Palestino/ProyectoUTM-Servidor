@@ -42,15 +42,14 @@ class ArticulosController {
 		res.json(resp)
 	}
 
-	public async getArticulosByProfesor(req: Request, res: Response): Promise<void> {
+	public async listArticulosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.idArticulo, A.titulo, A.tipoCRL, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
 			const respuesta2 = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos  FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo)
 			respuesta[i].autores = respuesta2
-			const respuesta3 = await pool.query('SELECT * FROM archivoyarticulo WHERE idArticulo=?', respuesta[i].idArticulo)
-			respuesta[i].archivos = respuesta3
 		}
 
 		res.json(respuesta)
