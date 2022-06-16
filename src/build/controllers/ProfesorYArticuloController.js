@@ -90,7 +90,7 @@ class ProfesorYArticuloController {
                 pos: pos,
                 validado: 1,
                 fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
-                esInterno: 1,
+                esInterno: 0,
             };
             console.log(dato);
             const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
