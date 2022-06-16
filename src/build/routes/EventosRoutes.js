@@ -8,6 +8,7 @@ class EventosRoutes {
         this.config();
     }
     config() {
+        this.router.get('/listEventosByPeriodo/:idProfesor/:fechaIni/:fechaFin', EventosController_1.eventosController.listEventosByPeriodo);
         this.router.get('/', EventosController_1.eventosController.list);
         this.router.get('/:id', EventosController_1.eventosController.listOne);
         this.router.post('/create', EventosController_1.eventosController.create);

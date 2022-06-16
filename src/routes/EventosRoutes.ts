@@ -10,6 +10,7 @@ class EventosRoutes {
 	}
 
 	config() : void {
+		this.router.get('/listEventosByPeriodo/:idProfesor/:fechaIni/:fechaFin', eventosController.listEventosByPeriodo)
 		this.router.get('/', eventosController.list)
 		this.router.get('/:id', eventosController.listOne)
 		this.router.post('/create', eventosController.create)
