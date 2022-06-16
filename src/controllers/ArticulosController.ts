@@ -127,6 +127,12 @@ class ArticulosController {
 		res.json({ 'mensaje': 'Articulos no encontrados' })
 	}
 
+	public async getSugerenciasExternoByAutorUTM(req:Request, res: Response): Promise<void>{
+		const {idProfesor} = req.params;
+		let listexternos = await pool.query(`SELECT EA.* FROM externosAPA AS EA INNER JOIN profesorYArticulo PAE ON EA.idExternoAPA = PAE.idProfesor INNER JOIN profesorYArticulo PAO ON PAE.idArticulo = PAO.idArticulo WHERE PAE.esInterno = 1 AND PAO.esInterno!=1 AND PAO.idProfesor = ${idProfesor}`);
+		res.json(listexternos);
+	}
+
 }
 
 export const articulosController = new ArticulosController()
