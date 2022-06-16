@@ -52,6 +52,20 @@ class ProfesorYArticuloController {
             res.json(resp);
         });
     }
+    updatePrioridadesOfAutoresByPublicacion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let resp;
+            const { idArticulo } = req.params;
+            let hoy = new Date();
+            let fecha = hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2);
+            for (let i = 0; i < req.body.length; i++) {
+                const utm = req.body[i];
+                utm.fechaModificacion = fecha;
+                resp = yield database_1.default.query('UPDATE profesorYArticulo set ? WHERE idArticulo = ? AND idProfesor = ? AND esInterno = ?', [utm, idArticulo, utm.idProfesor, utm.esInterno]);
+            }
+            res.json(resp);
+        });
+    }
     profesoresByArticulo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;

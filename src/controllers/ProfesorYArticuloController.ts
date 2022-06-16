@@ -35,6 +35,19 @@ class ProfesorYArticuloController {
 		res.json(resp)
 	}
 
+	public async updatePrioridadesOfAutoresByPublicacion(req: Request, res: Response): Promise<void> {
+		let resp
+		const { idArticulo } = req.params
+		let hoy: Date = new Date()
+		let fecha = hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2)
+		for( let i = 0; i < req.body.length; i++ ) {
+			const utm = req.body[i]
+			utm.fechaModificacion = fecha
+			resp = await pool.query('UPDATE profesorYArticulo set ? WHERE idArticulo = ? AND idProfesor = ? AND esInterno = ?', [utm, idArticulo, utm.idProfesor, utm.esInterno])
+		}
+		res.json(resp)
+	}
+	
 	public async profesoresByArticulo(req: Request, res: Response): Promise<void> {
 		const { idArticulo } = req.params;
 		const respuesta = await pool.query(`SELECT nombres FROM profesores, articulos, profesorYArticulo 
