@@ -52,5 +52,18 @@ class ProyectosController {
             res.json(resp);
         });
     }
+    listProyectosByProfesorByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respuesta = yield database_1.default.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYProyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`);
+            //Obtenemos los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Con esta consulta obtenemos los colaboradores del proyecto 
+                const respuestaColaboradores = yield database_1.default.query('SELECT P.* FROM profesores as P INNER JOIN profesorYProyecto PP ON PP.idProfesor = P.idProfesor WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
+                respuesta[i].colaboradores = respuestaColaboradores;
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.proyectosController = new ProyectosController();

@@ -15,6 +15,7 @@ class ProyectoRoutes {
 		this.router.post('/create', proyectosController.create)
 		this.router.delete('/delete/:idProyecto', proyectosController.delete)
 		this.router.put('/update/:idProyecto', proyectosController.update)
+		this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', proyectosController.listProyectosByProfesorByPeriodo);
 	}
 
 }

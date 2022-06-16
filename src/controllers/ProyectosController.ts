@@ -35,6 +35,20 @@ class ProyectosController {
 		res.json(resp)
 	}
 
+	public async listProyectosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
+		const { idProfesor, fechaIni, fechaFin} = req.params;
+		let respuesta = await pool.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYProyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
+	
+		//Obtenemos los profesores participantes
+		for(let i = 0; i < respuesta.length; i++) {
+			//Con esta consulta obtenemos los colaboradores del proyecto 
+			const respuestaColaboradores = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYProyecto PP ON PP.idProfesor = P.idProfesor WHERE PP.idProyecto = ? ORDER BY PP.pos' , respuesta[i].idProyecto);
+			respuesta[i].colaboradores = respuestaColaboradores;
+		}
+
+		res.json(respuesta);
+	}
+
 }
 
 export const proyectosController = new ProyectosController()
