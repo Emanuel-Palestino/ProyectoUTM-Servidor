@@ -30,6 +30,7 @@ const ProfesorYProyectoRoutes_1 = __importDefault(require("./routes/ProfesorYPro
 const ExternosProyectoRoutes_1 = __importDefault(require("./routes/ExternosProyectoRoutes"));
 const TutoradosRoutes_1 = __importDefault(require("./routes/TutoradosRoutes"));
 const MateriasRoutes_1 = __importDefault(require("./routes/MateriasRoutes"));
+const PlanRoutes_1 = __importDefault(require("./routes/PlanRoutes"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -55,6 +56,7 @@ class Server {
         this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes_1.default);
         this.app.use('/api/eventos', EventosRoutes_1.default);
         this.app.use('/api/actividades', ActividadesRoutes_1.default);
+        this.app.use('/api/plan', PlanRoutes_1.default);
         this.app.use('/api/patentes', PatentesRoutes_1.default);
         this.app.use('/api/profesorYPatente', ProfesorYPatenteRoutes_1.default);
         this.app.use('/api/externosPatente', ExternosPatenteRoutes_1.default);

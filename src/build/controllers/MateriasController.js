@@ -52,5 +52,13 @@ class MateriasController {
             res.json(resp);
         });
     }
+    listMateriasByAnyoByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, anyoIni, anyoFin } = req.params;
+            let consulta = `SELECT pym.idMateria, pym.grupo, c.nombreCarrera, pl.nombre as plan, p.nombre as nombrePeriodo FROM profesorymateria pym INNER JOIN periodos as p ON p.idPeriodo = pym.idPeriodo INNER JOIN materias as m ON m.idMateria = pym.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pym.idProfesor = ${idProfesor} AND p.fechaInicio >= '${anyoIni}' AND p.fechaFin <= '${anyoFin}';`;
+            const respuesta = yield database_1.default.query(consulta);
+            res.json(respuesta);
+        });
+    }
 }
 exports.materiasController = new MateriasController();
