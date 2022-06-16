@@ -1,3 +1,4 @@
 package-lock.json
 node_modules/
-keys.ts
+src/keys.ts
+src/build/keys.js
