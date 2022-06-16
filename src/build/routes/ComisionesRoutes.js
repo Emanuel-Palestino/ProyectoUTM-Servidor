@@ -13,6 +13,7 @@ class ComisionesRoutes {
         this.router.post('/create', ComisionesController_1.comisionesController.create);
         this.router.put('/update/:idComision', ComisionesController_1.comisionesController.update);
         this.router.delete('/delete/:idComision', ComisionesController_1.comisionesController.delete);
+        this.router.get('/listComisionesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ComisionesController_1.comisionesController.listComisionesByProfesoByPeriodo);
     }
 }
 const comisionesRoutes = new ComisionesRoutes();
