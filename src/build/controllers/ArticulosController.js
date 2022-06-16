@@ -147,7 +147,7 @@ class ArticulosController {
     getSugerenciasExternoByAutorUTM(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor } = req.params;
-            let listexternos = yield database_1.default.query(`SELECT EA.* FROM externosAPA AS EA INNER JOIN profesorYArticulo PAE ON EA.idExternoAPA = PAE.idProfesor INNER JOIN profesorYArticulo PAO ON PAE.idArticulo = PAO.idArticulo WHERE PAE.esInterno = 1 AND PAO.esInterno!=1 AND PAO.idProfesor = ${idProfesor}`);
+            let listexternos = yield database_1.default.query(`SELECT DISTINCT EA.* FROM externosAPA AS EA INNER JOIN profesorYArticulo PAE ON EA.idExternoAPA = PAE.idProfesor INNER JOIN profesorYArticulo PAO ON PAE.idArticulo = PAO.idArticulo WHERE PAE.esInterno = 0 AND PAO.esInterno!=0 AND PAO.idProfesor = ${idProfesor}`);
             res.json(listexternos);
         });
     }
