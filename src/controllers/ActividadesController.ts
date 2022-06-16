@@ -53,6 +53,11 @@ class ActividadesController {
 		res.json(respuesta)
 	}
 
+	public async listActividadesByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
+		const { idProfesor, fechaIni, fechaFin } = req.params
+		let respuesta = await pool.query(`SELECT * FROM actividades  WHERE idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`)
+		res.json(respuesta)
+	}
 }
 
 export const actividadesController = new ActividadesController()
