@@ -35,6 +35,19 @@ class ProfesorYArticuloController {
 		res.json(resp)
 	}
 
+	public async updatePrioridadesOfAutoresByPublicacion(req: Request, res: Response): Promise<void> {
+		let resp
+		const { idArticulo } = req.params
+		let hoy: Date = new Date()
+		let fecha = hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2)
+		for( let i = 0; i < req.body.length; i++ ) {
+			const utm = req.body[i]
+			utm.fechaModificacion = fecha
+			resp = await pool.query('UPDATE profesorYArticulo set ? WHERE idArticulo = ? AND idProfesor = ? AND esInterno = ?', [utm, idArticulo, utm.idProfesor, utm.esInterno])
+		}
+		res.json(resp)
+	}
+	
 	public async profesoresByArticulo(req: Request, res: Response): Promise<void> {
 		const { idArticulo } = req.params;
 		const respuesta = await pool.query(`SELECT nombres FROM profesores, articulos, profesorYArticulo 
@@ -58,6 +71,39 @@ class ProfesorYArticuloController {
 		}
 		res.status(404).json({ 'mensaje': 'Articulos no encontrados' })
 	}
+
+	public async createExterno(req:Request, res: Response): Promise<void> {
+		const { idArticulo, pos } = req.params
+		const resp = await pool.query('INSERT INTO externosAPA SET ?', [req.body])
+		console.log(resp.insertId);
+		let hoy = new Date();
+		let dato = {
+			idProfesor: resp.insertId,
+			idArticulo: idArticulo,
+			pos: pos,
+			validado: 1,
+			fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
+			esInterno: 0,
+		}
+		console.log(dato);
+		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
+		res.json(resp2)
+	}
+
+	public async addAutoresUTM(req: Request, res: Response): Promise<void> {
+		const {idArticulo} = req.params
+		let profesores = req.body
+		let resp: any;
+		console.log(profesores)
+
+		let hoy = new Date();
+		let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
+		for(var i=0; i<profesores.length;i++){
+			resp = await pool.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`)
+		}
+		res.json(resp)
+	}
+
 
 }
 
