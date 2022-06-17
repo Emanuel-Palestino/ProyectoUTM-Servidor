@@ -14,6 +14,7 @@ class PatentesRoutes
 		this.router.get('/:id',patentesController.listOne);
 		this.router.delete('/delete/:id', patentesController.delete);
 		this.router.put('/actualizar/:id',patentesController.actualizar);
+		this.router.get('/listPatentesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin',patentesController.listPatentesByProfesorByPeriodo );
 	}
 }
 const patentesRoutes= new PatentesRoutes();
