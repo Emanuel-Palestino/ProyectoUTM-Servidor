@@ -15,6 +15,7 @@ class RevisorRoutes {
 		this.router.post('/create', revisorController.create)
 		this.router.delete('/delete/:idRevisor', revisorController.delete) 
 		this.router.put('/update/:idRevisor', revisorController.update)
+		this.router.get('/listRevisionByProfesor/:idProfesor/:fechaIni/:fechaFin', revisorController.listRevisionByProfesor);
 	}
 
 }
