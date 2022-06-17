@@ -36,5 +36,11 @@ class TutoradoController
 		const resp = await pool.query("UPDATE tutorado set ? WHERE idTutorado= ?", [req.body, idTutorado]);
 		res.json(resp);
 		}
+		public async listTutoradosByPeriodo(req: Request, res: Response): Promise<void> {
+			const { idProfesor, fechaIni, fechaFin } = req.params
+			let respuesta = await pool.query(`SELECT idTutorado,numero,nivel,idCarrera,estado,inicio,fin,comprobante FROM tutorado WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`)
+			res.json(respuesta)
+		
+		}
 }
 export const tutoradoController = new TutoradoController();

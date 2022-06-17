@@ -24,7 +24,7 @@ class ArticulosController {
 		let dato = {
 			idProfesor: idProfesor,
 			idArticulo: resp.insertId,
-			posicion: 1
+			pos: 1
 		}
 		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
 		res.json(resp2)

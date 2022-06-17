@@ -11,8 +11,11 @@ class ProyectoRoutes {
         this.router.get('/', ProyectosController_1.proyectosController.list);
         this.router.get('/:idProyecto', ProyectosController_1.proyectosController.listOne);
         this.router.post('/create', ProyectosController_1.proyectosController.create);
+        this.router.get('/listColaboradoresExternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresExternosProyectos);
         this.router.delete('/delete/:idProyecto', ProyectosController_1.proyectosController.delete);
         this.router.put('/update/:idProyecto', ProyectosController_1.proyectosController.update);
+        this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ProyectosController_1.proyectosController.listProyectosByProfesorByPeriodo);
+        this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
     }
 }
 const proyectoRoutes = new ProyectoRoutes();
