@@ -13,6 +13,7 @@ class ProyectoRoutes {
         this.router.post('/create', ProyectosController_1.proyectosController.create);
         this.router.delete('/delete/:idProyecto', ProyectosController_1.proyectosController.delete);
         this.router.put('/update/:idProyecto', ProyectosController_1.proyectosController.update);
+        this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
     }
 }
 const proyectoRoutes = new ProyectoRoutes();
