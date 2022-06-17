@@ -52,6 +52,30 @@ class ProyectosController {
             res.json(resp);
         });
     }
+  
+    listProyectosByProfesorByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respuesta = yield database_1.default.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYProyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`);
+            //Obtenemos los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Obtenemos los colaboradores del proyecto
+                const respuestaProyectos = yield database_1.default.query('SELECT PP.* FROM profesoryproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
+                respuesta[i].colaboradores = respuestaProyectos;
+                for (let j = 0; j < respuestaProyectos.length; j++) {
+                    if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
+                        const respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS nombreColaborador FROM profesores as P INNER JOIN profesorYProyecto PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
+                        respuesta[i].colaboradores[j] = respuestaColaboradores;
+                    }
+                    else { //Si no es un colaborador externo
+                        const respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS nombreColaborador FROM externosproyecto as E INNER JOIN profesorYProyecto PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
+                        respuesta[i].colaboradores[j] = respuestaColaboradores;
+                    }
+                }
+            }
+        });
+    }
+
     listColaboradoresInternosProyectos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor } = req.params;
