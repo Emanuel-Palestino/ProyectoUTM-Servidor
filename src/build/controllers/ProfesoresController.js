@@ -124,5 +124,15 @@ class ProfesoresController {
             });
         });
     }
+    updateCredencialesProfesor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            const correoNuevo = req.body.correo;
+            const nombreProfesorNuevo = req.body.nombreProfesor;
+            const gradoNuevo = req.body.grado;
+            const resp = yield database_1.default.query('UPDATE profesores SET nombreProfesor=?,correo = ?,grado = ? WHERE idProfesor = ?', [nombreProfesorNuevo, correoNuevo, gradoNuevo, idProfesor]);
+            res.json(resp);
+        });
+    }
 }
 exports.profesoresController = new ProfesoresController();

@@ -103,6 +103,18 @@ class ProfesoresController {
 		})
 	}
 
+	public async updateCredencialesProfesor(req: Request, res: Response): Promise<void>{
+		const {idProfesor} = req.params;
+
+		const correoNuevo = req.body.correo;
+		const nombreProfesorNuevo = req.body.nombreProfesor;
+		const gradoNuevo = req.body.grado;
+
+		const resp = await pool.query('UPDATE profesores SET nombreProfesor=?,correo = ?,grado = ? WHERE idProfesor = ?', [nombreProfesorNuevo,correoNuevo,gradoNuevo,idProfesor])
+	
+		res.json(resp);
+	}
+
 }
 
 export const profesoresController = new ProfesoresController()
