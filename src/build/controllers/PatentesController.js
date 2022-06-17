@@ -65,11 +65,11 @@ class PatentesController {
                 respuesta[i].colaboradores = respuesta2;
                 for (let j = 0; j < respuesta2.length; j++) {
                     if (respuesta2[j].esInterno == 1) {
-                        const colaborador = yield database_1.default.query('SELECT nombreExterno AS nombreColaborador FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor]);
+                        const colaborador = yield database_1.default.query('SELECT nombreProfesor AS nombreColaborador FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor]);
                         respuesta[i].colaboradores[j] = colaborador;
                     }
                     else {
-                        const colaborador = yield database_1.default.query('SELECT nombreProfesor AS nombreColaborador FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor]);
+                        const colaborador = yield database_1.default.query('SELECT nombreExterno AS nombreColaborador FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor]);
                         respuesta[i].colaboradores[j] = colaborador;
                     }
                 }
