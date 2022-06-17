@@ -54,5 +54,12 @@ class PatentesController {
             res.json(resp);
         });
     }
+    listColaboradoresInternosPatentes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            const resp = yield database_1.default.query(`SELECT CE.idProfesor, CE.nombreProfesor,CE.idCarrera,CE.idInstituto from profesores AS CE INNER JOIN profesorYPatente PYP ON CE.idProfesor=PYP.idProfesor INNER JOIN profesorYPatente P ON P.idPatente=PYP.esInterno=1 AND PYP.idProfesor!=${idProfesor} AND P.esInterno=1 AND P.idProfesor=${idProfesor}`);
+            res.json(resp);
+        });
+    }
 }
 exports.patentesController = new PatentesController();

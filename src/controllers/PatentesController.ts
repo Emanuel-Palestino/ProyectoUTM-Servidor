@@ -33,5 +33,11 @@ class PatentesController
 		const resp = await pool.query("UPDATE patentes set ? WHERE idPatente= ?", [req.body, id]);
 		res.json(resp);
 		}
+	public async listColaboradoresInternosPatentes(req: Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params;
+		const resp = await pool.query(`SELECT CE.idProfesor, CE.nombreProfesor,CE.idCarrera,CE.idInstituto from profesores AS CE INNER JOIN profesorYPatente PYP ON CE.idProfesor=PYP.idProfesor INNER JOIN profesorYPatente P ON P.idPatente=PYP.esInterno=1 AND PYP.idProfesor!=${idProfesor} AND P.esInterno=1 AND P.idProfesor=${idProfesor}`);
+		res.json(resp);
+	}
+		
 }
 export const patentesController = new PatentesController();
