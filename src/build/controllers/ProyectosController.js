@@ -52,5 +52,13 @@ class ProyectosController {
             res.json(resp);
         });
     }
+    listColaboradoresExternosProyectos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            let consulta = `SELECT ep.idExternoProyecto as idExterno, ep.nombreExterno FROM profesoryproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE idProyecto = ANY (SELECT idProyecto from profesoryproyecto WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0;`;
+            const resp = yield database_1.default.query(consulta);
+            res.json(resp);
+        });
+    }
 }
 exports.proyectosController = new ProyectosController();
