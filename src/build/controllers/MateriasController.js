@@ -60,5 +60,22 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+    listMateriasByAnyoByPeriodoMultiple(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, anyoIni, anyoFin } = req.params;
+            let resp;
+            let consulta = `SELECT pymm.idProfesorYMateriaMultiple,pymm.idMateria, c.nombreCarrera, pl.nombre as plan, p.nombre as nombrePeriodo FROM profesorymateriamultiple pymm INNER JOIN periodos as p ON p.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pymm.idProfesor = ${idProfesor} AND p.fechaInicio >= '${anyoIni}' AND p.fechaFin <= '${anyoFin}'`;
+            const respuesta = yield database_1.default.query(consulta);
+            for (let i = 0; i < respuesta.length; i++) {
+                resp = yield database_1.default.query(`SELECT grupo FROM gruposmultiples WHERE idProfesorYMateriaMultiple = ${respuesta[i].idProfesorYMateriaMultiple}`);
+                respuesta[i].grupos = [];
+                delete respuesta[i].idProfesorYMateriaMultiple;
+                resp.forEach((element) => {
+                    respuesta[i].grupos.push(element.grupo);
+                });
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.materiasController = new MateriasController();
