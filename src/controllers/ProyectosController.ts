@@ -34,14 +34,20 @@ class ProyectosController {
 		const resp = await pool.query('UPDATE proyectos set ? WHERE idProyecto=?', [req.body, idProyecto])
 		res.json(resp)
 	}
+
+	public async listColaboradoresExternosProyectos(req: Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params
+        let consulta = `SELECT ep.idExternoProyecto as idExterno, ep.nombreExterno FROM profesoryproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE idProyecto = ANY (SELECT idProyecto from profesoryproyecto WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0;`
+		const resp = await pool.query(consulta)
+		res.json(resp)
+	}
+
 	public async listColaboradoresInternosProyectos(req: Request, res: Response): Promise<void> {
 		const { idProfesor } = req.params;
 		const respuesta = await pool.query(`SELECT DISTINCT CE.idProfesor, CE.nombreProfesor, CE.idCarrera, CE.idInstituto FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProfesor = ${idProfesor} AND CE.idProfesor !=${idProfesor}`);
 		res.json(respuesta)
 	}
 	
-
-
 	public async listProyectosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin} = req.params;
 		let respuesta = await pool.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYProyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
