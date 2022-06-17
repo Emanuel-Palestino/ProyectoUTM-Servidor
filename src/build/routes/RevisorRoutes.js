@@ -13,6 +13,7 @@ class RevisorRoutes {
         this.router.post('/create', RevisorController_1.revisorController.create);
         this.router.delete('/delete/:idRevisor', RevisorController_1.revisorController.delete);
         this.router.put('/update/:idRevisor', RevisorController_1.revisorController.update);
+        this.router.get('/listRevisionByProfesor/:idProfesor/:fechaIni/:fechaFin', RevisorController_1.revisorController.listRevisionByProfesor);
     }
 }
 const revisorRoutes = new RevisorRoutes();

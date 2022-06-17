@@ -14,6 +14,7 @@ class PatentesRoutes {
         this.router.delete('/delete/:id', PatentesController_1.patentesController.delete);
         this.router.put('/actualizar/:id', PatentesController_1.patentesController.actualizar);
         this.router.get('/listColaboradoresInternosPatentes/:idProfesor', PatentesController_1.patentesController.listColaboradoresInternosPatentes);
+        this.router.get('/listColaboradoresExternosPatentes/:idProfesor', PatentesController_1.patentesController.colaboradoresExternos);
     }
 }
 const patentesRoutes = new PatentesRoutes();

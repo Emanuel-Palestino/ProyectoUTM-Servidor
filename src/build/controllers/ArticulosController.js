@@ -39,7 +39,7 @@ class ArticulosController {
             let dato = {
                 idProfesor: idProfesor,
                 idArticulo: resp.insertId,
-                posicion: 1
+                pos: 1
             };
             const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
             res.json(resp2);

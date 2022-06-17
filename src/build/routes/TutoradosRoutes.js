@@ -13,6 +13,7 @@ class TutoradoRoutes {
         this.router.post('/create', TutoradosController_1.tutoradoController.create);
         this.router.delete('/delete/:id', TutoradosController_1.tutoradoController.delete);
         this.router.put('/actualizar/:idTutorado', TutoradosController_1.tutoradoController.actualizar);
+        this.router.get('/listTutoradosByPeriodo/:idProfesor/:fechaIni/:fechaFin', TutoradosController_1.tutoradoController.listTutoradosByPeriodo);
     }
 }
 const tutoradoRoutes = new TutoradoRoutes();
