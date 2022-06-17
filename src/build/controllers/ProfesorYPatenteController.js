@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database"));
 class ProfesorYPatenteController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYPatenteorder by idPatente');
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYPatente order by idPatente');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idPatente, esInterno } = req.params;
-            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYPatenteWHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
+            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYPatente WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,21 +34,21 @@ class ProfesorYPatenteController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO profesorYPatenteset ?", [req.body]);
+            const resp = yield database_1.default.query("INSERT INTO profesorYPatente set ?", [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idPatente, esInterno } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYPatenteWHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
+            const resp = yield database_1.default.query(`DELETE FROM profesorYPatente WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
             res.json(resp);
         });
     }
     actualizar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idPatente, esInterno } = req.params;
-            const resp = yield database_1.default.query(`UPDATE profesorYPatenteset ? WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`, req.body);
+            const resp = yield database_1.default.query(`UPDATE profesorYPatente set ? WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`, req.body);
             res.json(resp);
         });
     }
