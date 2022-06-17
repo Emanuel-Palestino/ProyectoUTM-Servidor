@@ -35,7 +35,7 @@ class PatentesController
 		}
 	public async listColaboradoresInternosPatentes(req: Request, res: Response): Promise<void> {
 		const { idProfesor } = req.params;
-		const resp = await pool.query(`SELECT CE.idProfesor, CE.nombreProfesor,CE.idCarrera,CE.idInstituto from profesores AS CE INNER JOIN profesorYPatente PYP ON CE.idProfesor=PYP.idProfesor INNER JOIN profesorYPatente P ON P.idPatente=PYP.esInterno=1 AND PYP.idProfesor!=${idProfesor} AND P.esInterno=1 AND P.idProfesor=${idProfesor}`);
+		const resp = await pool.query(`SELECT DISTINCT prof.idProfesor, prof.nombreProfesor,prof.idCarrera,prof.idInstituto from profesores AS prof INNER JOIN profesorYPatente pYP ON prof.idProfesor=pYP.idProfesor INNER JOIN profesorYPatente P ON P.idPatente=pYP.esInterno=1  AND P.esInterno=1 AND P.idProfesor=${idProfesor}`);
 		res.json(resp);
 	}
 		
