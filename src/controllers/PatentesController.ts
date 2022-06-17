@@ -32,6 +32,13 @@ class PatentesController
 		const { id } = req.params;
 		const resp = await pool.query("UPDATE patentes set ? WHERE idPatente= ?", [req.body, id]);
 		res.json(resp);
-		}
+	}
+
+	public async colaboradoresExternos(req: Request, res: Response) {
+		const { idProfesor } = req.params
+		const resp = await pool.query(`SELECT EP.idExternoPatente, EP.nombreExterno FROM ((patentes as P INNER JOIN profesorypatente PP ON P.idPatente=PP.idPatente AND PP.idProfesor=${idProfesor} AND PP.esInterno=1) INNER JOIN profesorypatente PP2 ON PP2.idPatente=P.idPatente) INNER JOIN externosPatente EP ON EP.idExternoPatente=PP2.idProfesor AND PP2.esInterno=0`)
+		res.json(resp)
+	}
+
 }
 export const patentesController = new PatentesController();

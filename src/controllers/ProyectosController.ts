@@ -34,6 +34,13 @@ class ProyectosController {
 		const resp = await pool.query('UPDATE proyectos set ? WHERE idProyecto=?', [req.body, idProyecto])
 		res.json(resp)
 	}
+	public async listColaboradoresInternosProyectos(req: Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params;
+		const respuesta = await pool.query(`SELECT DISTINCT CE.idProfesor, CE.nombreProfesor, CE.idCarrera, CE.idInstituto FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProfesor = ${idProfesor} AND CE.idProfesor !=${idProfesor}`);
+		res.json(respuesta)
+	}
+	
+
 
 	public async listProyectosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin} = req.params;
