@@ -124,7 +124,7 @@ class ProfesoresController {
             });
         });
     }
-    updateCredencialesProfesor(req, res) {
+    updateDatosPersonales(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor } = req.params;
             const correoNuevo = req.body.correo;
