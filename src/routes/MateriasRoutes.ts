@@ -16,6 +16,7 @@ class MateriasRouter {
         this.router.put('/update/:idMateria',materiasController.update);
         this.router.get('/delete/:idMateria',materiasController.delete);
         this.router.get('/listMateriasByAnyoByPeriodo/:idProfesor/:anyoIni/:anyoFin',materiasController.listMateriasByAnyoByPeriodo);
+        this.router.get('/listMateriasByAnyoByPeriodoMultiple/:idProfesor/:anyoIni/:anyoFin',materiasController.listMateriasByAnyoByPeriodoMultiple);
 	}
 }
 const materiasRouter = new MateriasRouter()

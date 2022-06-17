@@ -54,5 +54,12 @@ class PatentesController {
             res.json(resp);
         });
     }
+    colaboradoresExternos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            const resp = yield database_1.default.query(`SELECT EP.idExternoPatente, EP.nombreExterno FROM ((patentes as P INNER JOIN profesorypatente PP ON P.idPatente=PP.idPatente AND PP.idProfesor=${idProfesor} AND PP.esInterno=1) INNER JOIN profesorypatente PP2 ON PP2.idPatente=P.idPatente) INNER JOIN externosPatente EP ON EP.idExternoPatente=PP2.idProfesor AND PP2.esInterno=0`);
+            res.json(resp);
+        });
+    }
 }
 exports.patentesController = new PatentesController();
