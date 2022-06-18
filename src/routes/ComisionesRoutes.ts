@@ -15,7 +15,7 @@ class ComisionesRoutes{
         this.router.put('/update/:idComision', comisionesController.update);
         this.router.delete('/delete/:idComision', comisionesController.delete);
         this.router.get('/listComisionesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin',comisionesController.listComisionesByProfesoByPeriodo);
-
+        this.router.get('/listComisionesByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin',comisionesController.listComisionesByCarreraByPeriodo);   
     }
 }
 
