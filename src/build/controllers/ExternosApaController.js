@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database"));
 class ExternosApaController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM externosapa order by idExternoAPA');
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA order by idExternoAPA');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExternoAPA } = req.params; //id para filtrar la consulta
-            const respuesta = yield database_1.default.query('SELECT * FROM externosapa WHERE idExternoAPA = ?', [idExternoAPA]);
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA WHERE idExternoAPA = ?', [idExternoAPA]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,21 +34,21 @@ class ExternosApaController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO externosapa SET ?', [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO externosAPA SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExternoAPA } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM externosapa WHERE idExternoAPA = ${idExternoAPA}`);
+            const resp = yield database_1.default.query(`DELETE FROM externosAPA WHERE idExternoAPA = ${idExternoAPA}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExternoAPA } = req.params;
-            const resp = yield database_1.default.query(`UPDATE externosapa set ? WHERE idExternoAPA = ?`, [req.body, idExternoAPA]);
+            const resp = yield database_1.default.query(`UPDATE externosAPA set ? WHERE idExternoAPA = ?`, [req.body, idExternoAPA]);
             res.json(resp);
         });
     }
