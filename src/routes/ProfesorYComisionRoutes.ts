@@ -11,6 +11,7 @@ class ProfesorYComisionRoutes {
 
 	config() : void {
 		this.router.get('/', profesorYComisionController.list)
+		this.router.post('/AddComisionado/:idComision', profesorYComisionController.AddComisionado)
 		this.router.get('/:idProfesor/:idComision', profesorYComisionController.listOne)
 		this.router.post('/create', profesorYComisionController.create)
 		this.router.delete('/delete/:idProfesor/:idComision', profesorYComisionController.delete)
