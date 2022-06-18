@@ -19,12 +19,15 @@ class ArticulosController {
 	}
 
 	public async create(req:Request, res: Response): Promise<void> {
-		const { idProfesor } = req.params
+		const { idProfesor, fecha } = req.params
 		const resp = await pool.query('INSERT INTO articulos SET ?', [req.body])
 		let dato = {
 			idProfesor: idProfesor,
 			idArticulo: resp.insertId,
-			pos: 1
+			pos: 1,
+			validado: 1,
+			fechaModificacion: fecha,
+			esInterno: 1
 		}
 		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
 		res.json(resp2)
