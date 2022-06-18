@@ -52,7 +52,7 @@ class ProfesorYComisionController {
             res.json(resp);
         });
     }
-    AddComisionado(req, res) {
+    addComisionado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let { idComision } = req.params;
             let respT = [];
@@ -61,8 +61,8 @@ class ProfesorYComisionController {
                     idComision: idComision,
                     idProfesor: req.body[i].idProfesor,
                     pos: req.body[i].pos,
-                    final: '2100-12-21',
-                    comprobante: 'No'
+                    final: req.body[i].final,
+                    comprobante: ' '
                 };
                 const resp = yield database_1.default.query('INSERT INTO profesorYComision SET ?', dato);
                 respT.push(resp);

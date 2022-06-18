@@ -33,7 +33,7 @@ class ProfesorYComisionController{
 		const resp = await pool.query('UPDATE profesorYComision set ? WHERE idProfesor = ? AND idComision = ?', [req.body,idProfesor, idComision])
 		res.json(resp)
 	}
-	public async AddComisionado(req:Request, res: Response): Promise<void> {
+	public async addComisionado(req:Request, res: Response): Promise<void> {
 		let {idComision}=req.params;
 		let respT:any=[];
 		for(let i=0; i<req.body.length; i++){
@@ -41,8 +41,8 @@ class ProfesorYComisionController{
 				idComision: idComision,
 				idProfesor: req.body[i].idProfesor,
 				pos: req.body[i].pos,
-				final: '2100-12-21',
-				comprobante: 'No'
+				final: req.body[i].final,
+				comprobante: ' '
 			} 
 			const resp = await pool.query('INSERT INTO profesorYComision SET ?', dato)
 			respT.push(resp)
