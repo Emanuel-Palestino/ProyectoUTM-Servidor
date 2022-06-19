@@ -38,14 +38,14 @@ class TesistasController {
 		let aux2: any[] = []
 		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorytesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
 		for(var i=0; i<resp.length;i++){
-			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorytesis where profesorytesis.idTesis=${resp[i].idTesis}`)
-			//console.log(respColab);
+			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorytesis where profesorytesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
+			console.log(respColab);
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){
 				if (respColab[j].esInterno == "0"){
-					respNombres =  await pool.query(`SELECT nombreProfesor FROM profesores where profesores.idProfesor=${respColab[j].idProfesor}`)
-				}else{
 					respNombres = await pool.query(`SELECT nombreCodirector FROM externocodirector WHERE idExternoCodirector = ${respColab[j].idProfesor};`)
+				}else{
+					respNombres =  await pool.query(`SELECT nombreProfesor FROM profesores where profesores.idProfesor=${respColab[j].idProfesor}`)
 				}
 				aux.push(respNombres)
 			}
