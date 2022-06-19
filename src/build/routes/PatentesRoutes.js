@@ -8,7 +8,7 @@ class PatentesRoutes {
         this.config();
     }
     config() {
-        this.router.post('/create', PatentesController_1.patentesController.create);
+        this.router.post('/create/:idProfesor', PatentesController_1.patentesController.create);
         this.router.get('/', PatentesController_1.patentesController.list);
         this.router.get('/:id', PatentesController_1.patentesController.listOne);
         this.router.delete('/delete/:id', PatentesController_1.patentesController.delete);

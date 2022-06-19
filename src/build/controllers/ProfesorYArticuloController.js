@@ -120,9 +120,16 @@ class ProfesorYArticuloController {
             let hoy = new Date();
             let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
             for (var i = 0; i < profesores.length; i++) {
-                resp = yield database_1.default.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`);
+                resp = yield database_1.default.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'1', '${fecha}', '1')`);
             }
             res.json(resp);
+        });
+    }
+    listProfesorYArticulo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT idProfesor,pos FROM profesorYArticulo WHERE idArticulo = ${idArticulo} ORDER BY pos ASC`);
+            res.json(respuesta);
         });
     }
 }

@@ -31,6 +31,7 @@ const ExternosProyectoRoutes_1 = __importDefault(require("./routes/ExternosProye
 const TutoradosRoutes_1 = __importDefault(require("./routes/TutoradosRoutes"));
 const MateriasRoutes_1 = __importDefault(require("./routes/MateriasRoutes"));
 const PlanesRoutes_1 = __importDefault(require("./routes/PlanesRoutes"));
+const PeriodosRoutes_1 = __importDefault(require("./routes/PeriodosRoutes"));
 const ExternosApaRoutes_1 = __importDefault(require("./routes/ExternosApaRoutes"));
 class Server {
     constructor() {
@@ -71,6 +72,7 @@ class Server {
         this.app.use('/api/externosProyecto', ExternosProyectoRoutes_1.default);
         this.app.use('/api/tutorados', TutoradosRoutes_1.default);
         this.app.use('/api/materias', MateriasRoutes_1.default);
+        this.app.use('/api/periodos', PeriodosRoutes_1.default);
         this.app.use('/api/externosApa', ExternosApaRoutes_1.default);
     }
     start() {
