@@ -150,5 +150,13 @@ class ArticulosController {
             res.json(listexternos);
         });
     }
+    addAutorExterno(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo, fecha } = req.params;
+            let profesor = req.body;
+            let resp = yield database_1.default.query(`INSERT INTO profesorYArticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','0', '${fecha}', '0')`);
+            res.json(resp);
+        });
+    }
 }
 exports.articulosController = new ArticulosController();

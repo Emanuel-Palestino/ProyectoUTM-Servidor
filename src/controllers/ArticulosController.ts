@@ -135,6 +135,15 @@ class ArticulosController {
 		res.json(listexternos);
 	}
 
+	public async addAutorExterno(req: Request, res: Response): Promise<void> {
+		const {idArticulo,fecha} = req.params
+		let profesor = req.body
+		
+		let resp = await pool.query(`INSERT INTO profesorYArticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','0', '${fecha}', '0')`)
+
+		res.json(resp)
+	}
+
 }
 
 export const articulosController = new ArticulosController()
