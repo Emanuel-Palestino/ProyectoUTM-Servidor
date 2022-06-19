@@ -24,7 +24,7 @@ class ExternosProyectoController {
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExterno } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM externosProyecto WHERE idExterno = ? ', [idExterno]);
+            const respuesta = yield database_1.default.query('SELECT * FROM externosProyecto WHERE idExternoProyecto = ? ', [idExterno]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -41,14 +41,14 @@ class ExternosProyectoController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExterno } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM externosProyecto WHERE idExterno=${idExterno}`);
+            const resp = yield database_1.default.query(`DELETE FROM externosProyecto WHERE idExternoProyecto=${idExterno}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExterno } = req.params;
-            const resp = yield database_1.default.query('UPDATE externosProyecto set ? WHERE idExterno=? ', [req.body, idExterno]);
+            const resp = yield database_1.default.query('UPDATE externosProyecto set ? WHERE idExternoProyecto=? ', [req.body, idExterno]);
             res.json(resp);
         });
     }

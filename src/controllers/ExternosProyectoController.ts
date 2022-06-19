@@ -10,7 +10,7 @@ class ExternosProyectoController {
 
 	public async listOne(req: Request, res: Response): Promise<void> {
 		const { idExterno } = req.params;
-		const respuesta = await pool.query('SELECT * FROM externosProyecto WHERE idExterno = ? ', [idExterno])
+		const respuesta = await pool.query('SELECT * FROM externosProyecto WHERE idExternoProyecto = ? ', [idExterno])
 		if (respuesta.length > 0) {
 			res.json(respuesta[0])
 			return;
@@ -25,13 +25,13 @@ class ExternosProyectoController {
 
 	public async delete(req:Request, res: Response): Promise<void> {
 		const { idExterno } = req.params
-		const resp = await pool.query(`DELETE FROM externosProyecto WHERE idExterno=${idExterno}`)
+		const resp = await pool.query(`DELETE FROM externosProyecto WHERE idExternoProyecto=${idExterno}`)
 		res.json(resp)
 	}
 
 	public async update(req: Request, res: Response): Promise<void> {
 		const { idExterno } = req.params
-		const resp = await pool.query('UPDATE externosProyecto set ? WHERE idExterno=? ', [req.body, idExterno])
+		const resp = await pool.query('UPDATE externosProyecto set ? WHERE idExternoProyecto=? ', [req.body, idExterno])
 		res.json(resp)
 	}
 

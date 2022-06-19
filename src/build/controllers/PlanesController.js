@@ -17,14 +17,15 @@ const database_1 = __importDefault(require("../database"));
 class PlanesController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM planes ORDER BY nombrePlan');
+            const respuesta = yield database_1.default.query('SELECT * FROM planes order by idPlan');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM planes WHERE idPlan = ?', [id]);
+            let consulta = 'SELECT * FROM planes WHERE idPlan = ' + id;
+            const respuesta = yield database_1.default.query(consulta);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,33 +35,23 @@ class PlanesController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO planes SET ?', [req.body]);
+            console.log(req.body);
+            const resp = yield database_1.default.query("INSERT INTO planes set ?", [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idPlan } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM planes WHERE idPlan=${idPlan}`);
+            const { id } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM planes WHERE idPlan = ${id}`);
             res.json(resp);
         });
     }
-    update(req, res) {
+    actualizar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idPlan } = req.params;
-            const resp = yield database_1.default.query('UPDATE planes set ? WHERE idPlan=?', [req.body, idPlan]);
+            const { id } = req.params;
+            const resp = yield database_1.default.query("UPDATE planes set ? WHERE idPlan= ?", [req.body, id]);
             res.json(resp);
-        });
-    }
-    getPlanesByCarrera(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera } = req.params;
-            const resp = yield database_1.default.query('SELECT nombrePlan FROM planes WHERE idCarrera=?', idCarrera);
-            if (resp.length > 0) {
-                res.json(resp[0]);
-                return;
-            }
-            res.status(404).json({ 'mensaje': 'Plan no encontrado' });
         });
     }
 }
