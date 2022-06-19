@@ -36,10 +36,14 @@ class ComisionesController{
     public async listComisionesByProfesoByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
 		let respuesta = await pool.query(`SELECT C.nombre,C.asignacion,C.periodo,C.inicio FROM comisiones as C INNER JOIN profesorYcomision PC ON PC.idComision=C.idComision WHERE PC.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
-		// Obtener los profesores participantes
-
 		res.json(respuesta)
 	}
+
+    public async listarComisionesSinAsignar(req: Request, res: Response): Promise<void> {
+        const respuesta = await pool.query('SELECT * FROM comisiones WHERE NOT EXISTS (SELECT *FROM profesorYComision WHERE idComision=comisiones.idComision)');
+        res.json(respuesta)
+    }
+    
 }
 
 export const comisionesController = new ComisionesController();

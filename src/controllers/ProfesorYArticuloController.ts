@@ -104,7 +104,11 @@ class ProfesorYArticuloController {
 		res.json(resp)
 	}
 
-
+	public async listProfesorYArticulo(req: Request, res: Response): Promise<void> {
+		const { idArticulo } = req.params;
+		const respuesta = await pool.query(`SELECT idProfesor,pos FROM profesorYArticulo WHERE idArticulo = ${idArticulo} ORDER BY pos ASC`)
+		res.json(respuesta)
+	}
 }
 
 export const profesorYArticuloController = new ProfesorYArticuloController()

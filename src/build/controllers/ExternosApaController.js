@@ -12,45 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profesorYPatenteController = void 0;
+exports.externosApaController = void 0;
 const database_1 = __importDefault(require("../database"));
-class ProfesorYPatenteController {
+class ExternosApaController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYPatente order by idPatente');
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA order by idExternoAPA');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor, idPatente, esInterno } = req.params;
-            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYPatente WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
+            const { idExternoAPA } = req.params; //id para filtrar la consulta
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA WHERE idExternoAPA = ?', [idExternoAPA]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'Patente no encontrada' });
+            res.status(404).json({ 'mensaje': 'Externo no encontrado' });
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO profesorYPatente set ?", [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO externosAPA SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor, idPatente, esInterno } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYPatente WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`);
+            const { idExternoAPA } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM externosAPA WHERE idExternoAPA = ${idExternoAPA}`);
             res.json(resp);
         });
     }
-    actualizar(req, res) {
+    update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor, idPatente, esInterno } = req.params;
-            const resp = yield database_1.default.query(`UPDATE profesorYPatente set ? WHERE idProfesor=${idProfesor} AND idPatente =${idPatente} AND esInterno=${esInterno}`, req.body);
+            const { idExternoAPA } = req.params;
+            const resp = yield database_1.default.query(`UPDATE externosAPA set ? WHERE idExternoAPA = ?`, [req.body, idExternoAPA]);
             res.json(resp);
         });
     }
 }
-exports.profesorYPatenteController = new ProfesorYPatenteController();
+exports.externosApaController = new ExternosApaController();

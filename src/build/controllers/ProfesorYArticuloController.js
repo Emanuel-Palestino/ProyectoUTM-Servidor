@@ -125,5 +125,12 @@ class ProfesorYArticuloController {
             res.json(resp);
         });
     }
+    listProfesorYArticulo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT idProfesor,pos FROM profesorYArticulo WHERE idArticulo = ${idArticulo} ORDER BY pos ASC`);
+            res.json(respuesta);
+        });
+    }
 }
 exports.profesorYArticuloController = new ProfesorYArticuloController();

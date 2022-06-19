@@ -19,8 +19,16 @@ class ProyectosController {
 	}
 
 	public async create(req:Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params
 		const resp = await pool.query('INSERT INTO proyectos SET ?', [req.body])
-		res.json(resp)
+		let dato =  {
+			idProfesor : idProfesor,
+			idProyecto: resp.insertId,
+			pos: 1,
+			esInterno: 1
+		}
+		const resp2 = await pool.query('INSERT INTO profesorYProyecto SET ?', dato)
+		res.json(resp2)
 	}
 
 	public async delete(req:Request, res: Response): Promise<void> {
