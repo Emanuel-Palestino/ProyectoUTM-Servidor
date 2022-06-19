@@ -48,7 +48,7 @@ class MateriasController {
 
         const {idProfesor,anyoIni,anyoFin} = req.params
 		let resp: any;
-        let consulta = `SELECT pymm.idProfesorYMateriaMultiple,pymm.idMateria, c.nombreCarrera, pl.nombre as plan, p.nombre as nombrePeriodo FROM profesorymateriamultiple pymm INNER JOIN periodos as p ON p.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pymm.idProfesor = ${idProfesor} AND p.fechaInicio >= '${anyoIni}' AND p.fechaFin <= '${anyoFin}'`
+        let consulta = `SELECT pymm.idProfesorYMateriaMultiple,pymm.idMateria, c.nombreCarrera, pl.nombrePlan as plan, p.nombre as nombrePeriodo FROM profesorymateriamultiple pymm INNER JOIN periodos as p ON p.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pymm.idProfesor = ${idProfesor} AND p.fechaInicio >= '${anyoIni}' AND p.fechaFin <= '${anyoFin}'`
 		const respuesta = await pool.query(consulta)
 		for (let i = 0; i < respuesta.length; i++){
 			resp = await pool.query(`SELECT grupo FROM gruposmultiples WHERE idProfesorYMateriaMultiple = ${respuesta[i].idProfesorYMateriaMultiple}`)
