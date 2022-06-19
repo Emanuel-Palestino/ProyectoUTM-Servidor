@@ -36,9 +36,9 @@ class TesistasController {
 		const {idProfesor, fechaIni, fechaFin} = req.params
 		let respNombres: ''
 		let aux2: any[] = []
-		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorytesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
+		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYTesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
 		for(var i=0; i<resp.length;i++){
-			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorytesis where profesorytesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
+			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYTesis where profesorYTesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
 			console.log(respColab);
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){
