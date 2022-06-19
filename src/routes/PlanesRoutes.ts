@@ -17,5 +17,5 @@ class PlanRoutes
 		this.router.put('/actualizar/:id',planesController.actualizar);
 	}
 }
-const planRoutes= new PlanRoutes();
-export default planRoutes.router;
+const planesRoutes= new PlanRoutes();
+export default planesRoutes.router;

@@ -1,6 +1,6 @@
 import {Request,Response} from 'express';
 import pool from '../database';
-class PlanControllers
+class PlanesController
 {
 	public async list(req: Request, res: Response ): Promise<void>
 	{
@@ -34,4 +34,4 @@ class PlanControllers
 		res.json(resp);
 		}
 }
-export const planesController = new PlanControllers();
+export const planesController = new PlanesController();
