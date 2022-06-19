@@ -69,7 +69,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 //Sacamos los profesores del articulo
-                const respuesta2 = yield database_1.default.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
+                const respuesta2 = yield database_1.default.query('SELECT P.*, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
