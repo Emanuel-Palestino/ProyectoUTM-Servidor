@@ -18,6 +18,7 @@ class ProfesoresRoutes {
         this.router.get('/profesoresByCarrera/:idCarrera', ProfesoresController_1.profesoresController.getProfesorByCarrera);
         this.router.get('/profesoresByArticulo/:idArticulo', ProfesoresController_1.profesoresController.getProfesoresByArticulo);
         this.router.post('/autenticar', ProfesoresController_1.profesoresController.existe);
+        this.router.put('/updateDatosPersonales/:idProfesor', ProfesoresController_1.profesoresController.updateDatosPersonales);
     }
 }
 const profesoresRoutes = new ProfesoresRoutes();

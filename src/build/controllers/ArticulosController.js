@@ -34,12 +34,15 @@ class ArticulosController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor } = req.params;
+            const { idProfesor, fecha } = req.params;
             const resp = yield database_1.default.query('INSERT INTO articulos SET ?', [req.body]);
             let dato = {
                 idProfesor: idProfesor,
                 idArticulo: resp.insertId,
-                pos: 1
+                pos: 1,
+                validado: 1,
+                fechaModificacion: fecha,
+                esInterno: 1
             };
             const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
             res.json(resp2);
@@ -48,7 +51,8 @@ class ArticulosController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`);
+            let resp = yield database_1.default.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`);
+            resp = yield database_1.default.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`);
             res.json(resp);
         });
     }
@@ -66,7 +70,7 @@ class ArticulosController {
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 //Sacamos los profesores del articulo
-                const respuesta2 = yield database_1.default.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
+                const respuesta2 = yield database_1.default.query('SELECT P.*, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);

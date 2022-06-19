@@ -9,6 +9,7 @@ class ComisionesRoutes{
     }
 
     config() : void {
+        this.router.get('/listarComisionesSinAsignar',comisionesController.listarComisionesSinAsignar);
         this.router.get('/', comisionesController.list);
         this.router.get('/:idComision', comisionesController.listOne);
         this.router.post('/create', comisionesController.create);

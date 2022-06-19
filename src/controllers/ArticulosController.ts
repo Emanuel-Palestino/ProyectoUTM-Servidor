@@ -19,12 +19,15 @@ class ArticulosController {
 	}
 
 	public async create(req:Request, res: Response): Promise<void> {
-		const { idProfesor } = req.params
+		const { idProfesor, fecha } = req.params
 		const resp = await pool.query('INSERT INTO articulos SET ?', [req.body])
 		let dato = {
 			idProfesor: idProfesor,
 			idArticulo: resp.insertId,
-			pos: 1
+			pos: 1,
+			validado: 1,
+			fechaModificacion: fecha,
+			esInterno: 1
 		}
 		const resp2 = await pool.query('INSERT INTO profesorYArticulo SET ?', dato)
 		res.json(resp2)
@@ -32,7 +35,8 @@ class ArticulosController {
 
 	public async delete(req:Request, res: Response): Promise<void> {
 		const { idArticulo } = req.params
-		const resp = await pool.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`)
+		let resp = await pool.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`)
+		resp = await pool.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`)
 		res.json(resp)
 	}
 
@@ -49,7 +53,7 @@ class ArticulosController {
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
 			//Sacamos los profesores del articulo
-			const respuesta2 = await pool.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo])
+			const respuesta2 = await pool.query('SELECT P.*, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo])
 			respuesta[i].autores = respuesta2
 		}
 

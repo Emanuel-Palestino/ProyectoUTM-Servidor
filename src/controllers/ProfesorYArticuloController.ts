@@ -99,12 +99,16 @@ class ProfesorYArticuloController {
 		let hoy = new Date();
 		let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
 		for(var i=0; i<profesores.length;i++){
-			resp = await pool.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`)
+			resp = await pool.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'1', '${fecha}', '1')`)
 		}
 		res.json(resp)
 	}
 
-
+	public async listProfesorYArticulo(req: Request, res: Response): Promise<void> {
+		const { idArticulo } = req.params;
+		const respuesta = await pool.query(`SELECT idProfesor,pos FROM profesorYArticulo WHERE idArticulo = ${idArticulo} ORDER BY pos ASC`)
+		res.json(respuesta)
+	}
 }
 
 export const profesorYArticuloController = new ProfesorYArticuloController()

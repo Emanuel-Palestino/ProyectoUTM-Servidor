@@ -14,43 +14,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.periodoController = void 0;
 const database_1 = __importDefault(require("../database"));
-class PeriodoController {
+class PeriodosController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM periodo ORDER BY inicio');
+            const respuesta = yield database_1.default.query('SELECT * FROM periodos order by idPeriodo ');
+            console.log(respuesta);
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM periodo WHERE idPeriodo = ?', [id]);
+            let consulta = 'SELECT * FROM periodos WHERE idPeriodo = ' + id;
+            const respuesta = yield database_1.default.query(consulta);
+            console.log(consulta);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'Periodo no encontrado' });
+            res.status(404).json({ 'mensaje': 'periodos no encontrado' });
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO periodo SET ?', [req.body]);
+            console.log(req.body);
+            const resp = yield database_1.default.query("INSERT INTO periodos set ?", [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPeriodo } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM periodo WHERE idProfesorMateria=${idPeriodo}`);
+            const resp = yield database_1.default.query(`DELETE FROM periodos WHERE idPeriodo  = ${idPeriodo}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPeriodo } = req.params;
-            const resp = yield database_1.default.query('UPDATE periodo set ? WHERE idPeriodo=?', [req.body, idPeriodo]);
+            const resp = yield database_1.default.query("UPDATE periodos set ? WHERE idPeriodo = ?", [req.body, idPeriodo]);
             res.json(resp);
         });
     }
 }
-exports.periodoController = new PeriodoController();
+exports.periodoController = new PeriodosController();

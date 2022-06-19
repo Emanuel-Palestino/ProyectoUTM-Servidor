@@ -26,7 +26,9 @@ import ProfesorYProyectoRoutes from './routes/ProfesorYProyectoRoutes'
 import ExternosProyectoRoutes from './routes/ExternosProyectoRoutes'
 import TutoradosRoutes from './routes/TutoradosRoutes'
 import MateriasRoutes from './routes/MateriasRoutes'
-import PlanRoutes from './routes/PlanRoutes'
+import PlanesRoutes from './routes/PlanesRoutes'
+import PeriodosRoutes from './routes/PeriodosRoutes'
+import ExternosApaRoutes from './routes/ExternosApaRoutes'
 
 class Server {
 
@@ -58,7 +60,7 @@ class Server {
 		this.app.use('/api/archivoYArticulo', ArchivoYArticuloRoutes)
 		this.app.use('/api/eventos', EventosRoutes)
 		this.app.use('/api/actividades', ActividadesRoutes)
-		this.app.use('/api/plan',PlanRoutes)
+		this.app.use('/api/planes',PlanesRoutes)
 		this.app.use('/api/patentes',PatentesRoutes)
 		this.app.use('/api/profesorYPatente',ProfesorYPatenteRoutes)
 		this.app.use('/api/externosPatente',ExternosPatenteRoutes)
@@ -72,6 +74,8 @@ class Server {
 		this.app.use('/api/externosProyecto',ExternosProyectoRoutes )
 		this.app.use('/api/tutorados', TutoradosRoutes)
 		this.app.use('/api/materias', MateriasRoutes);
+		this.app.use('/api/periodos', PeriodosRoutes);
+		this.app.use('/api/externosApa', ExternosApaRoutes);
 	}
 
 	start(): void {
