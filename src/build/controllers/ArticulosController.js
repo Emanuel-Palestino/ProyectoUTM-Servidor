@@ -51,7 +51,8 @@ class ArticulosController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`);
+            let resp = yield database_1.default.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`);
+            resp = yield database_1.default.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`);
             res.json(resp);
         });
     }
