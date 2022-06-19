@@ -16,9 +16,16 @@ class PatentesController {
 		res.status(404).json({ 'mensaje': 'Patente no encontrada' });
 	}
 	public async create(req: Request, res: Response): Promise<void> {
-		console.log(req.body);
+		const { idProfesor } = req.params
 		const resp = await pool.query("INSERT INTO patentes set ?", [req.body]);
-		res.json(resp);
+		let dato = {
+			idProfesor: idProfesor,
+			idPatente: resp.insertId,
+			pos: 1,
+			esInterno: 1
+		}
+		const resp2 = await pool.query('INSER INTO profesorYPatente SET ?', dato)
+		res.json(resp2);
 	}
 
 	public async delete(req: Request, res: Response): Promise<void> {
