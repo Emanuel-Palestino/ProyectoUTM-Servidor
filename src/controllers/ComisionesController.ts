@@ -18,13 +18,23 @@ class ComisionesController{
     }
 
     public async create(req: Request, res: Response): Promise<void> {
-        const resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
+        const { idProfesor, fechaFinal } = req.params
+        let resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
+        let dato = {
+            idProfesor: idProfesor,
+            idComision: resp.insertId,
+            pos: 1,
+            final: fechaFinal,
+            comprobante: ''
+        }
+        resp = await pool.query('INSERT INTO profesorYComision SET ?', dato);
 		res.json(resp);
     }
 
     public async delete(req: Request, res: Response): Promise<void> {
-        const {idComision} = req.params;
-        const resp = await pool.query(`DELETE FROM comisiones WHERE idComision = ${idComision}`);
+        const { idComision } = req.params;
+        let resp = await pool.query(`DELETE FROM profesorYComision WHERE idComision = ${idComision}`);
+        resp = await pool.query(`DELETE FROM comisiones WHERE idComision = ${idComision}`);
         res.json(resp);
     }
 

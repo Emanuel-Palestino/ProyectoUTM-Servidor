@@ -34,14 +34,24 @@ class ComisionesController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO comisiones SET ?', [req.body]);
+            const { idProfesor, fechaFinal } = req.params;
+            let resp = yield database_1.default.query('INSERT INTO comisiones SET ?', [req.body]);
+            let dato = {
+                idProfesor: idProfesor,
+                idComision: resp.insertId,
+                pos: 1,
+                final: fechaFinal,
+                comprobante: ''
+            };
+            resp = yield database_1.default.query('INSERT INTO profesorYComision SET ?', dato);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idComision } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM comisiones WHERE idComision = ${idComision}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYComision WHERE idComision = ${idComision}`);
+            resp = yield database_1.default.query(`DELETE FROM comisiones WHERE idComision = ${idComision}`);
             res.json(resp);
         });
     }
