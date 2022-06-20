@@ -139,7 +139,7 @@ class ArticulosController {
 		const {idArticulo,fecha} = req.params
 		let profesor = req.body
 		
-		let resp = await pool.query(`INSERT INTO profesorYArticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','0', '${fecha}', '0')`)
+		let resp = await pool.query(`INSERT INTO profesorYArticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','1', '${fecha}', '0')`)
 
 		res.json(resp)
 	}
