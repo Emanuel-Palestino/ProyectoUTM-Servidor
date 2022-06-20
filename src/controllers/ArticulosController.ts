@@ -35,8 +35,8 @@ class ArticulosController {
 
 	public async delete(req:Request, res: Response): Promise<void> {
 		const { idArticulo } = req.params
-		let resp = await pool.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`)
-		resp = await pool.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`)
+		let resp = await pool.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`)
+		resp = await pool.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`)
 		res.json(resp)
 	}
 
