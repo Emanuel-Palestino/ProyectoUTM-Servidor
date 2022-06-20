@@ -49,7 +49,8 @@ class ProyectosController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProyecto } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM proyectos WHERE idProyecto=${idProyecto}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYProyecto WHERE idProyecto=${idProyecto}`);
+            resp = yield database_1.default.query(`DELETE FROM proyectos WHERE idProyecto=${idProyecto}`);
             res.json(resp);
         });
     }

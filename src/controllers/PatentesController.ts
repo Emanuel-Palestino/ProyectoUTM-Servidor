@@ -30,7 +30,8 @@ class PatentesController {
 
 	public async delete(req: Request, res: Response): Promise<void> {
 		const { id } = req.params
-		const resp = await pool.query(`DELETE FROM patentes WHERE idPatente = ${id}`);
+		let resp = await pool.query(`DELETE FROM profesorYPatente WHERE idPatente = ${id}`);
+		resp = await pool.query(`DELETE FROM patentes WHERE idPatente = ${id}`);
 		res.json(resp);
 	}
 	public async actualizar(req: Request, res: Response): Promise<void> {

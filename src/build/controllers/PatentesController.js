@@ -50,7 +50,8 @@ class PatentesController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM patentes WHERE idPatente = ${id}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYPatente WHERE idPatente = ${id}`);
+            resp = yield database_1.default.query(`DELETE FROM patentes WHERE idPatente = ${id}`);
             res.json(resp);
         });
     }
