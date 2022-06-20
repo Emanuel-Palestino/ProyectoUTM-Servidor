@@ -24,7 +24,7 @@ class PatentesController {
 			pos: 1,
 			esInterno: 1
 		}
-		const resp2 = await pool.query('INSER INTO profesorYPatente SET ?', dato)
+		const resp2 = await pool.query('INSERT INTO profesorYPatente SET ?', dato)
 		res.json(resp2);
 	}
 
