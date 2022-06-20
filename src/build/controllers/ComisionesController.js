@@ -59,16 +59,16 @@ class ComisionesController {
             res.json(respuesta);
         });
     }
-    listarComisionesSinAsignar(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM comisiones WHERE NOT EXISTS (SELECT *FROM profesorYComision WHERE idComision=comisiones.idComision)');
-            res.json(respuesta);
-        });
-    }
     listComisionesByCarreraByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, fechaIni, fechaFin } = req.params;
             let respuesta = yield database_1.default.query(`SELECT C.idComision, C.nombre,C.descripcion,C.asignacion, C.periodo, C.inicio,C.fin, C.comprobante FROM comisiones as C, profesorYComision as PC INNER JOIN profesores P ON PC.idProfesor=P.idProfesor WHERE C.idComision=PC.idComision AND P.idCarrera='${idCarrera}' AND C.inicio>='${fechaIni}' AND C.fin<='${fechaFin}'`);
+            res.json(respuesta);
+        });
+    }
+    listarComisionesSinAsignar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const respuesta = yield database_1.default.query('SELECT * FROM comisiones WHERE NOT EXISTS (SELECT *FROM profesorYComision WHERE idComision=comisiones.idComision)');
             res.json(respuesta);
         });
     }
