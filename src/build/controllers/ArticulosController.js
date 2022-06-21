@@ -62,12 +62,23 @@ class ArticulosController {
     listArticulosByProfesorByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.titulo, A.tipoCRL, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.idArticulo, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
-                //Sacamos los profesores del articulo
-                const respuesta2 = yield database_1.default.query('SELECT P.* FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
-                respuesta[i].autores = respuesta2;
+                //Obtenemos los autores del articulo
+                const respuestaProfesores = yield database_1.default.query('SELECT PA.* FROM profesorYArticulo AS PA WHERE PA.idArticulo = ? ORDER BY PA.pos', respuesta[i].idArticulo);
+                respuesta[i].autores = respuestaProfesores;
+                for (let j = 0; j < respuestaProfesores.length; j++) {
+                    if (respuestaProfesores[j].esInterno == 1) { //Comprobamos si el autor es internos
+                        //Sacamos los profesores del articulo
+                        const respuestaInterno = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                        respuesta[i].autores[j] = respuestaInterno;
+                    }
+                    else {
+                        const respuestaExterno = yield database_1.default.query('SELECT EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado,PA.idProfesor, PA.fechaModificacion, PA.esInterno FROM externosApa as EA INNER JOIN profesorYArticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idArticulo = ? ORDER BY PA.pos', respuesta[i].idArticulo);
+                        respuesta[i].autores[j] = respuestaExterno;
+                    }
+                }
             }
             res.json(respuesta);
         });
