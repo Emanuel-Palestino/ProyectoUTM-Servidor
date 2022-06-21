@@ -64,7 +64,7 @@ class ProyectosController {
     listColaboradoresExternosProyectos(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor } = req.params;
-            let consulta = `SELECT ep.idExternoProyecto as idExterno, ep.nombreExterno FROM profesoryproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE idProyecto = ANY (SELECT idProyecto from profesoryproyecto WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0;`;
+            let consulta = `SELECT ep.idExternoProyecto as idExterno, ep.nombreExterno FROM profesorYproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE idProyecto = ANY (SELECT idProyecto from profesorYproyecto WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0;`;
             const resp = yield database_1.default.query(consulta);
             res.json(resp);
         });
@@ -83,7 +83,7 @@ class ProyectosController {
             //Obtenemos los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 //Obtenemos los colaboradores del proyecto
-                const respuestaProyectos = yield database_1.default.query('SELECT PP.* FROM profesoryproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
+                const respuestaProyectos = yield database_1.default.query('SELECT PP.* FROM profesorYproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
                 respuesta[i].colaboradores = respuestaProyectos;
                 for (let j = 0; j < respuestaProyectos.length; j++) {
                     if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
