@@ -70,19 +70,19 @@ class TesistasController {
             let aux2 = [];
             const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`);
             for (var i = 0; i < resp.length; i++) {
-                const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYTesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`);
+                const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`);
                 console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
-                        respNombres = yield database_1.default.query(`SELECT nombreCodirector FROM externocodirector WHERE idExternoCodirector = ${respColab[j].idProfesor};`);
+                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, esInterno FROM externocodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
                     }
                     else {
-                        respNombres = yield database_1.default.query(`SELECT nombreProfesor FROM profesores where profesores.idProfesor=${respColab[j].idProfesor}`);
+                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, rol, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
                     }
-                    aux.push(respNombres);
+                    aux.push(respNombres[0]);
                 }
-                resp[i].nombreProfesor = aux;
+                resp[i].profesores = aux;
             }
             console.log(aux2);
             //console.log(aux)
