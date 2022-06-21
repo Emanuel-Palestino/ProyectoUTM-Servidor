@@ -43,13 +43,14 @@ class TesistasController {
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){
 				if (respColab[j].esInterno == "0"){
-					respNombres = await pool.query(`SELECT rol, esInterno FROM externocodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
-				}else{
+					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, esInterno FROM externocodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
+				}
+				else{
 					respNombres =  await pool.query(`SELECT nombreProfesor, rol, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
 				}
-				aux.push(respNombres)
+				aux.push(respNombres[0]);
 			}
-			resp[i].nombreProfesor = aux
+			resp[i].profesores = aux;
 		}
 		console.log(aux2)
 		//console.log(aux)
