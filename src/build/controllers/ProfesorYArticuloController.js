@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database"));
 class ProfesorYArticuloController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYArticulo order by idArticuloYProfesor');
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYarticulo order by idArticuloYProfesor');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYArticulo WHERE idArticuloYProfesor = ?', [id]);
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYarticulo WHERE idArticuloYProfesor = ?', [id]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,21 +34,21 @@ class ProfesorYArticuloController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO profesorYarticulo SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticuloYProfesor } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYArticulo WHERE idArticuloYProfesor=${idArticuloYProfesor}`);
+            const resp = yield database_1.default.query(`DELETE FROM profesorYarticulo WHERE idArticuloYProfesor=${idArticuloYProfesor}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticuloYProfesor } = req.params;
-            const resp = yield database_1.default.query('UPDATE profesorYArticulo set ? WHERE idArticuloYProfesor=?', [req.body, idArticuloYProfesor]);
+            const resp = yield database_1.default.query('UPDATE profesorYarticulo set ? WHERE idArticuloYProfesor=?', [req.body, idArticuloYProfesor]);
             res.json(resp);
         });
     }
@@ -61,7 +61,7 @@ class ProfesorYArticuloController {
             for (let i = 0; i < req.body.length; i++) {
                 const utm = req.body[i];
                 utm.fechaModificacion = fecha;
-                resp = yield database_1.default.query('UPDATE profesorYArticulo set ? WHERE idArticulo = ? AND idProfesor = ? AND esInterno = ?', [utm, idArticulo, utm.idProfesor, utm.esInterno]);
+                resp = yield database_1.default.query('UPDATE profesorYarticulo set ? WHERE idArticulo = ? AND idProfesor = ? AND esInterno = ?', [utm, idArticulo, utm.idProfesor, utm.esInterno]);
             }
             res.json(resp);
         });
@@ -69,7 +69,7 @@ class ProfesorYArticuloController {
     profesoresByArticulo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;
-            const respuesta = yield database_1.default.query(`SELECT nombres FROM profesores, articulos, profesorYArticulo 
+            const respuesta = yield database_1.default.query(`SELECT nombres FROM profesores, articulos, profesorYarticulo 
 		WHERE articulos.idArticulo=${idArticulo} AND articuloyprofesor.idArticulo = articulos.idArticulo 
 		AND articuloyprofesor.idProfesor = profesores.idProfesor;`);
             if (respuesta.length > 0) {
@@ -82,7 +82,7 @@ class ProfesorYArticuloController {
     articulosByCarrera(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera } = req.params;
-            const respuesta = yield database_1.default.query(`SELECT nombreArticulo FROM profesores, articulos, profesorYArticulo 
+            const respuesta = yield database_1.default.query(`SELECT nombreArticulo FROM profesores, articulos, profesorYarticulo 
 		WHERE profesores.idCarrera=${idCarrera} AND articuloyprofesor.idArticulo = articulos.idArticulo 
 		AND articuloyprofesor.idProfesor = profesores.idProfesor;`);
             if (respuesta.length > 0) {
@@ -107,7 +107,7 @@ class ProfesorYArticuloController {
                 esInterno: 0,
             };
             console.log(dato);
-            const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYarticulo SET ?', dato);
             res.json(resp2);
         });
     }
@@ -120,9 +120,16 @@ class ProfesorYArticuloController {
             let hoy = new Date();
             let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
             for (var i = 0; i < profesores.length; i++) {
-                resp = yield database_1.default.query(`INSERT INTO profesoryarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'0', '${fecha}', '0')`);
+                resp = yield database_1.default.query(`INSERT INTO profesorYarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES (${profesores[i].idProfesor},${idArticulo}, ${profesores[i].pos},'1', '${fecha}', '1')`);
             }
             res.json(resp);
+        });
+    }
+    listProfesorYArticulo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idArticulo } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT idProfesor,pos FROM profesorYarticulo WHERE idArticulo = ${idArticulo} ORDER BY pos ASC`);
+            res.json(respuesta);
         });
     }
 }

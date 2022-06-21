@@ -18,6 +18,7 @@ class ProfesorYArticuloRoutes {
         this.router.post('/createExterno/:idArticulo/:pos', ProfesorYArticuloController_1.profesorYArticuloController.createExterno);
         this.router.post('/addAutoresUTM/:idArticulo/', ProfesorYArticuloController_1.profesorYArticuloController.addAutoresUTM);
         this.router.put('/updatePrioridadesOfAutoresByPublicacion/:idArticulo', ProfesorYArticuloController_1.profesorYArticuloController.updatePrioridadesOfAutoresByPublicacion);
+        this.router.get('/listProfesorYArticulo/:idArticulo', ProfesorYArticuloController_1.profesorYArticuloController.listProfesorYArticulo);
     }
 }
 const profesorYArticuloRoutes = new ProfesorYArticuloRoutes();

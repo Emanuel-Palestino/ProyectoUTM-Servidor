@@ -8,12 +8,14 @@ class ComisionesRoutes {
         this.config();
     }
     config() {
+        this.router.get('/listarComisionesSinAsignar', ComisionesController_1.comisionesController.listarComisionesSinAsignar);
         this.router.get('/', ComisionesController_1.comisionesController.list);
         this.router.get('/:idComision', ComisionesController_1.comisionesController.listOne);
-        this.router.post('/create', ComisionesController_1.comisionesController.create);
+        this.router.post('/create/:idProfesor/:fechaFinal', ComisionesController_1.comisionesController.create);
         this.router.put('/update/:idComision', ComisionesController_1.comisionesController.update);
         this.router.delete('/delete/:idComision', ComisionesController_1.comisionesController.delete);
         this.router.get('/listComisionesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ComisionesController_1.comisionesController.listComisionesByProfesoByPeriodo);
+        this.router.get('/listComisionesByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', ComisionesController_1.comisionesController.listComisionesByCarreraByPeriodo);
     }
 }
 const comisionesRoutes = new ComisionesRoutes();

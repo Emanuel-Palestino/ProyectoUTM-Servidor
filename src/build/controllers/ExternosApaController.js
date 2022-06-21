@@ -12,47 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.planControllers = void 0;
+exports.externosApaController = void 0;
 const database_1 = __importDefault(require("../database"));
-class PlanControllers {
+class ExternosApaController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM plan order by idPlan');
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA order by idExternoAPA');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            let consulta = 'SELECT * FROM plan WHERE idPlan = ' + id;
-            const respuesta = yield database_1.default.query(consulta);
+            const { idExternoAPA } = req.params; //id para filtrar la consulta
+            const respuesta = yield database_1.default.query('SELECT * FROM externosAPA WHERE idExternoAPA = ?', [idExternoAPA]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'Patente no encontrada' });
+            res.status(404).json({ 'mensaje': 'Externo no encontrado' });
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
-            const resp = yield database_1.default.query("INSERT INTO plan set ?", [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO externosAPA SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM plan WHERE idPlan = ${id}`);
+            const { idExternoAPA } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM externosAPA WHERE idExternoAPA = ${idExternoAPA}`);
             res.json(resp);
         });
     }
-    actualizar(req, res) {
+    update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query("UPDATE plan set ? WHERE idPlan= ?", [req.body, id]);
+            const { idExternoAPA } = req.params;
+            const resp = yield database_1.default.query(`UPDATE externosAPA set ? WHERE idExternoAPA = ?`, [req.body, idExternoAPA]);
             res.json(resp);
         });
     }
 }
-exports.planControllers = new PlanControllers();
+exports.externosApaController = new ExternosApaController();

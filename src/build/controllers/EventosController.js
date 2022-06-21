@@ -76,7 +76,7 @@ class EventosController {
     listEventosByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT nombreEvento,titulo, tipoEvento, participacion, afectaLinea, tipoParticipacion, inicio, fin, comprobante FROM eventos WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' and fin<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT idEvento, nombreEvento,titulo, tipoEvento, participacion, afectaLinea, tipoParticipacion, inicio, fin, comprobante FROM eventos WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' and fin<='${fechaFin}'`);
             res.json(respuesta);
         });
     }

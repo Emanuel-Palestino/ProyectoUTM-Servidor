@@ -52,5 +52,12 @@ class CarrerasController {
             res.json(resp);
         });
     }
+    getCarrerasByInstituto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idInstituto } = req.params;
+            const resp = yield database_1.default.query(`SELECT * FROM carreras WHERE idInstituto= ${idInstituto}`);
+            res.json(resp);
+        });
+    }
 }
 exports.carrerasController = new CarrerasController();

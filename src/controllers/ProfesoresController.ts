@@ -86,7 +86,7 @@ class ProfesoresController {
 
 	public async getProfesoresByArticulo(req: Request, res: Response): Promise<void> {
 		const { idArticulo } = req.params
-		const respuesta = await pool.query('SELECT P.nombreProfesor, P.idProfesor FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=?', idArticulo)
+		const respuesta = await pool.query('SELECT P.nombreProfesor, P.idProfesor FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=?', idArticulo)
 		res.json(respuesta)
 	}
 
