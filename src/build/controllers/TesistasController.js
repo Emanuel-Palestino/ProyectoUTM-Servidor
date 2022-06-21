@@ -35,14 +35,24 @@ class TesistasController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO tesistas set ?", [req.body]);
+            const { idProfesor } = req.params;
+            let resp = yield database_1.default.query("INSERT INTO tesistas set ?", [req.body]);
+            let dato = {
+                idProfesor: idProfesor,
+                idTesis: resp.insertId,
+                pos: 1,
+                rol: '1',
+                esInterno: 1
+            };
+            resp = yield database_1.default.query('INSERT INTO profesorYTesis SET ?', dato);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM tesistas WHERE idTesis = ${id}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYTesis WHERE idTesis = ${id}`);
+            resp = yield database_1.default.query(`DELETE FROM tesistas WHERE idTesis = ${id}`);
             res.json(resp);
         });
     }
