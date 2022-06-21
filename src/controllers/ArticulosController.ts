@@ -44,7 +44,7 @@ class ArticulosController {
 
 	public async listArticulosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.idArticulo, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
 		
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
