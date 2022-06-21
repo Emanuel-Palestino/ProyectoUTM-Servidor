@@ -44,7 +44,7 @@ class ArticulosController {
 
 	public async listArticulosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT A.idArticulo, A.idArticulo, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT A.idArticulo, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`)
 		
 		// Obtener los profesores participantes
 		for (let i = 0; i < respuesta.length; i++) {
@@ -53,13 +53,12 @@ class ArticulosController {
 			respuesta[i].autores = respuestaProfesores
 
 			for(let j = 0; j < respuestaProfesores.length ; j++){
-				if(respuestaProfesores[j].esInterno == 1){		//Comprobamos si el autor es internos
-					//Sacamos los profesores del articulo
-					const respuestaInterno = await pool.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
-					respuesta[i].autores[j] = respuestaInterno
+				if(respuestaProfesores[j].esInterno == 1){
+					const respuestaAutores = await pool.query(`SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
+					respuesta[i].autores[j] = respuestaAutores;
 				}else{
-					const respuestaExterno = await pool.query('SELECT EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado,PA.idProfesor, PA.fechaModificacion, PA.esInterno FROM externosApa as EA INNER JOIN profesorYArticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idArticulo = ? ORDER BY PA.pos', respuesta[i].idArticulo);
-					respuesta[i].autores[j] = respuestaExterno;
+				 	const respuestaAutores = await pool.query(`SELECT PA.idProfesor, EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM externosApa as EA INNER JOIN profesorYArticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
+					respuesta[i].autores[j] = respuestaAutores;
 				}
 			}
 		}
