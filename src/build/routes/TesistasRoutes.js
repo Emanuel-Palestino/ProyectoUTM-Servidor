@@ -14,7 +14,6 @@ class TesistasRoutes {
         this.router.delete('/delete/:id', TesistasController_1.tesistasController.delete);
         this.router.put('/update/:id', TesistasController_1.tesistasController.update);
         this.router.get('/listTesistasByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodo);
-        this.router.get('/listTesistasByProfesorByPeriodo2/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodo);
     }
 }
 const tesistasRoutes = new TesistasRoutes();
