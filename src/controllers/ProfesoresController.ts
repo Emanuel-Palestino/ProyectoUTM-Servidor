@@ -103,7 +103,7 @@ class ProfesoresController {
 		})
 	}
 
-	public async updateCredencialesProfesor(req: Request, res: Response): Promise<void>{
+	public async updateDatosPersonales(req: Request, res: Response): Promise<void>{
 		const {idProfesor} = req.params;
 
 		const correoNuevo = req.body.correo;
