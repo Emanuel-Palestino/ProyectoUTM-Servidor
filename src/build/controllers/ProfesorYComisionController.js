@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database"));
 class ProfesorYComisionController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYComision order by pos');
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYcomision order by pos');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idComision } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYComision WHERE idProfesor = ? AND idComision = ?', [idProfesor, idComision]);
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYcomision WHERE idProfesor = ? AND idComision = ?', [idProfesor, idComision]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,21 +34,21 @@ class ProfesorYComisionController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO profesorYComision SET ?', [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO profesorYcomision SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idComision } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYComision WHERE idProfesor = ${idProfesor} AND idComision = ${idComision}`);
+            const resp = yield database_1.default.query(`DELETE FROM profesorYcomision WHERE idProfesor = ${idProfesor} AND idComision = ${idComision}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, idComision } = req.params;
-            const resp = yield database_1.default.query('UPDATE profesorYComision set ? WHERE idProfesor = ? AND idComision = ?', [req.body, idProfesor, idComision]);
+            const resp = yield database_1.default.query('UPDATE profesorYcomision set ? WHERE idProfesor = ? AND idComision = ?', [req.body, idProfesor, idComision]);
             res.json(resp);
         });
     }
@@ -64,7 +64,7 @@ class ProfesorYComisionController {
                     final: req.body[i].final,
                     comprobante: ' '
                 };
-                const resp = yield database_1.default.query('INSERT INTO profesorYComision SET ?', dato);
+                const resp = yield database_1.default.query('INSERT INTO profesorYcomision SET ?', dato);
                 respT.push(resp);
             }
             res.json(respT);

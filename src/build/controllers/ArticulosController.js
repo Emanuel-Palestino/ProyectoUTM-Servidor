@@ -44,14 +44,14 @@ class ArticulosController {
                 fechaModificacion: fecha,
                 esInterno: 1
             };
-            const resp2 = yield database_1.default.query('INSERT INTO profesorYArticulo SET ?', dato);
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYarticulo SET ?', dato);
             res.json(resp2);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;
-            let resp = yield database_1.default.query(`DELETE FROM profesorYArticulo WHERE idArticulo=${idArticulo}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYarticulo WHERE idArticulo=${idArticulo}`);
             resp = yield database_1.default.query(`DELETE FROM articulos WHERE idArticulo=${idArticulo}`);
             res.json(resp);
         });
@@ -66,11 +66,11 @@ class ArticulosController {
     listArticulosByProfesorByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.titulo, A.tipoCRL, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.titulo, A.tipoCRL, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 //Sacamos los profesores del articulo
-                const respuesta2 = yield database_1.default.query('SELECT P.*, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
+                const respuesta2 = yield database_1.default.query('SELECT P.*, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo = ? ORDER BY PA.pos', [respuesta[i].idArticulo]);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -79,10 +79,10 @@ class ArticulosController {
     getArticulosByInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto}`);
+            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto}`);
             // Obtener los profesores participantes y archivos subidos
             for (let i = 0; i < respuesta.length; i++) {
-                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -91,10 +91,10 @@ class ArticulosController {
     getArticulosByInstitutoByFecha(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
-                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -103,10 +103,10 @@ class ArticulosController {
     getTodoPorInsituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE PA.pos=1 AND P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT A.* FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE PA.pos=1 AND P.idInstituto=${idInstituto} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
-                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -114,10 +114,10 @@ class ArticulosController {
     }
     getTodoDivididoInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let respuesta = yield database_1.default.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 ORDER BY I.idInstituto;`);
+            let respuesta = yield database_1.default.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 ORDER BY I.idInstituto;`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
-                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -126,10 +126,10 @@ class ArticulosController {
     getTodoDivididoInstitutoPorFecha(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYArticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 AND A.fechaedicion>='${fechaIni}' AND A.fechaedicion<='${fechaFin}' ORDER BY I.idInstituto;`);
+            let respuesta = yield database_1.default.query(`SELECT A.*, I.nombreInstituto FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor AND PA.pos=1 INNER JOIN institutos I ON P.idInstituto=I.idInstituto WHERE I.idInstituto > 0 AND A.fechaedicion>='${fechaIni}' AND A.fechaedicion<='${fechaFin}' ORDER BY I.idInstituto;`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
-                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
+                const respuesta2 = yield database_1.default.query('SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=? ORDER BY PA.pos', respuesta[i].idArticulo);
                 respuesta[i].autores = respuesta2;
             }
             res.json(respuesta);
@@ -150,7 +150,7 @@ class ArticulosController {
     getSugerenciasExternoByAutorUTM(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor } = req.params;
-            let listexternos = yield database_1.default.query(`SELECT DISTINCT EA.* FROM externosAPA AS EA INNER JOIN profesorYArticulo PAE ON EA.idExternoAPA = PAE.idProfesor INNER JOIN profesorYArticulo PAO ON PAE.idArticulo = PAO.idArticulo WHERE PAE.esInterno = 0 AND PAO.esInterno!=0 AND PAO.idProfesor = ${idProfesor}`);
+            let listexternos = yield database_1.default.query(`SELECT DISTINCT EA.* FROM externosAPA AS EA INNER JOIN profesorYarticulo PAE ON EA.idExternoAPA = PAE.idProfesor INNER JOIN profesorYarticulo PAO ON PAE.idArticulo = PAO.idArticulo WHERE PAE.esInterno = 0 AND PAO.esInterno!=0 AND PAO.idProfesor = ${idProfesor}`);
             res.json(listexternos);
         });
     }
@@ -158,7 +158,7 @@ class ArticulosController {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo, fecha } = req.params;
             let profesor = req.body;
-            let resp = yield database_1.default.query(`INSERT INTO profesorYArticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','1', '${fecha}', '0')`);
+            let resp = yield database_1.default.query(`INSERT INTO profesorYarticulo (idProfesor, idArticulo, pos, validado, fechaModificacion, esInterno) VALUES ('${profesor.idExternoAPA}','${idArticulo}', '${profesor.pos}','1', '${fecha}', '0')`);
             res.json(resp);
         });
     }

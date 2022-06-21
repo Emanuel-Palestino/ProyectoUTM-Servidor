@@ -27,13 +27,13 @@ class TesistasController {
 			rol: '1',
 			esInterno: 1
 		}
-		resp = await pool.query('INSERT INTO profesorYTesis SET ?', dato)
+		resp = await pool.query('INSERT INTO profesorYtesis SET ?', dato)
 		res.json(resp);
 	}
 	
 	public async delete (req:Request, res:Response): Promise <void>{
 		const {id} = req.params
-		let resp = await pool.query (`DELETE FROM profesorYTesis WHERE idTesis = ${id}`);
+		let resp = await pool.query (`DELETE FROM profesorYtesis WHERE idTesis = ${id}`);
 		resp = await pool.query (`DELETE FROM tesistas WHERE idTesis = ${id}`);
 		res.json(resp);
 	}
@@ -46,9 +46,9 @@ class TesistasController {
 		const {idProfesor, fechaIni, fechaFin} = req.params
 		let respNombres: ''
 		let aux2: any[] = []
-		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYTesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
+		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
 		for(var i=0; i<resp.length;i++){
-			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYTesis where profesorYTesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
+			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYTesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
 			console.log(respColab);
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){

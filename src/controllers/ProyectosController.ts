@@ -27,13 +27,13 @@ class ProyectosController {
 			pos: 1,
 			esInterno: 1
 		}
-		const resp2 = await pool.query('INSERT INTO profesorYProyecto SET ?', dato)
+		const resp2 = await pool.query('INSERT INTO profesorYproyecto SET ?', dato)
 		res.json(resp2)
 	}
 
 	public async delete(req:Request, res: Response): Promise<void> {
 		const { idProyecto } = req.params
-		let resp = await pool.query(`DELETE FROM profesorYProyecto WHERE idProyecto=${idProyecto}`)
+		let resp = await pool.query(`DELETE FROM profesorYproyecto WHERE idProyecto=${idProyecto}`)
 		resp = await pool.query(`DELETE FROM proyectos WHERE idProyecto=${idProyecto}`)
 		res.json(resp)
 	}
@@ -59,7 +59,7 @@ class ProyectosController {
 	
 	public async listProyectosByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin} = req.params;
-		let respuesta = await pool.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYProyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT P.* FROM proyectos as P INNER JOIN profesorYproyecto PP ON PP.idProyecto = P.idProyecto WHERE PP.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
 	
 		//Obtenemos los profesores participantes
 		for(let i = 0; i < respuesta.length; i++) {
@@ -69,10 +69,10 @@ class ProyectosController {
 			
 			for(let j = 0; j < respuestaProyectos.length; j++){
 				if(respuestaProyectos[j].esInterno == 1){			//Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-					const respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS nombreColaborador FROM profesores as P INNER JOIN profesorYProyecto PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
+					const respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS nombreColaborador FROM profesores as P INNER JOIN profesorYproyecto PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
 					respuesta[i].colaboradores[j] = respuestaColaboradores;
 				}else{												//Si no es un colaborador externo
-					const respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS nombreColaborador FROM externosproyecto as E INNER JOIN profesorYProyecto PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
+					const respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS nombreColaborador FROM externosproyecto as E INNER JOIN profesorYproyecto PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
 					respuesta[i].colaboradores[j] = respuestaColaboradores;
 				}
 			}

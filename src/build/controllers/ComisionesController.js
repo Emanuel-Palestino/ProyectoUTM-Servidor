@@ -43,14 +43,14 @@ class ComisionesController {
                 final: fechaFinal,
                 comprobante: ''
             };
-            resp = yield database_1.default.query('INSERT INTO profesorYComision SET ?', dato);
+            resp = yield database_1.default.query('INSERT INTO profesorYcomision SET ?', dato);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idComision } = req.params;
-            let resp = yield database_1.default.query(`DELETE FROM profesorYComision WHERE idComision = ${idComision}`);
+            let resp = yield database_1.default.query(`DELETE FROM profesorYcomision WHERE idComision = ${idComision}`);
             resp = yield database_1.default.query(`DELETE FROM comisiones WHERE idComision = ${idComision}`);
             res.json(resp);
         });
@@ -65,20 +65,20 @@ class ComisionesController {
     listComisionesByProfesoByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT C.nombre,C.asignacion,C.periodo,C.inicio FROM comisiones as C INNER JOIN profesorYComision PC ON PC.idComision=C.idComision WHERE PC.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT C.nombre,C.asignacion,C.periodo,C.inicio FROM comisiones as C INNER JOIN profesorYcomision PC ON PC.idComision=C.idComision WHERE PC.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`);
             res.json(respuesta);
         });
     }
     listComisionesByCarreraByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT C.idComision, C.nombre,C.descripcion,C.asignacion, C.periodo, C.inicio,C.fin, C.comprobante FROM comisiones as C, profesorYComision as PC INNER JOIN profesores P ON PC.idProfesor=P.idProfesor WHERE C.idComision=PC.idComision AND P.idCarrera='${idCarrera}' AND C.inicio>='${fechaIni}' AND C.fin<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT C.idComision, C.nombre,C.descripcion,C.asignacion, C.periodo, C.inicio,C.fin, C.comprobante FROM comisiones as C, profesorYcomision as PC INNER JOIN profesores P ON PC.idProfesor=P.idProfesor WHERE C.idComision=PC.idComision AND P.idCarrera='${idCarrera}' AND C.inicio>='${fechaIni}' AND C.fin<='${fechaFin}'`);
             res.json(respuesta);
         });
     }
     listarComisionesSinAsignar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM comisiones WHERE NOT EXISTS (SELECT *FROM profesorYComision WHERE idComision=comisiones.idComision)');
+            const respuesta = yield database_1.default.query('SELECT * FROM comisiones WHERE NOT EXISTS (SELECT *FROM profesorYcomision WHERE idComision=comisiones.idComision)');
             res.json(respuesta);
         });
     }

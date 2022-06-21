@@ -17,14 +17,14 @@ const database_1 = __importDefault(require("../database"));
 class ProfesorYTesisController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM profesorYTesis order by idTesis');
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYtesis order by idTesis');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idTesis, idProfesor } = req.params;
-            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYTesis WHERE idTesis =${idTesis} AND idProfesor=${idProfesor}`);
+            const respuesta = yield database_1.default.query(`SELECT * FROM profesorYtesis WHERE idTesis =${idTesis} AND idProfesor=${idProfesor}`);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -34,21 +34,21 @@ class ProfesorYTesisController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query("INSERT INTO profesorYTesis set ?", [req.body]);
+            const resp = yield database_1.default.query("INSERT INTO profesorYtesis set ?", [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idTesis, idProfesor } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYTesis WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`);
+            const resp = yield database_1.default.query(`DELETE FROM profesorYtesis WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`);
             res.json(resp);
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idTesis, idProfesor } = req.params;
-            const resp = yield database_1.default.query(`UPDATE profesorYTesis set ? WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`, [req.body, idTesis, idProfesor]);
+            const resp = yield database_1.default.query(`UPDATE profesorYtesis set ? WHERE idTesis = ${idTesis} AND idProfesor = ${idProfesor}`, [req.body, idTesis, idProfesor]);
             res.json(resp);
         });
     }

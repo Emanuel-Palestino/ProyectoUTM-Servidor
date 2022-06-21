@@ -106,7 +106,7 @@ class ProfesoresController {
     getProfesoresByArticulo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo } = req.params;
-            const respuesta = yield database_1.default.query('SELECT P.nombreProfesor, P.idProfesor FROM profesores as P INNER JOIN profesorYArticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=?', idArticulo);
+            const respuesta = yield database_1.default.query('SELECT P.nombreProfesor, P.idProfesor FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor=P.idProfesor WHERE PA.idArticulo=?', idArticulo);
             res.json(respuesta);
         });
     }
