@@ -3,13 +3,13 @@ import pool from '../database'
 
 class ProfesorYComisionController{
     public async list(req: Request, res: Response): Promise<void> {
-		const respuesta = await pool.query('SELECT * FROM profesorYComision order by pos')
+		const respuesta = await pool.query('SELECT * FROM profesorYcomision order by pos')
 		res.json(respuesta)
 	}
 
 	public async listOne(req: Request, res: Response): Promise<void> {
 		const { idProfesor, idComision} = req.params;
-		const respuesta = await pool.query('SELECT * FROM profesorYComision WHERE idProfesor = ? AND idComision = ?', [idProfesor,idComision]);
+		const respuesta = await pool.query('SELECT * FROM profesorYcomision WHERE idProfesor = ? AND idComision = ?', [idProfesor,idComision]);
 		if (respuesta.length > 0) {
 			res.json(respuesta[0])
 			return;
@@ -18,19 +18,19 @@ class ProfesorYComisionController{
 	}
 
 	public async create(req:Request, res: Response): Promise<void> {
-		const resp = await pool.query('INSERT INTO profesorYComision SET ?', [req.body])
+		const resp = await pool.query('INSERT INTO profesorYcomision SET ?', [req.body])
 		res.json(resp)
 	}
 
 	public async delete(req:Request, res: Response): Promise<void> {
         const { idProfesor, idComision} = req.params;
-		const resp = await pool.query(`DELETE FROM profesorYComision WHERE idProfesor = ${idProfesor} AND idComision = ${idComision}`)
+		const resp = await pool.query(`DELETE FROM profesorYcomision WHERE idProfesor = ${idProfesor} AND idComision = ${idComision}`)
 		res.json(resp)
 	}
 
 	public async update(req: Request, res: Response): Promise<void> {
 		const { idProfesor, idComision} = req.params;
-		const resp = await pool.query('UPDATE profesorYComision set ? WHERE idProfesor = ? AND idComision = ?', [req.body,idProfesor, idComision])
+		const resp = await pool.query('UPDATE profesorYcomision set ? WHERE idProfesor = ? AND idComision = ?', [req.body,idProfesor, idComision])
 		res.json(resp)
 	}
 	public async addComisionado(req:Request, res: Response): Promise<void> {
@@ -44,7 +44,7 @@ class ProfesorYComisionController{
 				final: req.body[i].final,
 				comprobante: ' '
 			} 
-			const resp = await pool.query('INSERT INTO profesorYComision SET ?', dato)
+			const resp = await pool.query('INSERT INTO profesorYcomision SET ?', dato)
 			respT.push(resp)
 		}
 		res.json(respT)

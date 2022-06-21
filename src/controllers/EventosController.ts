@@ -54,7 +54,7 @@ class EventosController {
 	}
 	public async listEventosByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT nombreEvento,titulo, tipoEvento, participacion, afectaLinea, tipoParticipacion, inicio, fin, comprobante FROM eventos WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' and fin<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT idEvento, nombreEvento,titulo, tipoEvento, participacion, afectaLinea, tipoParticipacion, inicio, fin, comprobante FROM eventos WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' and fin<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 

@@ -64,5 +64,12 @@ class TutoradoController {
             res.json(respuesta);
         });
     }
+    listTutoradosByCareraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, fechaIni, fechaFin } = req.params;
+            let respuesta = yield database_1.default.query(`SELECT * FROM tutorado WHERE idCarrera='${idCarrera}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`);
+            res.json(respuesta);
+        });
+    }
 }
 exports.tutoradoController = new TutoradoController();
