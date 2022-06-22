@@ -77,14 +77,14 @@ class PatentesController {
                         const esInterno = yield database_1.default.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=1', [idProfesor]);
                         colaborador[0].esInterno = esInterno[0].esInterno;
                         colaborador[0].pos = esInterno[0].pos;
-                        respuesta[i].colaboradores[j] = colaborador;
+                        respuesta[i].colaboradores[j] = colaborador[0];
                     }
                     else {
                         const colaborador = yield database_1.default.query('SELECT nombreExterno AS nombreProfesor,idExternoPatente AS idProfesor FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor]);
                         const esInterno = yield database_1.default.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=0', [idProfesor]);
                         colaborador[0].esInterno = esInterno[0].esInterno;
                         colaborador[0].pos = esInterno[0].pos;
-                        respuesta[i].colaboradores[j] = colaborador;
+                        respuesta[i].colaboradores[j] = colaborador[0];
                     }
                 }
             }
