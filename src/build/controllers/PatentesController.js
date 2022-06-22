@@ -66,18 +66,22 @@ class PatentesController {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
             //una patente
-            let respuesta = yield database_1.default.query(`SELECT P.idPatente, P.nombrePatente, P.registro, P.obtencion, P.resumen, P.comprobante FROM patentes as P INNER JOIN profesorYpatente PP ON PP.idPatente=P.idPatente WHERE PP.idProfesor=${idProfesor} AND registro >= '${fechaIni}' AND registro <= '${fechaFin}' AND esInterno=1`);
+            let respuesta = yield database_1.default.query(`SELECT P.idPatente, P.nombrePatente, P.registro, P.obtencion, P.resumen, P.comprobante FROM patentes as P INNER JOIN profesorYpatente PP ON PP.idPatente=P.idPatente WHERE PP.idProfesor=${idProfesor} AND registro >= '${fechaIni}' AND registro <= '${fechaFin}'`);
             //todos sus colaboradores
             for (let i = 0; i < respuesta.length; i++) {
                 const respuesta2 = yield database_1.default.query('SELECT idProfesor, esInterno FROM profesorYpatente WHERE idPatente = ? ORDER BY pos', [respuesta[i].idPatente]);
                 respuesta[i].colaboradores = respuesta2;
                 for (let j = 0; j < respuesta2.length; j++) {
                     if (respuesta2[j].esInterno == 1) {
-                        const colaborador = yield database_1.default.query('SELECT nombreProfesor AS nombreColaborador FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor]);
+                        const colaborador = yield database_1.default.query('SELECT nombreProfesor,idProfesor FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor]);
+                        const esInterno = yield database_1.default.query('SELECT esInterno from profesorYpatente WHERE idProfesor=? AND esInterno=1', [idProfesor]);
+                        colaborador[0].esInterno = esInterno[0].esInterno;
                         respuesta[i].colaboradores[j] = colaborador;
                     }
                     else {
-                        const colaborador = yield database_1.default.query('SELECT nombreExterno AS nombreColaborador FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor]);
+                        const colaborador = yield database_1.default.query('SELECT nombreExterno AS nombreProfesor,idExternoPatente AS idProfesor FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor]);
+                        const esInterno = yield database_1.default.query('SELECT esInterno from profesorYpatente WHERE idProfesor=? AND esInterno=0', [idProfesor]);
+                        colaborador[0].esInterno = esInterno[0].esInterno;
                         respuesta[i].colaboradores[j] = colaborador;
                     }
                 }
