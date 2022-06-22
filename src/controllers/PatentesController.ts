@@ -78,6 +78,8 @@ class PatentesController {
 		const {idProfesor} = req.params
 
 		const respExternos = await pool.query(`SELECT idExternoPatente, nombreExterno from externosPatente where idExternoPatente NOT IN (SELECT idProfesor FROM profesorypatente WHERE idPatente IN (SELECT idPatente FROM profesorypatente WHERE idProfesor = ${idProfesor} and esinterno = 1)and esInterno=0);`);
+		res.json(respExternos)
+		
 		/*let aux: any[] = []
 		let respIdColaborador = []
 		let respExternos = []
@@ -114,7 +116,6 @@ class PatentesController {
 			}*/
 		
 
-		res.json(respExternos)
 
 		
 
