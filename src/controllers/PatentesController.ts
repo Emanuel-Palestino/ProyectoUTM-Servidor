@@ -76,7 +76,9 @@ class PatentesController {
 
 	public async listColaboradoresExternosExistentesSinColaboracionPatentes(req: Request, res: Response){
 		const {idProfesor} = req.params
-		let aux: any[] = []
+
+		const respExternos = await pool.query(`SELECT idExternoPatente, nombreExterno from externosPatente where idExternoPatente NOT IN (SELECT idProfesor FROM profesorypatente WHERE idPatente IN (SELECT idPatente FROM profesorypatente WHERE idProfesor = ${idProfesor} and esinterno = 1)and esInterno=0);`);
+		/*let aux: any[] = []
 		let respIdColaborador = []
 		let respExternos = []
 
@@ -109,7 +111,7 @@ class PatentesController {
 			console.log(pos);
 			for(let i =0; i<pos.length;i++){
 				respExternos.splice(pos[i],1)
-			}
+			}*/
 		
 
 		res.json(respExternos)
