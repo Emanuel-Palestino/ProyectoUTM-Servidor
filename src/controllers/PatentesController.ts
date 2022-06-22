@@ -50,12 +50,18 @@ class PatentesController {
 			respuesta[i].colaboradores = respuesta2
 			for(let j=0; j < respuesta2.length; j++){
 				if(respuesta2[j].esInterno==1){
-					const colaborador = await pool.query('SELECT nombreProfesor AS nombreColaborador FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor])
-					respuesta[i].colaboradores[j]=colaborador
+					const colaborador = await pool.query('SELECT nombreProfesor,idProfesor FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor])
+					const esInterno = await pool.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=1',[idProfesor])
+					colaborador[0].esInterno=esInterno[0].esInterno;
+					colaborador[0].pos=esInterno[0].pos;
+					respuesta[i].colaboradores[j]=colaborador[0]
 				}
 				else{
-					const colaborador = await pool.query('SELECT nombreExterno AS nombreColaborador FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor])
-					respuesta[i].colaboradores[j]=colaborador
+					const colaborador = await pool.query('SELECT nombreExterno AS nombreProfesor,idExternoPatente AS idProfesor FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor])
+					const esInterno = await pool.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=0',[idProfesor])
+					colaborador[0].esInterno=esInterno[0].esInterno;
+					colaborador[0].pos=esInterno[0].pos;
+					respuesta[i].colaboradores[j]=colaborador[0]
 				}
 			}
 		}
