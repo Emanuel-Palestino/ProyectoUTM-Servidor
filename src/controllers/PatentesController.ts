@@ -43,7 +43,7 @@ class PatentesController {
 	public async listPatentesByProfesorByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
 		//una patente
-		let respuesta = await pool.query(`SELECT P.idPatente, P.nombrePatente, P.registro, P.obtencion, P.resumen, P.comprobante FROM patentes as P INNER JOIN profesorYpatente PP ON PP.idPatente=P.idPatente WHERE PP.idProfesor=${idProfesor} AND registro >= '${fechaIni}' AND registro <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT P.idPatente, P.nombrePatente, P.registro, P.obtencion, P.resumen, P.comprobante FROM patentes as P INNER JOIN profesorYpatente PP ON PP.idPatente=P.idPatente WHERE PP.idProfesor=${idProfesor} AND registro >= '${fechaIni}' AND registro <= '${fechaFin}' AND esInterno=1`)
 		//todos sus colaboradores
 		for (let i = 0; i < respuesta.length; i++) {
 			const respuesta2 = await pool.query('SELECT idProfesor, esInterno FROM profesorYpatente WHERE idPatente = ? ORDER BY pos', [respuesta[i].idPatente])
@@ -51,14 +51,16 @@ class PatentesController {
 			for(let j=0; j < respuesta2.length; j++){
 				if(respuesta2[j].esInterno==1){
 					const colaborador = await pool.query('SELECT nombreProfesor,idProfesor FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor])
-					const esInterno = await pool.query('SELECT esInterno from profesorYpatente WHERE idProfesor=? AND esInterno=1',[idProfesor])
+					const esInterno = await pool.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=1',[idProfesor])
 					colaborador[0].esInterno=esInterno[0].esInterno;
+					colaborador[0].pos=esInterno[0].pos;
 					respuesta[i].colaboradores[j]=colaborador
 				}
 				else{
 					const colaborador = await pool.query('SELECT nombreExterno AS nombreProfesor,idExternoPatente AS idProfesor FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor])
-					const esInterno = await pool.query('SELECT esInterno from profesorYpatente WHERE idProfesor=? AND esInterno=0',[idProfesor])
+					const esInterno = await pool.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND esInterno=0',[idProfesor])
 					colaborador[0].esInterno=esInterno[0].esInterno;
+					colaborador[0].pos=esInterno[0].pos;
 					respuesta[i].colaboradores[j]=colaborador
 				}
 			}
