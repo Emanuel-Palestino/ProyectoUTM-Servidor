@@ -13,6 +13,7 @@ class ArticulosRoutes {
 		this.router.get('/', articulosController.list)
 		this.router.get('/todoDividido', articulosController.getTodoDivididoInstituto)
 		this.router.get('/:id', articulosController.listOne)
+		this.router.get('/listAutoresExternosExistentesSinColaboracionArticulos/:idProfesor', articulosController.listAutoresExternosExistentesSinColaboracionArticulos)
 		this.router.post('/create/:idProfesor/:fecha', articulosController.create)
 		this.router.delete('/delete/:idArticulo', articulosController.delete) 
 		this.router.put('/update/:idArticulo', articulosController.update)

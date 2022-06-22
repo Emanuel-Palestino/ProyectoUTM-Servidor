@@ -11,6 +11,7 @@ class ArticulosRoutes {
         this.router.get('/', ArticulosController_1.articulosController.list);
         this.router.get('/todoDividido', ArticulosController_1.articulosController.getTodoDivididoInstituto);
         this.router.get('/:id', ArticulosController_1.articulosController.listOne);
+        this.router.get('/listAutoresExternosExistentesSinColaboracionArticulos/:idProfesor', ArticulosController_1.articulosController.listAutoresExternosExistentesSinColaboracionArticulos);
         this.router.post('/create/:idProfesor/:fecha', ArticulosController_1.articulosController.create);
         this.router.delete('/delete/:idArticulo', ArticulosController_1.articulosController.delete);
         this.router.put('/update/:idArticulo', ArticulosController_1.articulosController.update);
