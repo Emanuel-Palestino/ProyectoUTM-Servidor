@@ -4,13 +4,13 @@ class PeriodosController
 {
 	public async list(req: Request, res: Response ): Promise<void>
 	{
-		const respuesta = await pool.query('SELECT * FROM periodos order by idPeriodo ');
+		const respuesta = await pool.query('SELECT * FROM periodo order by idPeriodo ');
 		console.log(respuesta);
 		res.json( respuesta );
 	}
 	public async listOne(req: Request, res: Response): Promise <void>{
 		const {id} = req.params;
-		let consulta='SELECT * FROM periodos WHERE idPeriodo = '+id;
+		let consulta='SELECT * FROM periodo WHERE idPeriodo = '+id;
 		const respuesta = await pool.query(consulta); 
 		console.log(consulta);
 		if(respuesta.length>0){
@@ -21,18 +21,18 @@ class PeriodosController
 	}
 	public async create (req:Request, res:Response): Promise <void>{
 		console.log(req.body);
-		const resp= await pool.query ("INSERT INTO periodos set ?", [req.body]);
+		const resp= await pool.query ("INSERT INTO periodo set ?", [req.body]);
 		res.json(resp);
 	}
 	
 	public async delete (req:Request, res:Response): Promise <void>{
 		const {idPeriodo} = req.params
-		const resp= await pool.query (`DELETE FROM periodos WHERE idPeriodo  = ${idPeriodo}`);
+		const resp= await pool.query (`DELETE FROM periodo WHERE idPeriodo  = ${idPeriodo}`);
 		res.json(resp);
 	}
 	public async update(req: Request, res: Response): Promise<void> {
 		const { idPeriodo  } = req.params;  
-		const resp = await pool.query("UPDATE periodos set ? WHERE idPeriodo = ?", [req.body, idPeriodo ]);
+		const resp = await pool.query("UPDATE periodo set ? WHERE idPeriodo = ?", [req.body, idPeriodo ]);
 		res.json(resp);
 		}
 }
