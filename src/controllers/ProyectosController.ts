@@ -50,6 +50,13 @@ class ProyectosController {
 		const resp = await pool.query(consulta)
 		res.json(resp)
 	}
+	
+	public async listColaboradoresExternosSinColaboracionProyectos(req: Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params
+        let consulta = `SELECT ep.idExternoProyecto as idExterno, ep.nombreExterno FROM profesorYproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE ep.idExternoProyecto NOT IN (SELECT ep.idExternoProyecto FROM profesorYproyecto as pyp INNER JOIN externosproyecto as ep ON pyp.idProfesor = ep.idExternoProyecto WHERE idProyecto = ANY (SELECT idProyecto from profesorYproyecto WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0) AND esInterno = 0;`
+		const resp = await pool.query(consulta)
+		res.json(resp)
+	}
 
 	public async listColaboradoresInternosProyectos(req: Request, res: Response): Promise<void> {
 		const { idProfesor } = req.params;
