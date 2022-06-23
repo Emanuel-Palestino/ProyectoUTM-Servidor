@@ -160,6 +160,13 @@ class ArticulosController {
 		res.json(resp)
 	}
 
+    public async listAutoresExternosExistentesSinColaboracionArticulos(req: Request, res: Response): Promise<void> {
+        const {idProfesor} = req.params
+        let consulta = `SELECT t1.idExternoAPA, t1.nombreAPA, t1.correo, t1.nombre FROM externosAPA as t1 LEFT OUTER JOIN (SELECT * FROM profesorYarticulo as pya INNER JOIN externosAPA as eapa ON pya.idProfesor = eapa.idExternoAPA WHERE idArticulo = ANY (SELECT idArticulo from profesorYarticulo WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0) as t2 on t1.idExternoAPA = t2.idExternoAPA WHERE t2.idExternoAPA IS NULL`
+        let resp = await pool.query(consulta)
+        res.json(resp);
+    }
+
 }
 
 export const articulosController = new ArticulosController()
