@@ -76,9 +76,9 @@ class ProyectosController {
 			let colabs: any[]=[];	
 			for(let j = 0; j < respuestaProyectos.length; j++){
 				if(respuestaProyectos[j].esInterno == 1){			//Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-					respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
+					respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
 				}else{												//Si no es un colaborador externo
-					respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
+					respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
 				}
 				colabs.push(respuestaColaboradores[0]);
 			}

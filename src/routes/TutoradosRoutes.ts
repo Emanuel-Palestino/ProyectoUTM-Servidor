@@ -15,7 +15,7 @@ class TutoradoRoutes
 		this.router.delete('/delete/:id', tutoradoController.delete);
 		this.router.put('/actualizar/:idTutorado',tutoradoController.actualizar);
 		this.router.get('/listTutoradosByPeriodo/:idProfesor/:fechaIni/:fechaFin', tutoradoController.listTutoradosByPeriodo);
-		this.router.get('/listTutoradosByCareraByPeriodo/:idCarrera/:fechaIni/:fechaFin', tutoradoController.listTutoradosByCareraByPeriodo)
+		this.router.get('/listTutoradosByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', tutoradoController.listTutoradosByCareraByPeriodo)
 	}
 }
 const tutoradoRoutes= new TutoradoRoutes();
