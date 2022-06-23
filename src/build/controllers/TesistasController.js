@@ -75,10 +75,10 @@ class TesistasController {
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
-                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
+                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
                     }
                     else {
-                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, rol, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
+                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, rol, pos, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
                     }
                     aux.push(respNombres[0]);
                 }
