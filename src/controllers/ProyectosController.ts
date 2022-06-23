@@ -88,6 +88,39 @@ class ProyectosController {
 		res.json(respuesta);
 	}
 
+	public async createColaboradorExternoProyecto(req:Request, res: Response): Promise<void> {
+		const { idProyecto } = req.params
+		let datoE =  {
+			nombreExterno : req.body.nombreExterno,
+			correoExterno : req.body.correoExterno
+		}
+		const resp = await pool.query('INSERT INTO externosProyecto SET ?', [datoE])
+		console.log("INFO EXTERNO",resp)
+		let dato =  {
+			idProfesor : resp.insertId,
+			idProyecto: idProyecto,
+			pos: req.body.pos,
+			esInterno: 0
+		}
+		const resp2 = await pool.query('INSERT INTO profesorYproyecto SET ?', dato)
+		res.json(resp2);
+	}
+	
+	public async addColaboradoresProyectoUTM(req:Request, res: Response): Promise<void> {
+		const {idProyec}=req.params
+		const colaboradores:any[]=req.body;
+		for(let i = 0; i < colaboradores.length; i++) {
+			let dato =  {
+				idProfesor : colaboradores[i].idProfesor,
+				idProyecto: idProyec,
+				pos: colaboradores[i].pos,
+				esInterno: 1
+			}
+			const resp2 = await pool.query('INSERT INTO profesorYproyecto SET ?', dato)
+		}
+		res.json(colaboradores);
+	}
+
 }
 
 export const proyectosController = new ProyectosController()
