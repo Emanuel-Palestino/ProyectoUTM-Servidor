@@ -181,5 +181,29 @@ class ArticulosController {
             res.json(resp);
         });
     }
+    listArticulosByProfesorByPeriodoByTitulo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respuestaAutores;
+            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND A.fechaedicion >= '${fechaIni}' AND A.fechaedicion <= '${fechaFin}' AND PA.esInterno=1 ORDER BY A.titulo ASC`);
+            // Obtener los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Obtenemos los autores del articulo
+                let respuestaProfesores = yield database_1.default.query(`SELECT PA.* FROM profesorYarticulo AS PA WHERE PA.idArticulo = ${respuesta[i].idArticulo} ORDER BY PA.pos ASC`);
+                let aux = []; //Usamos un arreglo auxiliar para meter los autores 
+                for (let j = 0; j < respuestaProfesores.length; j++) {
+                    if (respuestaProfesores[j].esInterno == 1) {
+                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, P.nombreProfesor AS nombre, P.nombreApa, PA.pos, PA.esInterno FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.esInterno=1 AND P.idProfesor = ${respuestaProfesores[j].idProfesor} AND PA.idArticulo=${respuestaProfesores[j].idArticulo}`);
+                    }
+                    else {
+                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, EA.nombre, EA.nombreAPA AS nombreApa, PA.pos, PA.esInterno FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.esInterno=0 AND EA.idExternoAPA = ${respuestaProfesores[j].idProfesor} AND PA.idArticulo=${respuestaProfesores[j].idArticulo}`);
+                    }
+                    aux.push(respuestaAutores[0]);
+                }
+                respuesta[i].autores = aux;
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.articulosController = new ArticulosController();

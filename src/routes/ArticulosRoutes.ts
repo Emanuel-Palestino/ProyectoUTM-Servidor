@@ -25,6 +25,7 @@ class ArticulosRoutes {
 		this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodo)
 		this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', articulosController.getTodoPorInsituto)
 		this.router.get('/todoDividido/:fechaIni/:fechaFin', articulosController.getTodoDivididoInstitutoPorFecha)
+		this.router.get('/listArticulosByProfesorByPeriodoByTitulo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodoByTitulo)
 	}
 
 }
