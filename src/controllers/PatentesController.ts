@@ -80,5 +80,52 @@ class PatentesController {
 		res.json(resp)
 	}
 
+	public async listColaboradoresExternosExistentesSinColaboracionPatentes(req: Request, res: Response){
+		const {idProfesor} = req.params
+
+		const respExternos = await pool.query(`SELECT idExternoPatente, nombreExterno from externosPatente where idExternoPatente NOT IN (SELECT idProfesor FROM profesorypatente WHERE idPatente IN (SELECT idPatente FROM profesorypatente WHERE idProfesor = ${idProfesor} and esinterno = 1)and esInterno=0);`);
+		res.json(respExternos)
+		
+		/*let aux: any[] = []
+		let respIdColaborador = []
+		let respExternos = []
+
+		//obtener los ids de las patentes en las que ha trabajado un profesor (interno)
+		const respPatentes = await pool.query(`SELECT idPatente FROM profesorypatente WHERE idProfesor = ${idProfesor} AND esInterno = 1`)
+		console.log(respPatentes);
+		
+		
+		//obtener los ids de todos los colaboradores externos que trabajaron en las patentes anteriormente obtenidas
+		for(let i = 0; i<respPatentes.length; i++){
+			respIdColaborador = await pool.query(`SELECT idProfesor,esInterno From profesorypatente WHERE idPatente = ${respPatentes[i].idPatente} and esInterno = 0`)	
+			for(let j = 0; j < respIdColaborador.length; j++){
+				aux.push(respIdColaborador[j].idProfesor)
+			}
+		}
+		
+		
+		respExternos = await pool.query(`SELECT idExternoPatente, nombreExterno from externosPatente`)
+		
+		
+		let pos: any[] = []
+		for(let i = respExternos.length-1; i>=0; i--){
+				for(let j = 0; j<aux.length;j++){
+					if(respExternos[i].idExternoPatente == aux[j]){
+						pos.push(i)
+					}
+				}
+			}
+
+			console.log(pos);
+			for(let i =0; i<pos.length;i++){
+				respExternos.splice(pos[i],1)
+			}*/
+		
+
+
+		
+
+	}
+
 }
 export const patentesController = new PatentesController();
