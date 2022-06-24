@@ -13,7 +13,7 @@ class ProyectoRoutes {
 		this.router.get('/', proyectosController.list)
 		this.router.get('/:idProyecto', proyectosController.listOne)
 		this.router.post('/create/:idProfesor', proyectosController.create)
-		this.router.get('/listColaboradoresExternosProyectos/:idProfesor', proyectosController.listColaboradoresExternosProyectos)
+		this.router.get('/listSugerenciasColaboradoresExternosProyectos/:idProfesor', proyectosController.listColaboradoresExternosProyectos)
 		this.router.get('/listColaboradoresExternosSinColaboracionProyectos/:idProfesor', proyectosController.listColaboradoresExternosSinColaboracionProyectos)
 		this.router.delete('/delete/:idProyecto', proyectosController.delete)
 		this.router.put('/update/:idProyecto', proyectosController.update)
