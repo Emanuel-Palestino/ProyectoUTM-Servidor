@@ -181,5 +181,29 @@ class ArticulosController {
             res.json(resp);
         });
     }
+    listProfesoresbyInstitutoNoAutores(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idInstituto, idArticulo } = req.params;
+            let respuesta = [];
+            let idAutores = [];
+            //Obtenemos los idProfesor de los autores del articulo del instituto dado
+            let respuestaAutores = yield database_1.default.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesoryarticulo PA ON P.idProfesor = PA.idProfesor WHERE PA.idArticulo = ${idArticulo} AND P.idInstituto = ${idInstituto}`);
+            //Ponemos los id en un arreglo
+            respuestaAutores.forEach((element) => {
+                idAutores.push(element.idProfesor);
+            });
+            //Obtenemos los autores del instituto deseado
+            let respuestaProfesores = yield database_1.default.query("SELECT * FROM profesores WHERE idInstituto = ?", idInstituto);
+            //Recorremos los profesores para filtrar por los autores del articulo
+            for (let i = 0; i < respuestaProfesores.length; i++) {
+                const element = respuestaProfesores[i];
+                //Si no esta dentro de los id de los autores entonces lo añade al JSON de respuesta
+                if (!idAutores.includes(element.idProfesor)) {
+                    respuesta.push(element);
+                }
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.articulosController = new ArticulosController();
