@@ -17,6 +17,7 @@ class ProyectoRoutes {
         this.router.put('/update/:idProyecto', ProyectosController_1.proyectosController.update);
         this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ProyectosController_1.proyectosController.listProyectosByProfesorByPeriodo);
         this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
+        this.router.put('/updatePrioridadesOfColaboradoresByProyecto/:idProyecto', ProyectosController_1.proyectosController.updatePrioridadesOfColaboradoresByProyecto);
     }
 }
 const proyectoRoutes = new ProyectoRoutes();

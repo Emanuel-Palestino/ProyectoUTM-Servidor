@@ -88,6 +88,19 @@ class ProyectosController {
 		res.json(respuesta);
 	}
 
+
+    public async updatePrioridadesOfColaboradoresByProyecto(req: Request, res: Response): Promise<void> {
+        const {idProyecto} = req.params;
+            let resp
+           
+            for( let i = 0; i < req.body.length; i++ ) {
+                const utm = req.body[i]
+                resp = await pool.query('UPDATE profesorYproyecto set ? WHERE idProyecto = ? AND idProfesor = ? AND esInterno = ?', [utm, idProyecto, utm.idProfesor, utm.esInterno])
+            }
+            res.json(resp)
+        
+    }
+
 }
 
 export const proyectosController = new ProyectosController()

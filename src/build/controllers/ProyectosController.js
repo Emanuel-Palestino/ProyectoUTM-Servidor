@@ -108,5 +108,16 @@ class ProyectosController {
             res.json(respuesta);
         });
     }
+    updatePrioridadesOfColaboradoresByProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto } = req.params;
+            let resp;
+            for (let i = 0; i < req.body.length; i++) {
+                const utm = req.body[i];
+                resp = yield database_1.default.query('UPDATE profesorYproyecto set ? WHERE idProyecto = ? AND idProfesor = ? AND esInterno = ?', [utm, idProyecto, utm.idProfesor, utm.esInterno]);
+            }
+            res.json(resp);
+        });
+    }
 }
 exports.proyectosController = new ProyectosController();

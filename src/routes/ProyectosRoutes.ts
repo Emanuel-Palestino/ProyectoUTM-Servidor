@@ -19,6 +19,7 @@ class ProyectoRoutes {
 		this.router.put('/update/:idProyecto', proyectosController.update)
 		this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', proyectosController.listProyectosByProfesorByPeriodo);
 		this.router.get('/listColaboradoresInternosProyectos/:idProfesor', proyectosController.listColaboradoresInternosProyectos)
+		this.router.put('/updatePrioridadesOfColaboradoresByProyecto/:idProyecto', proyectosController.updatePrioridadesOfColaboradoresByProyecto)
 	}
 
 }
