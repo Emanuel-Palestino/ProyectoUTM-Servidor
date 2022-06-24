@@ -126,6 +126,13 @@ class PatentesController {
 		
 
 	}
+	
+	public async listProfesoresByInstitutoSinColaboradoresInternosByPatente(req: Request, res: Response): Promise<void> {
+		const {idInstituto, idPatente} = req.params
+		const resp = await pool.query(`SELECT idProfesor,nombreProfesor,correo,nivel,idCarrera,grado,tipo,nombreApa,idInstituto FROM profesores WHERE idInstituto=${idInstituto} and idProfesor NOT IN (SELECT idProfesor FROM profesorYPatente WHERE idPatente=${idPatente});`)
+		res.json(resp)
+	}
+
 
 }
 export const patentesController = new PatentesController();
