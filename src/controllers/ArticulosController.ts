@@ -167,7 +167,7 @@ class ArticulosController {
         res.json(resp);
     }
 
-	public async listProfesoresbyInstitutoNoAutores(req: Request, res: Response): Promise<void>{
+	public async listProfesoresByInstitutoNoAutores(req: Request, res: Response): Promise<void>{
 		const {idInstituto, idArticulo} = req.params;
 		let respuesta:any= [];
 		let idAutores:any[] = [];

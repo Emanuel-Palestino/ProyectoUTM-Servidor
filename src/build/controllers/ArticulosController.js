@@ -181,7 +181,7 @@ class ArticulosController {
             res.json(resp);
         });
     }
-    listProfesoresbyInstitutoNoAutores(req, res) {
+    listProfesoresByInstitutoNoAutores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idArticulo } = req.params;
             let respuesta = [];

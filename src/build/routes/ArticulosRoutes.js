@@ -23,7 +23,7 @@ class ArticulosRoutes {
         this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodo);
         this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoPorInsituto);
         this.router.get('/todoDividido/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoDivididoInstitutoPorFecha);
-        this.router.get('/listProfesoresbyInstitutoNoAutores/:idInstituto/:idArticulo', ArticulosController_1.articulosController.listProfesoresbyInstitutoNoAutores);
+        this.router.get('/listProfesoresByInstitutoNoAutores/:idInstituto/:idArticulo', ArticulosController_1.articulosController.listProfesoresByInstitutoNoAutores);
     }
 }
 const articulosRoutes = new ArticulosRoutes();
