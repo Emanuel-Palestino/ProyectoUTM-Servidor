@@ -127,5 +127,18 @@ class PatentesController {
 
 	}
 
+	public async addColaboradoresPatenteUTM(req: Request, res: Response): Promise<void> {
+		const { idPatente } = req.params
+		const profesores = req.body
+		let resp;
+		for(let i = 0; i < profesores.length; i++){
+			let profesor = profesores[i]
+			profesor.esInterno = 1
+			profesor.idPatente = idPatente
+			resp = await pool.query("INSERT INTO profesorYpatente set ?", profesor);
+		}
+		res.json(resp);
+	}
+
 }
 export const patentesController = new PatentesController();

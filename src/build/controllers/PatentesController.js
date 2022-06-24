@@ -146,5 +146,19 @@ class PatentesController {
                 }*/
         });
     }
+    addColaboradoresPatenteUTM(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPatente } = req.params;
+            const profesores = req.body;
+            let resp;
+            for (let i = 0; i < profesores.length; i++) {
+                let profesor = profesores[i];
+                profesor.esInterno = 1;
+                profesor.idPatente = idPatente;
+                resp = yield database_1.default.query("INSERT INTO profesorYpatente set ?", profesor);
+            }
+            res.json(resp);
+        });
+    }
 }
 exports.patentesController = new PatentesController();
