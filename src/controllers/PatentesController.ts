@@ -126,6 +126,11 @@ class PatentesController {
 		
 
 	}
-
+	public async updatePrioridadesOfColaboradoresByPatente(req: Request, res: Response): Promise<void> {
+		const { idPatente } = req.params;
+		var idProfesor=req.body.idProfesor;
+		const resp = await pool.query("UPDATE profesorypatente set ? WHERE idPatente= ? AND idProfesor= ?", [req.body, idPatente,idProfesor]);
+		res.json(resp);
+	}
 }
 export const patentesController = new PatentesController();

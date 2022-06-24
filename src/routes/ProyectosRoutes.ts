@@ -18,7 +18,8 @@ class ProyectoRoutes {
 		this.router.delete('/delete/:idProyecto', proyectosController.delete)
 		this.router.put('/update/:idProyecto', proyectosController.update)
 		this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', proyectosController.listProyectosByProfesorByPeriodo);
-		this.router.get('/listColaboradoresInternosProyectos/:idProfesor', proyectosController.listColaboradoresInternosProyectos)
+		this.router.get('/listColaboradoresInternosProyectos/:idProfesor', proyectosController.listColaboradoresInternosProyectos);
+		this.router.get('/listProfesoresByInstitutoSinColaboradoresInternosByProyecto/:idProyecto/:idInstituto', proyectosController.listProfesoresByInstitutoSinColaboradoresInternosByProyecto)
 	}
 
 }

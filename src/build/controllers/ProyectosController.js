@@ -108,5 +108,12 @@ class ProyectosController {
             res.json(respuesta);
         });
     }
+    listProfesoresByInstitutoSinColaboradoresInternosByProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto, idInstituto } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT DISTINCT * FROM profesores  WHERE idProfesor NOT IN (SELECT DISTINCT CE.idProfesor FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProyecto = ${idProyecto}) AND idInstituto =${idInstituto}`);
+            res.json(respuesta);
+        });
+    }
 }
 exports.proyectosController = new ProyectosController();
