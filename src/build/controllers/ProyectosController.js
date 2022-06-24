@@ -108,5 +108,40 @@ class ProyectosController {
             res.json(respuesta);
         });
     }
+    createColaboradorExternoProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto } = req.params;
+            let datoE = {
+                nombreExterno: req.body.nombreExterno,
+                correoExterno: req.body.correoExterno
+            };
+            const resp = yield database_1.default.query('INSERT INTO externosProyecto SET ?', [datoE]);
+            console.log("INFO EXTERNO", resp);
+            let dato = {
+                idProfesor: resp.insertId,
+                idProyecto: idProyecto,
+                pos: req.body.pos,
+                esInterno: 0
+            };
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYproyecto SET ?', dato);
+            res.json(resp2);
+        });
+    }
+    addColaboradoresProyectoUTM(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyec } = req.params;
+            const colaboradores = req.body;
+            for (let i = 0; i < colaboradores.length; i++) {
+                let dato = {
+                    idProfesor: colaboradores[i].idProfesor,
+                    idProyecto: idProyec,
+                    pos: colaboradores[i].pos,
+                    esInterno: 1
+                };
+                const resp2 = yield database_1.default.query('INSERT INTO profesorYproyecto SET ?', dato);
+            }
+            res.json(colaboradores);
+        });
+    }
 }
 exports.proyectosController = new ProyectosController();
