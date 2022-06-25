@@ -146,6 +146,7 @@ class PatentesController {
                 }*/
         });
     }
+
     addColaboradoresPatenteUTM(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPatente } = req.params;
@@ -157,6 +158,33 @@ class PatentesController {
                 profesor.idPatente = idPatente;
                 resp = yield database_1.default.query("INSERT INTO profesorYpatente set ?", profesor);
             }
+            res.json(resp);
+        });
+    }
+
+    createColaboradorExternoPatente(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPatente } = req.params;
+            let externo = {
+                "correoExterno": req.body.correoExterno,
+                "nombreExterno": req.body.nombreExterno,
+            };
+            const consulta = yield database_1.default.query("INSERT INTO externosPatente set ?", externo);
+            let t_patente = {
+                "idProfesor": consulta.insertId,
+                "idPatente": idPatente,
+                "pos": req.body.pos,
+                "esInterno": 0
+            };
+            const resp_tabla = yield database_1.default.query('INSERT INTO profesorYpatente SET ?', t_patente);
+            res.json(resp_tabla);
+        });
+    }
+  
+    listProfesoresByInstitutoSinColaboradoresInternosByPatente(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idInstituto, idPatente } = req.params;
+            const resp = yield database_1.default.query(`SELECT idProfesor,nombreProfesor,correo,nivel,idCarrera,grado,tipo,nombreApa,idInstituto FROM profesores WHERE idInstituto=${idInstituto} and idProfesor NOT IN (SELECT idProfesor FROM profesorYPatente WHERE idPatente=${idPatente});`);
             res.json(resp);
         });
     }
