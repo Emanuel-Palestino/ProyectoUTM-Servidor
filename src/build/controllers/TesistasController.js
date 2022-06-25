@@ -89,5 +89,12 @@ class TesistasController {
             res.json(resp);
         });
     }
+    listCodirectoresExternosSugerencias(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            const resp = yield database_1.default.query(`SELECT idExternoCodirector, nombreCodirector FROM externoCodirector where idExternoCodirector NOT IN (SELECT idProfesor FROM profesorytesis where idTesis IN (SELECT idTesis FROM profesorytesis where idProfesor=${idProfesor} and esInterno = 1) and esInterno = 0)`);
+            res.json(resp);
+        });
+    }
 }
 exports.tesistasController = new TesistasController();

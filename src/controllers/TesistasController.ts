@@ -66,6 +66,12 @@ class TesistasController {
 		//console.log(aux)
 		res.json(resp)
 	}
+
+	public async listCodirectoresExternosSugerencias(req: Request, res: Response): Promise<void>{
+		const {idProfesor} = req.params
+		const resp = await pool.query(`SELECT idExternoCodirector, nombreCodirector FROM externoCodirector where idExternoCodirector NOT IN (SELECT idProfesor FROM profesorytesis where idTesis IN (SELECT idTesis FROM profesorytesis where idProfesor=${idProfesor} and esInterno = 1) and esInterno = 0)`)
+		res.json(resp)
+	}
 	
 }
 
