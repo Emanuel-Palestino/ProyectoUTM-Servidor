@@ -192,6 +192,35 @@ class ArticulosController {
         res.json(resp);
     }
 
+	public async listProfesoresByInstitutoNoAutores(req: Request, res: Response): Promise<void>{
+		const {idInstituto, idArticulo} = req.params;
+		let respuesta:any= [];
+		let idAutores:any[] = [];
+		
+		//Obtenemos los idProfesor de los autores del articulo del instituto dado
+		let respuestaAutores = await pool.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesoryarticulo PA ON P.idProfesor = PA.idProfesor WHERE PA.idArticulo = ${idArticulo} AND P.idInstituto = ${idInstituto}`);
+		
+		//Ponemos los id en un arreglo
+		respuestaAutores.forEach((element:any) => {
+			idAutores.push(element.idProfesor);
+		});
+		
+		
+		//Obtenemos los autores del instituto deseado
+		let respuestaProfesores = await pool.query("SELECT * FROM profesores WHERE idInstituto = ?",idInstituto);
+
+		//Recorremos los profesores para filtrar por los autores del articulo
+		for (let i = 0; i < respuestaProfesores.length; i++) {
+			const element = respuestaProfesores[i];
+			//Si no esta dentro de los id de los autores entonces lo añade al JSON de respuesta
+			if(!idAutores.includes(element.idProfesor)) {
+				respuesta.push(element);
+			}
+		}
+		
+		res.json(respuesta);
+  }
+
 	public async listArticulosByProfesorByPeriodoByAnyo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
 		let respuesta = await pool.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}' ORDER BY A.anyo ASC`)
