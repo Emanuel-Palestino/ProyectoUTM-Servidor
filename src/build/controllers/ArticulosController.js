@@ -193,7 +193,7 @@ class ArticulosController {
                 idAutores.push(element.idProfesor);
             });
             //Obtenemos los autores del instituto deseado
-            let respuestaProfesores = yield database_1.default.query("SELECT * FROM profesores WHERE idInstituto = ?", idInstituto);
+            let respuestaProfesores = yield database_1.default.query("SELECT idProfesor, nombreProfesor, nombreApa FROM profesores WHERE idInstituto = ?", idInstituto);
             //Recorremos los profesores para filtrar por los autores del articulo
             for (let i = 0; i < respuestaProfesores.length; i++) {
                 const element = respuestaProfesores[i];

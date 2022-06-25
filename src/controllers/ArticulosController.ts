@@ -182,7 +182,7 @@ class ArticulosController {
 		
 		
 		//Obtenemos los autores del instituto deseado
-		let respuestaProfesores = await pool.query("SELECT * FROM profesores WHERE idInstituto = ?",idInstituto);
+		let respuestaProfesores = await pool.query("SELECT idProfesor, nombreProfesor, nombreApa FROM profesores WHERE idInstituto = ?",idInstituto);
 
 		//Recorremos los profesores para filtrar por los autores del articulo
 		for (let i = 0; i < respuestaProfesores.length; i++) {
