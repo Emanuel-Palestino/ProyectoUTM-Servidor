@@ -119,7 +119,7 @@ class TesistasController {
 		for (let i = 0; i < req.body.length; i++) {
 			const elementoBody = req.body[i];
 			//Actualizamos 
-			respuesta = await pool.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ?', [elementoBody,idTesis, elementoBody.idProfesor]);
+			respuesta = await pool.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ? AND esInterno = ?', [elementoBody,idTesis, elementoBody.idProfesor, elementoBody.esInterno]);
 		}
 		
 		res.json(respuesta);

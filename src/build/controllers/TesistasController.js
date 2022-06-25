@@ -145,7 +145,7 @@ class TesistasController {
             for (let i = 0; i < req.body.length; i++) {
                 const elementoBody = req.body[i];
                 //Actualizamos 
-                respuesta = yield database_1.default.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ?', [elementoBody, idTesis, elementoBody.idProfesor]);
+                respuesta = yield database_1.default.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ? AND esInterno = ?', [elementoBody, idTesis, elementoBody.idProfesor, elementoBody.esInterno]);
             }
             res.json(respuesta);
         });
