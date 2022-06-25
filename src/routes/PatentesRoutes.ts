@@ -16,9 +16,10 @@ class PatentesRoutes
 		this.router.put('/actualizar/:id',patentesController.actualizar);
 		this.router.get('/listPatentesByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin',patentesController.listPatentesByProfesorByPeriodo );
 		this.router.get('/listColaboradoresInternosPatentes/:idProfesor',patentesController.listColaboradoresInternosPatentes);
-		this.router.get('/listColaboradoresExternosPatentes/:idProfesor', patentesController.colaboradoresExternos);
+		this.router.get('/listSugerenciasColaboradoresExternosPatente/:idProfesor', patentesController.colaboradoresExternos);
 		this.router.get('/listColaboradoresExternosExistentesSinColaboracionPatentes/:idProfesor',patentesController.listColaboradoresExternosExistentesSinColaboracionPatentes);
 		this.router.post('/createColaboradorExternoPatente/:idPatente',patentesController.createColaboradorExternoPatente);
+		this.router.get('/listProfesoresByInstitutoSinColaboradoresInternosByPatente/:idInstituto/:idPatente', patentesController.listProfesoresByInstitutoSinColaboradoresInternosByPatente);
 	}
 }
 const patentesRoutes= new PatentesRoutes();

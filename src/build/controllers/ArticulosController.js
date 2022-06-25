@@ -181,6 +181,7 @@ class ArticulosController {
             res.json(resp);
         });
     }
+
     listArticulosByProfesorByPeriodoByAnyo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -201,6 +202,35 @@ class ArticulosController {
                 respuesta[i].autores = aux;
             }
             res.json(respuesta);
+        });
+    }
+
+    //listArticulosByProfesorByPeriodoByEstado
+    listArticulosByProfesorByPeriodoByEstado(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('hola');
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respNombres;
+            let aux2 = [];
+            const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM Articulos AS t INNER JOIN profesorYarticulo AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idArticulo=pyt.idArticulo AND t.fechaedicion >= '${fechaIni}' and t.fechaedicion <= '${fechaFin}' AND pyt.esInterno=1 ORDER BY t.estado`);
+            for (var i = 0; i < resp.length; i++) {
+                const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYarticulo where profesorYarticulo.idArticulo=${resp[i].idArticulo} ORDER BY pos ASC`);
+                console.log(respColab);
+                let aux = [];
+                for (var j = 0; j < respColab.length; j++) {
+                    if (respColab[j].esInterno == "0") {
+                        respNombres = yield database_1.default.query(`SELECT nombre AS nombreProfesor, nombreAPA,idExternoApa AS idProfesor, esInterno,pos FROM externosAPA INNER JOIN profesorYarticulo AS pya WHERE idProfesor = ${respColab[j].idProfesor} AND pya.idProfesor=${respColab[j].idProfesor} AND pya.idArticulo = ${resp[i].idArticulo}`);
+                    }
+                    else {
+                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, nombreAPA, p.idProfesor, esInterno,pos FROM profesores AS p INNER JOIN profesorYarticulo AS pya WHERE p.idProfesor=${respColab[j].idProfesor} AND pya.idProfesor=${respColab[j].idProfesor} AND pya.idArticulo = ${resp[i].idArticulo}`);
+                    }
+                    aux.push(respNombres[0]);
+                }
+                resp[i].profesores = aux;
+            }
+            console.log(aux2);
+            //console.log(aux)
+            res.json(resp);
         });
     }
 }
