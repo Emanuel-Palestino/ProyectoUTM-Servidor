@@ -197,7 +197,7 @@ class ArticulosController {
 		let respuesta:any= [];
 		let idAutores:any[] = [];
 		
-		//Obtenemos los idProfesor de los autores del articulo del instituto dado
+		//Obtenemos los idAutores de los autores del articulo del instituto dado
 		let respuestaAutores = await pool.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesoryarticulo PA ON P.idProfesor = PA.idProfesor WHERE PA.idArticulo = ${idArticulo} AND P.idInstituto = ${idInstituto}`);
 		
 		//Ponemos los id en un arreglo
