@@ -11,7 +11,7 @@ class ProfesorYArticuloRoutes {
         this.router.get('/', ProfesorYArticuloController_1.profesorYArticuloController.list);
         this.router.get('/:id', ProfesorYArticuloController_1.profesorYArticuloController.listOne);
         this.router.post('/create', ProfesorYArticuloController_1.profesorYArticuloController.create);
-        this.router.delete('/delete/:idArticuloYProfesor', ProfesorYArticuloController_1.profesorYArticuloController.delete);
+        this.router.delete('/delete/:idArticulo/:idProfesor/:esInterno', ProfesorYArticuloController_1.profesorYArticuloController.delete);
         this.router.put('/update/:idArticuloYProfesor', ProfesorYArticuloController_1.profesorYArticuloController.update);
         this.router.get('/profesoresByArticulo/:idArticulo', ProfesorYArticuloController_1.profesorYArticuloController.profesoresByArticulo);
         this.router.get('/articulosByCarrera/:idCarrera', ProfesorYArticuloController_1.profesorYArticuloController.articulosByCarrera);

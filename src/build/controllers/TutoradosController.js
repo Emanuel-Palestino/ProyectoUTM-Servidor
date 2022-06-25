@@ -60,7 +60,7 @@ class TutoradoController {
     listTutoradosByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            let respuesta = yield database_1.default.query(`SELECT idTutorado,numero,nivel,idCarrera,estado,inicio,fin,comprobante FROM tutorado WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`);
+            let respuesta = yield database_1.default.query(`SELECT idProfesor, idTutorado,numero,nivel,idCarrera,estado,inicio,fin,comprobante FROM tutorado WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`);
             res.json(respuesta);
         });
     }

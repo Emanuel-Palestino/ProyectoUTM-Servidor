@@ -75,10 +75,10 @@ class TesistasController {
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
-                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
+                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno, idProfesor  FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
                     }
                     else {
-                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, rol, pos, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
+                        respNombres = yield database_1.default.query(`SELECT nombreProfesor, rol, pos, esInterno, profesores.idProfesor FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
                     }
                     aux.push(respNombres[0]);
                 }
@@ -86,6 +86,54 @@ class TesistasController {
             }
             console.log(aux2);
             //console.log(aux)
+            res.json(resp);
+        });
+    }
+    listTesistasByProfesorByPeriodoByStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respNombres;
+            let aux2 = [];
+            const resp = yield database_1.default.query(`SELECT DISTINCT t.idTesis,t.nombreTesis,t.nombreEstudiante,t.nivel,t.matricula,t.status,t.inicio,t.fin,t.comprobante FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.status ASC`);
+            for (var i = 0; i < resp.length; i++) {
+                const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
+                //console.log(respColab);
+                let aux = [];
+                for (var j = 0; j < respColab.length; j++) {
+                    if (respColab[j].esInterno == "0") {
+                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
+                    }
+                    else {
+                        respNombres = yield database_1.default.query(`SELECT profesores.idProfesor,nombreProfesor AS Nombre,rol,esInterno,pos FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
+                    }
+                    aux.push(respNombres[0]);
+                }
+                resp[i].profesores = aux;
+            }
+            res.json(resp);
+        });
+    }
+    listTesistasByProfesorByPeriodoByNombreTesis(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respNombres;
+            let aux2 = [];
+            const resp = yield database_1.default.query(`SELECT DISTINCT t.idTesis,t.nombreTesis,t.nombreEstudiante,t.nivel,t.matricula,t.status,t.inicio,t.fin,t.comprobante FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.nombreTesis ASC`);
+            for (var i = 0; i < resp.length; i++) {
+                const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
+                //console.log(respColab);
+                let aux = [];
+                for (var j = 0; j < respColab.length; j++) {
+                    if (respColab[j].esInterno == "0") {
+                        respNombres = yield database_1.default.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`);
+                    }
+                    else {
+                        respNombres = yield database_1.default.query(`SELECT profesores.idProfesor,nombreProfesor AS Nombre,rol,esInterno,pos FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`);
+                    }
+                    aux.push(respNombres[0]);
+                }
+                resp[i].profesores = aux;
+            }
             res.json(resp);
         });
     }
