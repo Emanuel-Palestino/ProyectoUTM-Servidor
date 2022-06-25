@@ -87,6 +87,30 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
+    listArticulosByProfesorByPeriodoByTipo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respuestaAutores;
+            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}' ORDER BY A.tipoCRL ASC`);
+            // Obtener los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Obtenemos los autores del articulo
+                const respuestaProfesores = yield database_1.default.query(`SELECT PA.* FROM profesorYarticulo AS PA WHERE PA.idArticulo = ${respuesta[i].idArticulo} ORDER BY PA.pos`);
+                let aux = []; //Usamos un arreglo auxiliar para meter los autores 
+                for (let j = 0; j < respuestaProfesores.length; j++) {
+                    if (respuestaProfesores[j].esInterno == 1) {
+                        respuestaAutores = yield database_1.default.query(`SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
+                    }
+                    else {
+                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
+                    }
+                    aux.push(respuestaAutores[0]);
+                }
+                respuesta[i].autores = aux;
+            }
+            res.json(respuesta);
+        });
+    }
     getArticulosByInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto } = req.params;
