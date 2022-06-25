@@ -18,9 +18,12 @@ class ArticulosRoutes {
         this.router.get('/articulosByInstituto/:idInstituto', ArticulosController_1.articulosController.getArticulosByInstituto);
         this.router.get('/getSugerenciasExternoByAutorUTM/:idProfesor', ArticulosController_1.articulosController.getSugerenciasExternoByAutorUTM);
         this.router.post('/addAutorExterno/:idArticulo/:fecha', ArticulosController_1.articulosController.addAutorExterno);
+        this.router.get('/listArticulosByProfesorByPeriodoByAnyo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByAnyo);
         this.router.get('/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listByPeriodo);
         this.router.get('/articulosByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getArticulosByInstitutoByFecha);
         this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodo);
+        this.router.get('/listArticulosByProfesorByPeriodoByTipo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByTipo);
+        this.router.get('/listArticulosByProfesorByPeriodoByEstado/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByEstado);
         this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoPorInsituto);
         this.router.get('/todoDividido/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoDivididoInstitutoPorFecha);
         this.router.get('/listProfesoresByInstitutoNoAutores/:idInstituto/:idArticulo', ArticulosController_1.articulosController.listProfesoresByInstitutoNoAutores);
