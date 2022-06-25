@@ -77,5 +77,12 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+    listMateriasByPlan(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPlan } = req.params;
+            let resp = yield database_1.default.query(`SELECT idMateria, nombreMateria, idPlan, semestre FROM materias where idPlan = ${idPlan} ORDER BY semestre`);
+            res.json(resp);
+        });
+    }
 }
 exports.materiasController = new MateriasController();

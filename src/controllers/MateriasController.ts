@@ -61,6 +61,12 @@ class MateriasController {
 		}
         res.json(respuesta)
 	}
+
+	public async listMateriasByPlan(req: Request, res: Response): Promise<void>{
+		const {idPlan} = req.params
+		let resp = await pool.query(`SELECT idMateria, nombreMateria, idPlan, semestre FROM materias where idPlan = ${idPlan} ORDER BY semestre`)
+		res.json(resp)
+	}
 }
 
 export const materiasController = new MateriasController();
