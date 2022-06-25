@@ -137,5 +137,17 @@ class TesistasController {
             res.json(resp);
         });
     }
+    updatePrioridadesTestistas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let respuesta;
+            const { idTesis } = req.params;
+            //recorremos el body con los JSON de la consulta
+            for (let i = 0; i < req.body.length; i++) {
+                const elementoBody = req.body[i];
+                respuesta = yield database_1.default.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ?', [elementoBody, idTesis, elementoBody.idProfesor]);
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.tesistasController = new TesistasController();

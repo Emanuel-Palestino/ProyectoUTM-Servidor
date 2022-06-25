@@ -205,7 +205,6 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
     listProfesoresByInstitutoNoAutores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idArticulo } = req.params;
@@ -230,7 +229,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     listArticulosByProfesorByPeriodoByAnyo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -253,7 +251,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     //listArticulosByProfesorByPeriodoByEstado
     listArticulosByProfesorByPeriodoByEstado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -282,6 +279,5 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
 }
 exports.articulosController = new ArticulosController();

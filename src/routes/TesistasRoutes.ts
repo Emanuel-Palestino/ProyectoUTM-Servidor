@@ -18,6 +18,7 @@ class TesistasRoutes {
 		this.router.get('/listTesistasByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin',tesistasController.listTesistasByProfesorByPeriodo);
 		this.router.get('/listTesistasByProfesorByPeriodoByStatus/:idProfesor/:fechaIni/:fechaFin',tesistasController.listTesistasByProfesorByPeriodoByStatus);
 		this.router.get('/listTesistasByProfesorByPeriodoByNombreTesis/:idProfesor/:fechaIni/:fechaFin',tesistasController.listTesistasByProfesorByPeriodoByNombreTesis);		
+		this.router.put('/updatePrioridadesTestistas/:idTesis',tesistasController.updatePrioridadesTestistas);
 	}
 
 }

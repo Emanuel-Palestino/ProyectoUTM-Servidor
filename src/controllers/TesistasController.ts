@@ -110,6 +110,19 @@ class TesistasController {
 		}
 		res.json(resp)
 	}
+	
+	public async updatePrioridadesTestistas(req: Request, res: Response){
+		let respuesta;
+		const { idTesis } = req.params;
+		
+		//recorremos el body con los JSON de la consulta
+		for (let i = 0; i < req.body.length; i++) {
+			const elementoBody = req.body[i];
+			respuesta = await pool.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ?', [elementoBody,idTesis, elementoBody.idProfesor]);
+		}
+		
+		res.json(respuesta);
+	}
 
 }
 
