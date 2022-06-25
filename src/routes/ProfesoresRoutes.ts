@@ -11,6 +11,7 @@ class ProfesoresRoutes {
 
 	config() : void {
 		this.router.get('/', profesoresController.list)
+		this.router.get('/listProfesorByInstituto', profesoresController.listProfesorByInstituto)
 		this.router.get('/:id', profesoresController.listOne)
 		this.router.post('/create', profesoresController.create)
 		this.router.delete('/delete/:idProfesor', profesoresController.delete)
