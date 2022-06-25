@@ -167,6 +167,28 @@ class ArticulosController {
         res.json(resp);
     }
 
+	public async listArticulosByProfesorByPeriodoByAnyo(req: Request, res: Response): Promise<void> {
+		const { idProfesor, fechaIni, fechaFin } = req.params
+		let respuesta = await pool.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}' ORDER BY A.anyo ASC`)
+		
+		for (let i = 0; i < respuesta.length; i++) {
+			const respuestaProfesores = await pool.query('SELECT PA.* FROM profesorYarticulo AS PA WHERE PA.idArticulo = ? ORDER BY PA.pos ASC',respuesta[i].idArticulo);
+			let aux: any = [];
+			for(let j = 0; j < respuestaProfesores.length ; j++){
+				let respuestaAutores: '';
+				if(respuestaProfesores[j].esInterno == 1){
+					respuestaAutores = await pool.query(`SELECT P.idProfesor, P.nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE P.idProfesor = ${respuestaProfesores[j].idProfesor} AND PA.idArticulo = ${respuesta[i].idArticulo}`);
+				}else{
+				 	respuestaAutores = await pool.query(`SELECT PA.idProfesor, EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.fechaModificacion, PA.esInterno FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = ${respuestaProfesores[j].idProfesor} AND PA.idArticulo = ${respuesta[i].idArticulo}`);
+				}
+				aux.push(respuestaAutores[0]);
+			}
+			respuesta[i].autores = aux;
+		}
+
+		res.json(respuesta)
+	}
+  
 	//listArticulosByProfesorByPeriodoByEstado
 	
 	public async listArticulosByProfesorByPeriodoByEstado(req: Request, res: Response): Promise<void>{

@@ -18,6 +18,7 @@ class ArticulosRoutes {
         this.router.get('/articulosByInstituto/:idInstituto', ArticulosController_1.articulosController.getArticulosByInstituto);
         this.router.get('/getSugerenciasExternoByAutorUTM/:idProfesor', ArticulosController_1.articulosController.getSugerenciasExternoByAutorUTM);
         this.router.post('/addAutorExterno/:idArticulo/:fecha', ArticulosController_1.articulosController.addAutorExterno);
+        this.router.get('/listArticulosByProfesorByPeriodoByAnyo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByAnyo);
         this.router.get('/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listByPeriodo);
         this.router.get('/articulosByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getArticulosByInstitutoByFecha);
         this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodo);

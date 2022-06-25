@@ -18,6 +18,7 @@ class PatentesRoutes
 		this.router.get('/listColaboradoresInternosPatentes/:idProfesor',patentesController.listColaboradoresInternosPatentes);
 		this.router.get('/listSugerenciasColaboradoresExternosPatente/:idProfesor', patentesController.colaboradoresExternos);
 		this.router.get('/listColaboradoresExternosExistentesSinColaboracionPatentes/:idProfesor',patentesController.listColaboradoresExternosExistentesSinColaboracionPatentes);
+		this.router.post('/createColaboradorExternoPatente/:idPatente',patentesController.createColaboradorExternoPatente);
 		this.router.get('/listProfesoresByInstitutoSinColaboradoresInternosByPatente/:idInstituto/:idPatente', patentesController.listProfesoresByInstitutoSinColaboradoresInternosByPatente);
 	}
 }
