@@ -137,5 +137,41 @@ class TesistasController {
             res.json(resp);
         });
     }
+    updatePrioridadesTestistas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let respuesta;
+            const { idTesis } = req.params;
+            //Recorremos el body con los JSON de la consulta
+            for (let i = 0; i < req.body.length; i++) {
+                const elementoBody = req.body[i];
+                //Actualizamos 
+                respuesta = yield database_1.default.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ? AND esInterno = ?', [elementoBody, idTesis, elementoBody.idProfesor, elementoBody.esInterno]);
+            }
+            res.json(respuesta);
+        });
+    }
+    listNoColaboradoresUTMByCarreraByTesis(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idTesis } = req.params;
+            let respuesta = [];
+            let idProfesores = [];
+            let respuestaAutoresTesis = yield database_1.default.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesorytesis PT ON P.idProfesor = PT.idProfesor WHERE PT.idTesis = ? AND P.idCarrera = ? AND PT.esInterno = 1`, [idTesis, idCarrera]);
+            //Pasamos los id a un arreglo
+            respuestaAutoresTesis.forEach((element) => {
+                idProfesores.push(element.idProfesor);
+            });
+            //Obtenemos los idProfesores de los profesores de la carrera dada
+            let respuestaProfesores = yield database_1.default.query(`SELECT idProfesor, nombreProfesor FROM profesores WHERE idCarrera = ${idCarrera}`);
+            //Recorremos los profesores de la carreara para filtrar por los colaboradores de la tesis
+            for (let i = 0; i < respuestaProfesores.length; i++) {
+                const element = respuestaProfesores[i];
+                //Si no esta dentro de los id de los autores entonces añade al JSON de respuesta
+                if (!idProfesores.includes(element.idProfesor)) {
+                    respuesta.push(element);
+                }
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.tesistasController = new TesistasController();
