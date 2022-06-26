@@ -54,5 +54,12 @@ class PlanesController {
             res.json(resp);
         });
     }
+    listPlanesByCarrera(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM planes WHERE idCarrera=?', [idCarrera]);
+            res.json(respuesta);
+        });
+    }
 }
 exports.planesController = new PlanesController();

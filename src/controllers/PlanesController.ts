@@ -32,6 +32,12 @@ class PlanesController
 		const { id } = req.params;
 		const resp = await pool.query("UPDATE planes set ? WHERE idPlan= ?", [req.body, id]);
 		res.json(resp);
-		}
+	}
+	public async listPlanesByCarrera(req: Request, res: Response ): Promise<void>
+	{
+		const {idCarrera}=req.params
+		const respuesta = await pool.query('SELECT * FROM planes WHERE idCarrera=?',[idCarrera]);
+		res.json( respuesta );
+	}
 }
 export const planesController = new PlanesController();

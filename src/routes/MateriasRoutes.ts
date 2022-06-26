@@ -17,7 +17,8 @@ class MateriasRouter {
         this.router.delete('/delete/:idMateria',materiasController.delete);
         this.router.get('/listMateriasByAnyoByPeriodo/:idProfesor/:anyoIni/:anyoFin',materiasController.listMateriasByAnyoByPeriodo);
         this.router.get('/listMateriasByAnyoByPeriodoMultiple/:idProfesor/:anyoIni/:anyoFin',materiasController.listMateriasByAnyoByPeriodoMultiple);
-	}
+        this.router.get('/listMateriasMultiasignacionByPeriodoByProfesor/:idPeriodo/:idProfesor',materiasController.listMateriasMultiasignacionByPeriodoByProfesor);
+        }
 }
 const materiasRouter = new MateriasRouter()
 export default materiasRouter.router
