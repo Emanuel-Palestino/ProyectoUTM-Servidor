@@ -115,14 +115,11 @@ class ProfesoresController {
 		res.json(resp);
 	}
 	public async listProfesorByInstituto(req: Request, res: Response): Promise<void> {
-		let respuestaProfesores: '';
-		let resp = await pool.query(`SELECT * FROM institutos order by codigoInstituto`);
-		let aux: any[] = [];
+		let resp = await pool.query(`SELECT * FROM institutos WHERE codigoInstituto!=000 ORDER BY codigoInstituto`);
 		for (let i=0; i<resp.length; i++)
 		{
-			respuestaProfesores = await pool.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
-			aux.push(respuestaProfesores[0]);
-			resp[i].profesores = aux;
+			resp[i].profesores =  await pool.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
+
 		}
 		res.json(resp)
 	}

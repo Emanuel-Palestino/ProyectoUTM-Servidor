@@ -136,13 +136,9 @@ class ProfesoresController {
     }
     listProfesorByInstituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let respuestaProfesores;
-            let resp = yield database_1.default.query(`SELECT * FROM institutos order by codigoInstituto`);
-            let aux = [];
+            let resp = yield database_1.default.query(`SELECT * FROM institutos WHERE codigoInstituto!=000 ORDER BY codigoInstituto`);
             for (let i = 0; i < resp.length; i++) {
-                respuestaProfesores = yield database_1.default.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
-                aux.push(respuestaProfesores[0]);
-                resp[i].profesores = aux;
+                resp[i].profesores = yield database_1.default.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
             }
             res.json(resp);
         });
