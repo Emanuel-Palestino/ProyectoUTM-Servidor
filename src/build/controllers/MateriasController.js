@@ -77,5 +77,22 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+    listMateriasByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idPeriodo } = req.params;
+            let respuestaMaterias;
+            let consulta = yield database_1.default.query(`SELECT DISTINCT P.idProfesor, P.nombreProfesor FROM profesores AS P INNER JOIN profesorYmateria AS PM ON PM.idProfesor=P.idProfesor INNER JOIN materias M ON PM.idMateria=M.idMateria INNER JOIN planes AS PL ON PL.idPlan=M.idPlan WHERE PM.idPeriodo=${idPeriodo} AND PL.idCarrera=${idCarrera}`);
+            for (let i = 0; i < consulta.length; i++) {
+                let resp = yield database_1.default.query(`SELECT PM.idMateria FROM profesorYmateria AS PM WHERE PM.idProfesor=${consulta[i].idProfesor}`);
+                let aux = [];
+                for (let j = 0; j < resp.length; j++) {
+                    respuestaMaterias = yield database_1.default.query(`SELECT M.*, PM.idProfesorYMateria, PM.grupo, C.nombreCarrera FROM materias AS M INNER JOIN profesorYmateria AS PM ON M.idMateria=PM.idMateria INNER JOIN planes AS P ON M.idPlan=P.idPlan INNER JOIN carreras AS C ON P.idCarrera=C.idCarrera WHERE PM.idMateria=${resp[j].idMateria}`);
+                    aux.push(respuestaMaterias[0]);
+                }
+                consulta[i].materias = aux;
+            }
+            res.json(consulta);
+        });
+    }
 }
 exports.materiasController = new MateriasController();

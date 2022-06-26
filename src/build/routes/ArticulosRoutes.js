@@ -26,6 +26,7 @@ class ArticulosRoutes {
         this.router.get('/listArticulosByProfesorByPeriodoByEstado/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByEstado);
         this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoPorInsituto);
         this.router.get('/todoDividido/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoDivididoInstitutoPorFecha);
+        this.router.get('/listArticulosByProfesorByPeriodoByTitulo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByTitulo);
         this.router.get('/listProfesoresByInstitutoNoAutores/:idInstituto/:idArticulo', ArticulosController_1.articulosController.listProfesoresByInstitutoNoAutores);
     }
 }
