@@ -121,6 +121,47 @@ class PatentesController {
 		
 
 	}
+	
+	public async listProfesoresByInstitutoSinColaboradoresInternosByPatente(req: Request, res: Response): Promise<void> {
+		const {idInstituto, idPatente} = req.params
+		const resp = await pool.query(`SELECT idProfesor,nombreProfesor,correo,nivel,idCarrera,grado,tipo,nombreApa,idInstituto FROM profesores WHERE idInstituto=${idInstituto} and idProfesor NOT IN (SELECT idProfesor FROM profesorYPatente WHERE idPatente=${idPatente});`)
+		res.json(resp)
+	}
+
+
+	public async createColaboradorExternoPatente(req: Request, res: Response): Promise<void> {
+		const {idPatente} = req.params;
+
+		let  externo = {
+			"correoExterno":req.body.correoExterno,
+    		"nombreExterno":req.body.nombreExterno,
+		}
+
+		const consulta = await pool.query("INSERT INTO externosPatente set ?", externo);
+
+		let t_patente = {
+			"idProfesor":consulta.insertId,
+			"idPatente":idPatente,
+			"pos":req.body.pos,
+			"esInterno":0
+		}
+
+		const resp_tabla = await pool.query('INSERT INTO profesorYpatente SET ?',t_patente)
+		res.json(resp_tabla);
+	}
+
+	public async addColaboradoresPatenteUTM(req: Request, res: Response): Promise<void> {
+		const { idPatente } = req.params
+		const profesores = req.body
+		let resp;
+		for(let i = 0; i < profesores.length; i++){
+			let profesor = profesores[i]
+			profesor.esInterno = 1
+			profesor.idPatente = idPatente
+			resp = await pool.query("INSERT INTO profesorYpatente set ?", profesor);
+		}
+		res.json(resp);
+	}
 
 }
 export const patentesController = new PatentesController();
