@@ -41,6 +41,12 @@ class RevisorController {
 		const resp = await pool.query(`SELECT tipoRP,nombreRI,fecha,tituloRP,idRevisor FROM revisor WHERE idProfesor = ${idProfesor} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`)
 		res.json(resp)
 	}
+
+	public async listRevisionByCarreraByPeriodo(req: Request, res: Response): Promise<void> {
+		const { idCarrera, fechaIni, fechaFin } = req.params;
+		const resp = await pool.query(`SELECT S.tipoRP, S.nombreRI, S.fecha, S.tituloRP, S.idRevisor, S.idProfesor, P.nombreProfesor FROM profesores as P INNER JOIN revisor S ON S.idProfesor = P.idProfesor WHERE P.idCarrera = ${idCarrera} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`)
+		res.json(resp)
+	}
 }
 
 export const revisorController = new RevisorController()

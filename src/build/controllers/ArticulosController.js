@@ -135,6 +135,30 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
+    listArticulosByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, fechaIni, fechaFin } = req.params;
+            let respuestaAutores;
+            let respuesta = yield database_1.default.query(`SELECT DISTINCT A.idArticulo,A.titulo,A.tipoCRL,A.estado,A.anyo,A.fechaedicion FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo INNER JOIN profesores P ON P.idProfesor=PA.idProfesor WHERE P.idCarrera=${idCarrera} AND PA.esInterno = 1 AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}'`);
+            // Obtener los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Obtenemos los autores del articulo
+                const respuestaProfesores = yield database_1.default.query(`SELECT PA.* FROM profesorYarticulo AS PA WHERE PA.idArticulo = ${respuesta[i].idArticulo} ORDER BY PA.pos`);
+                let aux = []; //Usamos un arreglo auxiliar para meter los autores 
+                for (let j = 0; j < respuestaProfesores.length; j++) {
+                    if (respuestaProfesores[j].esInterno == 1) {
+                        respuestaAutores = yield database_1.default.query(`SELECT P.idProfesor, P.nombreProfesor AS Nombre, P.nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
+                    }
+                    else {
+                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, EA.nombre AS Nombre, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
+                    }
+                    aux.push(respuestaAutores[0]);
+                }
+                respuesta[i].autores = aux;
+            }
+            res.json(respuesta);
+        });
+    }
     getTodoPorInsituto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, fechaIni, fechaFin } = req.params;
@@ -205,7 +229,6 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
     listArticulosByProfesorByPeriodoByAnyo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -228,7 +251,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     //listArticulosByProfesorByPeriodoByEstado
     listArticulosByProfesorByPeriodoByEstado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
