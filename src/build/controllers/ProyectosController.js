@@ -108,7 +108,6 @@ class ProyectosController {
             res.json(respuesta);
         });
     }
-
     updatePrioridadesOfColaboradoresByProyecto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProyecto } = req.params;
@@ -120,7 +119,6 @@ class ProyectosController {
             res.json(resp);
         });
     }
-
     createColaboradorExternoProyecto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProyecto } = req.params;

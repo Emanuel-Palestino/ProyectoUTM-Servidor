@@ -229,7 +229,6 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
     listArticulosByProfesorByPeriodoByTitulo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -254,7 +253,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     listProfesoresByInstitutoNoAutores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idArticulo } = req.params;
@@ -279,7 +277,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     listArticulosByProfesorByPeriodoByAnyo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
