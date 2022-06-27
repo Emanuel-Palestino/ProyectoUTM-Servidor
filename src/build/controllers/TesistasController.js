@@ -67,7 +67,6 @@ class TesistasController {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
             let respNombres;
-            let aux2 = [];
             const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`);
@@ -84,8 +83,29 @@ class TesistasController {
                 }
                 resp[i].profesores = aux;
             }
-            console.log(aux2);
-            //console.log(aux)
+            res.json(resp);
+        });
+    }
+    listTesistasByProfesorByPeriodoByInicio(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor, fechaIni, fechaFin } = req.params;
+            let respNombres;
+            const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.inicio ASC`);
+            for (var i = 0; i < resp.length; i++) {
+                const respColab = yield database_1.default.query(`SELECT * FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
+                console.log(respColab);
+                let aux = [];
+                for (var j = 0; j < respColab.length; j++) {
+                    if (respColab[j].esInterno == 0) {
+                        respNombres = yield database_1.default.query(`SELECT PT.idProfesor, EC.nombreCodirector AS Nombre, PT.rol, PT.pos, PT.esInterno FROM externoCodirector AS EC INNER JOIN profesorYtesis AS PT ON EC.idExternoCodirector=PT.idProfesor WHERE idExternoCodirector = ${respColab[j].idProfesor} AND PT.esInterno=0 AND PT.idTesis=${resp[i].idTesis}`);
+                    }
+                    else {
+                        respNombres = yield database_1.default.query(`SELECT PT.idProfesor, P.nombreProfesor AS Nombre, PT.rol, PT.pos, PT.esInterno FROM profesores AS P INNER JOIN profesorYtesis AS PT ON P.idProfesor=PT.idProfesor WHERE P.idProfesor=${respColab[j].idProfesor} AND PT.esInterno=1 AND PT.idTesis=${resp[i].idTesis}`);
+                    }
+                    aux.push(respNombres[0]);
+                }
+                resp[i].profesores = aux;
+            }
             res.json(resp);
         });
     }
@@ -135,6 +155,42 @@ class TesistasController {
                 resp[i].profesores = aux;
             }
             res.json(resp);
+        });
+    }
+    updatePrioridadesTestistas(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let respuesta;
+            const { idTesis } = req.params;
+            //Recorremos el body con los JSON de la consulta
+            for (let i = 0; i < req.body.length; i++) {
+                const elementoBody = req.body[i];
+                //Actualizamos 
+                respuesta = yield database_1.default.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ? AND esInterno = ?', [elementoBody, idTesis, elementoBody.idProfesor, elementoBody.esInterno]);
+            }
+            res.json(respuesta);
+        });
+    }
+    listNoColaboradoresUTMByCarreraByTesis(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idTesis } = req.params;
+            let respuesta = [];
+            let idProfesores = [];
+            let respuestaAutoresTesis = yield database_1.default.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesorytesis PT ON P.idProfesor = PT.idProfesor WHERE PT.idTesis = ? AND P.idCarrera = ? AND PT.esInterno = 1`, [idTesis, idCarrera]);
+            //Pasamos los id a un arreglo
+            respuestaAutoresTesis.forEach((element) => {
+                idProfesores.push(element.idProfesor);
+            });
+            //Obtenemos los idProfesores de los profesores de la carrera dada
+            let respuestaProfesores = yield database_1.default.query(`SELECT idProfesor, nombreProfesor FROM profesores WHERE idCarrera = ${idCarrera}`);
+            //Recorremos los profesores de la carreara para filtrar por los colaboradores de la tesis
+            for (let i = 0; i < respuestaProfesores.length; i++) {
+                const element = respuestaProfesores[i];
+                //Si no esta dentro de los id de los autores entonces añade al JSON de respuesta
+                if (!idProfesores.includes(element.idProfesor)) {
+                    respuesta.push(element);
+                }
+            }
+            res.json(respuesta);
         });
     }
 }

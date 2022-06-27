@@ -23,10 +23,14 @@ class ArticulosRoutes {
 		this.router.get('/listArticulosByProfesorByPeriodoByAnyo/:idProfesor/:fechaIni/:fechaFin',articulosController.listArticulosByProfesorByPeriodoByAnyo);
 		this.router.get('/:fechaIni/:fechaFin', articulosController.listByPeriodo)
 		this.router.get('/articulosByInstituto/:idInstituto/:fechaIni/:fechaFin', articulosController.getArticulosByInstitutoByFecha)
+		this.router.get('/listArticulosByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', articulosController.listArticulosByCarreraByPeriodo)
 		this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodo)
+		this.router.get('/listArticulosByProfesorByPeriodoByTipo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodoByTipo)
 		this.router.get('/listArticulosByProfesorByPeriodoByEstado/:idProfesor/:fechaIni/:fechaFin',articulosController.listArticulosByProfesorByPeriodoByEstado);
 		this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', articulosController.getTodoPorInsituto)
 		this.router.get('/todoDividido/:fechaIni/:fechaFin', articulosController.getTodoDivididoInstitutoPorFecha)
+		this.router.get('/listArticulosByProfesorByPeriodoByTitulo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodoByTitulo)
+		this.router.get('/listProfesoresByInstitutoNoAutores/:idInstituto/:idArticulo', articulosController.listProfesoresByInstitutoNoAutores);
 	}
 
 }
