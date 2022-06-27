@@ -76,9 +76,9 @@ class ProyectosController {
 			let colabs: any[]=[];	
 			for(let j = 0; j < respuestaProyectos.length; j++){
 				if(respuestaProyectos[j].esInterno == 1){			//Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-					respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
+					respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
 				}else{												//Si no es un colaborador externo
-					respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
+					respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
 				}
 				colabs.push(respuestaColaboradores[0]);
 			}
@@ -91,6 +91,50 @@ class ProyectosController {
 		const { idProyecto, idInstituto} = req.params;
 		const respuesta = await pool.query(`SELECT DISTINCT * FROM profesores  WHERE idProfesor NOT IN (SELECT DISTINCT CE.idProfesor FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProyecto = ${idProyecto}) AND idInstituto =${idInstituto}`);
 		res.json(respuesta)
+	}
+
+    public async updatePrioridadesOfColaboradoresByProyecto(req: Request, res: Response): Promise<void> {
+        const {idProyecto} = req.params;
+            let resp
+           
+            for( let i = 0; i < req.body.length; i++ ) {
+                const utm = req.body[i]
+                resp = await pool.query('UPDATE profesorYproyecto set ? WHERE idProyecto = ? AND idProfesor = ? AND esInterno = ?', [utm, idProyecto, utm.idProfesor, utm.esInterno])
+            }
+            res.json(resp)
+        
+    }
+	public async createColaboradorExternoProyecto(req:Request, res: Response): Promise<void> {
+		const { idProyecto } = req.params
+		let datoE =  {
+			nombreExterno : req.body.nombreExterno,
+			correoExterno : req.body.correoExterno
+		}
+		const resp = await pool.query('INSERT INTO externosProyecto SET ?', [datoE])
+		console.log("INFO EXTERNO",resp)
+		let dato =  {
+			idProfesor : resp.insertId,
+			idProyecto: idProyecto,
+			pos: req.body.pos,
+			esInterno: 0
+		}
+		const resp2 = await pool.query('INSERT INTO profesorYproyecto SET ?', dato)
+		res.json(resp2);
+	}
+	
+	public async addColaboradoresProyectoUTM(req:Request, res: Response): Promise<void> {
+		const {idProyec}=req.params
+		const colaboradores:any[]=req.body;
+		for(let i = 0; i < colaboradores.length; i++) {
+			let dato =  {
+				idProfesor : colaboradores[i].idProfesor,
+				idProyecto: idProyec,
+				pos: colaboradores[i].pos,
+				esInterno: 1
+			}
+			const resp2 = await pool.query('INSERT INTO profesorYproyecto SET ?', dato)
+		}
+		res.json(colaboradores);
 	}
 
 }

@@ -60,5 +60,12 @@ class RevisorController {
             res.json(resp);
         });
     }
+    listRevisionByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, fechaIni, fechaFin } = req.params;
+            const resp = yield database_1.default.query(`SELECT S.tipoRP, S.nombreRI, S.fecha, S.tituloRP, S.idRevisor, S.idProfesor, P.nombreProfesor FROM profesores as P INNER JOIN revisor S ON S.idProfesor = P.idProfesor WHERE P.idCarrera = ${idCarrera} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`);
+            res.json(resp);
+        });
+    }
 }
 exports.revisorController = new RevisorController();
