@@ -78,6 +78,26 @@ class MateriasController {
         });
     }
 
+    listMateriasByPlanBySemestreByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPlan, semestre, AnyoI, AnyoF } = req.params;
+            let resp;
+            let consulta = `SELECT DISTINCT M.nombreMateria, M.semestre FROM profesorYmateria PM INNER JOIN materias AS M ON M.idPlan=${idPlan} AND M.semestre=${semestre} AND M.idMateria=PM.idMateria`;
+            //console.log(consulta)
+            let respuesta2 = [];
+            const respuesta = yield database_1.default.query(consulta);
+            console.log(respuesta.length);
+            //res.json(respuesta)
+            for (let i = 0; i < respuesta.length; i++) {
+                respuesta[0].profesores = yield database_1.default.query(`SELECT PR.nombreProfesor,P.anyo,P.nombre FROM ((profesorYmateria AS PM INNER JOIN materias AS M ON M.nombreMateria="${respuesta[i].nombreMateria}" AND M.semestre=${semestre} AND PM.idMateria=M.idMateria) INNER JOIN profesores AS PR ON PM.idProfesor=PR.idProfesor) INNER JOIN periodo AS P ON P.fechaInicio>='${AnyoI}' AND P.fechaFin<='${AnyoF}' AND P.idPeriodo=PM.idPeriodo`);
+                //console.log("profes",resp)
+                //respuesta[0].profesores=resp;
+            }
+            //console.log(respuesta)
+            res.json(respuesta);
+        });
+    }
+
     listMateriasMultiasignacionByPeriodoByProfesor(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPeriodo, idProfesor } = req.params;

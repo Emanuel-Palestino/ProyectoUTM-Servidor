@@ -75,6 +75,45 @@ class PatentesController {
 		res.json(resp)
 	}
 
+	public async listPatentesByCarreraByPeriodo(req: Request, res: Response) {
+		const { idCarrera, fechaIni, fechaFin } = req.params;
+		let consulta =await pool.query(`SELECT DISTINCT P.idPatente, P.nombrePatente, P.registro, P.obtencion, P.resumen, P.comprobante FROM (patentes P INNER JOIN profesorYpatente PP ON P.registro>='${fechaIni}' AND P.obtencion<='${fechaFin}' AND P.idPatente=PP.idPatente) INNER JOIN profesores PR ON PP.idProfesor=PR.idProfesor AND PR.idCarrera=${idCarrera}`);
+		console.log("consulta",consulta)
+		for (let i = 0; i < consulta.length; i++) {
+			console.log("consulta.lengt",consulta.length);
+			const respuesta2 = await pool.query('SELECT idProfesor, esInterno FROM profesorYpatente WHERE idPatente =?  ORDER BY pos', [consulta[i].idPatente])
+			
+			consulta[i].colaboradores = respuesta2
+			console.log("respuesta2",respuesta2)
+			for(let j=0; j < respuesta2.length; j++){
+				if(respuesta2[j].esInterno==1){
+					const colaborador = await pool.query('SELECT nombreProfesor,idProfesor FROM profesores WHERE idProfesor = ?', [respuesta2[j].idProfesor])
+					console.log("colaborador",colaborador)
+					const esInterno = await pool.query('SELECT esInterno,pos from profesorYpatente WHERE idProfesor=? AND idPatente=? AND esInterno=1',[respuesta2[j].idProfesor,consulta[i].idPatente])
+					console.log("esInterno",esInterno)
+					colaborador[0].esInterno=esInterno[0].esInterno;
+					colaborador[0].pos=esInterno[0].pos;
+					consulta[i].colaboradores[j]=colaborador[0]
+				}
+				else{
+					const colaborador = await pool.query('SELECT nombreExterno AS nombreProfesor,idExternoPatente AS idProfesor FROM externosPatente WHERE idExternoPatente = ?', [respuesta2[j].idProfesor])
+					console.log("colaborador2",colaborador)
+
+					const esInterno2 = await pool.query('SELECT esInterno, pos from profesorYpatente WHERE idProfesor=? AND idPatente=? AND esInterno=0',[respuesta2[j].idProfesor,consulta[i].idPatente])
+					console.log("esInterno2",esInterno2[0].esInterno)
+					colaborador[0].esInterno=esInterno2[0].esInterno;
+					console.log("esInterno2",colaborador[0].esInterno)
+					colaborador[0].pos=esInterno2[0].pos;
+					console.log("pos2",colaborador[0].pos)
+					consulta[i].colaboradores[j]=colaborador[0]
+				}
+			}
+		}
+		console.log("consulta",consulta)
+		res.json(consulta);
+		
+	}
+
 	public async listColaboradoresExternosExistentesSinColaboracionPatentes(req: Request, res: Response){
 		const {idProfesor} = req.params
 
