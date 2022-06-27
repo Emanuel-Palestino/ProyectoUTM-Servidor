@@ -55,7 +55,7 @@ class MateriasController {
     listMateriasByAnyoByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, anyoIni, anyoFin } = req.params;
-            let consulta = `SELECT pym.idMateria, pym.grupo, c.nombreCarrera, pl.nombrePlan as plan, p.nombre as nombrePeriodo, p.actual FROM profesorYmateria pym INNER JOIN periodo as p ON p.idPeriodo = pym.idPeriodo INNER JOIN materias as m ON m.idMateria = pym.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pym.idProfesor = ${idProfesor} AND p.fechaInicio >= '${anyoIni}' AND p.fechaFin <= '${anyoFin}';`;
+            let consulta = `SELECT pym.idMateria, pym.grupo, c.nombreCarrera, pl.nombrePlan as plan, p.nombre as nombrePeriodo, p.actual FROM profesorYmateria pym INNER JOIN periodo as p ON p.idPeriodo = pym.idPeriodo INNER JOIN materias as m ON m.idMateria = pym.idMateria INNER JOIN planes as pl ON m.idPlan = pl.idPlan INNER JOIN carreras as c ON pl.idCarrera = c.idCarrera WHERE pym.idProfesor = ${idProfesor} AND p.anyo >= '${anyoIni}' AND p.anyo <= '${anyoFin}';`;
             const respuesta = yield database_1.default.query(consulta);
             res.json(respuesta);
         });
@@ -77,6 +77,7 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+
     listMateriasMultiasignacionByPeriodoByProfesor(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPeriodo, idProfesor } = req.params;
@@ -86,6 +87,24 @@ class MateriasController {
             respuesta[0].materias = materias;
             respuesta[0].grupos = grupos;
             res.json(respuesta);
+         });
+    }
+
+    listMateriasByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idPeriodo } = req.params;
+            let respuestaMaterias;
+            let consulta = yield database_1.default.query(`SELECT DISTINCT P.idProfesor, P.nombreProfesor FROM profesores AS P INNER JOIN profesorYmateria AS PM ON PM.idProfesor=P.idProfesor INNER JOIN materias M ON PM.idMateria=M.idMateria INNER JOIN planes AS PL ON PL.idPlan=M.idPlan WHERE PM.idPeriodo=${idPeriodo} AND PL.idCarrera=${idCarrera}`);
+            for (let i = 0; i < consulta.length; i++) {
+                let resp = yield database_1.default.query(`SELECT PM.idMateria FROM profesorYmateria AS PM WHERE PM.idProfesor=${consulta[i].idProfesor}`);
+                let aux = [];
+                for (let j = 0; j < resp.length; j++) {
+                    respuestaMaterias = yield database_1.default.query(`SELECT M.*, PM.idProfesorYMateria, PM.grupo, C.nombreCarrera FROM materias AS M INNER JOIN profesorYmateria AS PM ON M.idMateria=PM.idMateria INNER JOIN planes AS P ON M.idPlan=P.idPlan INNER JOIN carreras AS C ON P.idCarrera=C.idCarrera WHERE PM.idMateria=${resp[j].idMateria}`);
+                    aux.push(respuestaMaterias[0]);
+                }
+                consulta[i].materias = aux;
+            }
+            res.json(consulta);
         });
     }
 }

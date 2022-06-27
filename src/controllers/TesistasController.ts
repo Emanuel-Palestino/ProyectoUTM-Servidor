@@ -45,7 +45,6 @@ class TesistasController {
 	public async listTesistasByProfesorByPeriodo(req: Request, res: Response): Promise<void>{
 		const {idProfesor, fechaIni, fechaFin} = req.params
 		let respNombres: ''
-		let aux2: any[] = []
 		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
 		for(var i=0; i<resp.length;i++){
 			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
@@ -53,17 +52,37 @@ class TesistasController {
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){
 				if (respColab[j].esInterno == "0"){
-					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
+					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno, idProfesor  FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
 				}
 				else{
-					respNombres =  await pool.query(`SELECT nombreProfesor, rol, pos, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
+					respNombres =  await pool.query(`SELECT nombreProfesor, rol, pos, esInterno, profesores.idProfesor FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
 				}
 				aux.push(respNombres[0]);
 			}
 			resp[i].profesores = aux;
 		}
-		console.log(aux2)
-		//console.log(aux)
+		res.json(resp)
+	}
+
+	public async listTesistasByProfesorByPeriodoByInicio(req: Request, res: Response): Promise<void>{
+		const {idProfesor, fechaIni, fechaFin} = req.params
+		let respNombres: ''
+		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.inicio ASC`)
+		for(var i=0; i<resp.length;i++){
+			const respColab = await pool.query(`SELECT * FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`)
+			console.log(respColab);
+			let aux: any[] = []
+			for(var j=0; j<respColab.length;j++){
+				if (respColab[j].esInterno == 0){
+					respNombres = await pool.query(`SELECT PT.idProfesor, EC.nombreCodirector AS Nombre, PT.rol, PT.pos, PT.esInterno FROM externoCodirector AS EC INNER JOIN profesorYtesis AS PT ON EC.idExternoCodirector=PT.idProfesor WHERE idExternoCodirector = ${respColab[j].idProfesor} AND PT.esInterno=0 AND PT.idTesis=${resp[i].idTesis}`)
+				}
+				else{
+					respNombres = await pool.query(`SELECT PT.idProfesor, P.nombreProfesor AS Nombre, PT.rol, PT.pos, PT.esInterno FROM profesores AS P INNER JOIN profesorYtesis AS PT ON P.idProfesor=PT.idProfesor WHERE P.idProfesor=${respColab[j].idProfesor} AND PT.esInterno=1 AND PT.idTesis=${resp[i].idTesis}`)
+				}
+				aux.push(respNombres[0]);
+			}
+			resp[i].profesores = aux;
+		}
 		res.json(resp)
 	}
 	public async listTesistasByProfesorByPeriodoByStatus(req: Request, res: Response): Promise<void>{
@@ -109,6 +128,47 @@ class TesistasController {
 			resp[i].profesores = aux;
 		}
 		res.json(resp)
+	}
+	
+	public async updatePrioridadesTestistas(req: Request, res: Response){
+		let respuesta;
+		const { idTesis } = req.params;
+		
+		//Recorremos el body con los JSON de la consulta
+		for (let i = 0; i < req.body.length; i++) {
+			const elementoBody = req.body[i];
+			//Actualizamos 
+			respuesta = await pool.query('UPDATE profesorYTesis SET ? WHERE idTesis = ? AND idProfesor = ? AND esInterno = ?', [elementoBody,idTesis, elementoBody.idProfesor, elementoBody.esInterno]);
+		}
+		
+		res.json(respuesta);
+	}
+
+	public async listNoColaboradoresUTMByCarreraByTesis(req: Request, res: Response){
+		const {idCarrera , idTesis } = req.params
+		let respuesta: any = [];
+		let idProfesores:any[] = [];
+
+		let respuestaAutoresTesis = await pool.query(`SELECT P.idProfesor FROM profesores AS P INNER JOIN profesorytesis PT ON P.idProfesor = PT.idProfesor WHERE PT.idTesis = ? AND P.idCarrera = ? AND PT.esInterno = 1`,[idTesis,idCarrera]);
+		
+		//Pasamos los id a un arreglo
+		respuestaAutoresTesis.forEach((element:any) => {
+			idProfesores.push(element.idProfesor);
+		});
+
+		//Obtenemos los idProfesores de los profesores de la carrera dada
+		let respuestaProfesores = await pool.query(`SELECT idProfesor, nombreProfesor FROM profesores WHERE idCarrera = ${idCarrera}`);
+	
+		//Recorremos los profesores de la carreara para filtrar por los colaboradores de la tesis
+		for (let i = 0; i < respuestaProfesores.length; i++) {
+			const element = respuestaProfesores[i];
+			//Si no esta dentro de los id de los autores entonces añade al JSON de respuesta
+			if(!idProfesores.includes(element.idProfesor)){
+				respuesta.push(element);
+			}
+		}
+
+		res.json(respuesta);
 	}
 
 }
