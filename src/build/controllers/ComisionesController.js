@@ -34,16 +34,7 @@ class ComisionesController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor, fechaFinal } = req.params;
-            let resp = yield database_1.default.query('INSERT INTO comisiones SET ?', [req.body]);
-            let dato = {
-                idProfesor: idProfesor,
-                idComision: resp.insertId,
-                pos: 1,
-                final: fechaFinal,
-                comprobante: ''
-            };
-            resp = yield database_1.default.query('INSERT INTO profesorYcomision SET ?', dato);
+            const resp = yield database_1.default.query('INSERT INTO comisiones SET ?', [req.body]);
             res.json(resp);
         });
     }
