@@ -127,10 +127,14 @@ class PatentesController {
 
 	}
 	public async updatePrioridadesOfColaboradoresByPatente(req: Request, res: Response): Promise<void> {
-		const { idPatente } = req.params;
-		var idProfesor=req.body.idProfesor;
-		const resp = await pool.query("UPDATE profesorypatente set ? WHERE idPatente= ? AND idProfesor= ?", [req.body, idPatente,idProfesor]);
-		res.json(resp);
-	}
+        const {idPatente} = req.params;
+            let resp
+            for( let i = 0; i < req.body.length; i++ ) {
+                const profesorYpatente = req.body[i]
+				resp = await pool.query("UPDATE profesorypatente set ? WHERE idPatente= ? AND idProfesor= ?", [profesorYpatente, idPatente,profesorYpatente.idProfesor]);
+            }
+            res.json(resp)
+        
+    }
 }
 export const patentesController = new PatentesController();
