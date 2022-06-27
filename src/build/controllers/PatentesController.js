@@ -178,6 +178,19 @@ class PatentesController {
                 }*/
         });
     }
+
+    updatePrioridadesOfColaboradoresByPatente(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPatente } = req.params;
+            let resp;
+            for (let i = 0; i < req.body.length; i++) {
+                const profesorYpatente = req.body[i];
+                resp = yield database_1.default.query("UPDATE profesorypatente set ? WHERE idPatente= ? AND idProfesor= ?", [profesorYpatente, idPatente, profesorYpatente.idProfesor]);
+             }
+            res.json(resp);
+        });
+    }
+
     listProfesoresByInstitutoSinColaboradoresInternosByPatente(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idPatente } = req.params;
