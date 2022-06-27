@@ -36,6 +36,13 @@ class PlanesController {
 		res.json(resp);
 	}
 
+	public async listPlanesByCarrera(req: Request, res: Response ): Promise<void>
+	{
+		const {idCarrera}=req.params
+		const respuesta = await pool.query('SELECT * FROM planes WHERE idCarrera=?',[idCarrera]);
+		res.json( respuesta );
+	}
+
 	public async getPlanesByCarrera(req: Request, res: Response): Promise<void> {
 		const { idCarrera } = req.params
 		const resp = await pool.query(`SELECT * FROM planes WHERE idCarrera=${idCarrera}`)

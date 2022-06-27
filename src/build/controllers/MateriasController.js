@@ -77,6 +77,19 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+
+    listMateriasMultiasignacionByPeriodoByProfesor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPeriodo, idProfesor } = req.params;
+            const respuesta = yield database_1.default.query('SELECT p.idProfesor,p.nombreProfesor FROM `profesores`  AS p WHERE p.idProfesor=?', [idProfesor]);
+            const materias = yield database_1.default.query('SELECT m.idMateria,pymm.idProfesorYMateriaMultiple,m.semestre,m.idPlan,m.nombreMateria,c.nombreCarrera,pe.nombre FROM gruposMultiples  JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gruposMultiples.idProfesorYMateriaMultiple JOIN materias AS m ON m.idMateria=pymm.idMateria JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo JOIN carreras AS c ON c.idCarrera=gruposMultiples.idCarrera WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
+            const grupos = yield database_1.default.query('SELECT gp.idProfesorYMateriaMultiple,gp.idCarrera,gp.idPlan,gp.semestre,gp.grupo FROM `gruposMultiples` AS gp JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gp.idProfesorYMateriaMultiple JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
+            respuesta[0].materias = materias;
+            respuesta[0].grupos = grupos;
+            res.json(respuesta);
+         });
+    }
+
     listMateriasByCarreraByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, idPeriodo } = req.params;

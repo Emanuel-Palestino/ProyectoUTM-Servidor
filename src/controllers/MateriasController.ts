@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { json, Request, Response } from 'express'
 import pool from '../database'
 
 class MateriasController {
@@ -77,6 +77,16 @@ class MateriasController {
 		res.json(consulta)
 
 	}
+	public async listMateriasMultiasignacionByPeriodoByProfesor(req: Request, res: Response): Promise<void> {
+		const {idPeriodo,idProfesor}=req.params
+		const respuesta =await pool.query('SELECT p.idProfesor,p.nombreProfesor FROM `profesores`  AS p WHERE p.idProfesor=?',[idProfesor])
+		const materias=await pool.query('SELECT m.idMateria,pymm.idProfesorYMateriaMultiple,m.semestre,m.idPlan,m.nombreMateria,c.nombreCarrera,pe.nombre FROM gruposMultiples  JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gruposMultiples.idProfesorYMateriaMultiple JOIN materias AS m ON m.idMateria=pymm.idMateria JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo JOIN carreras AS c ON c.idCarrera=gruposMultiples.idCarrera WHERE pe.idPeriodo=? AND pymm.idProfesor=?',[idPeriodo,idProfesor])
+		const grupos = await pool.query('SELECT gp.idProfesorYMateriaMultiple,gp.idCarrera,gp.idPlan,gp.semestre,gp.grupo FROM `gruposMultiples` AS gp JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gp.idProfesorYMateriaMultiple JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo WHERE pe.idPeriodo=? AND pymm.idProfesor=?',[idPeriodo,idProfesor])
+		respuesta[0].materias=materias
+		respuesta[0].grupos=grupos
+		res.json(respuesta)
+	}
+
 }
 
 export const materiasController = new MateriasController();
