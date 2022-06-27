@@ -157,6 +157,16 @@ class TesistasController {
             res.json(resp);
         });
     }
+
+    listCodirectoresExternos(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            let consulta = `SELECT t1.idExternoCodirector, t1.nombreCodirector FROM externoCodirector as t1 LEFT OUTER JOIN (SELECT * FROM profesoryTesis as pyt INNER JOIN externoCodirector as eC ON pyt.idProfesor = eC.idExternoCodirector WHERE idTesis = ANY (SELECT idTesis from profesorYtesis WHERE idProfesor = ${idProfesor} AND esInterno = 1) AND esInterno = 0) as t2 on t1.idExternoCodirector = t2.idExternoCodirector WHERE t2.idExternoCodirector IS NULL`;
+            let resp = yield database_1.default.query(consulta);
+            res.json(resp);
+        });
+    }
+
     updatePrioridadesTestistas(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let respuesta;
