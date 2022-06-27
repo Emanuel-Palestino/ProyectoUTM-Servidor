@@ -134,5 +134,14 @@ class ProfesoresController {
             res.json(resp);
         });
     }
+    listProfesorByInstituto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let resp = yield database_1.default.query(`SELECT * FROM institutos ORDER BY codigoInstituto`);
+            for (let i = 0; i < resp.length; i++) {
+                resp[i].profesores = yield database_1.default.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
+            }
+            res.json(resp);
+        });
+    }
 }
 exports.profesoresController = new ProfesoresController();
