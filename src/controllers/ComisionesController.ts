@@ -18,16 +18,7 @@ class ComisionesController{
     }
 
     public async create(req: Request, res: Response): Promise<void> {
-        const { idProfesor, fechaFinal } = req.params
-        let resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
-        let dato = {
-            idProfesor: idProfesor,
-            idComision: resp.insertId,
-            pos: 1,
-            final: fechaFinal,
-            comprobante: ''
-        }
-        resp = await pool.query('INSERT INTO profesorYcomision SET ?', dato);
+        const resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
 		res.json(resp);
     }
 
