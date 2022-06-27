@@ -146,7 +146,13 @@ class PatentesController {
                 }*/
         });
     }
-
+    listProfesoresByInstitutoSinColaboradoresInternosByPatente(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idInstituto, idPatente } = req.params;
+            const resp = yield database_1.default.query(`SELECT idProfesor,nombreProfesor,correo,nivel,idCarrera,grado,tipo,nombreApa,idInstituto FROM profesores WHERE idInstituto=${idInstituto} and idProfesor NOT IN (SELECT idProfesor FROM profesorYPatente WHERE idPatente=${idPatente});`);
+            res.json(resp);
+        });
+    }
     createColaboradorExternoPatente(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPatente } = req.params;
@@ -163,14 +169,6 @@ class PatentesController {
             };
             const resp_tabla = yield database_1.default.query('INSERT INTO profesorYpatente SET ?', t_patente);
             res.json(resp_tabla);
-        });
-    }
-  
-    listProfesoresByInstitutoSinColaboradoresInternosByPatente(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idInstituto, idPatente } = req.params;
-            const resp = yield database_1.default.query(`SELECT idProfesor,nombreProfesor,correo,nivel,idCarrera,grado,tipo,nombreApa,idInstituto FROM profesores WHERE idInstituto=${idInstituto} and idProfesor NOT IN (SELECT idProfesor FROM profesorYPatente WHERE idPatente=${idPatente});`);
-            res.json(resp);
         });
     }
 }

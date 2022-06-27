@@ -15,6 +15,8 @@ class MateriasRouter {
         this.router.delete('/delete/:idMateria', MateriasController_1.materiasController.delete);
         this.router.get('/listMateriasByAnyoByPeriodo/:idProfesor/:anyoIni/:anyoFin', MateriasController_1.materiasController.listMateriasByAnyoByPeriodo);
         this.router.get('/listMateriasByAnyoByPeriodoMultiple/:idProfesor/:anyoIni/:anyoFin', MateriasController_1.materiasController.listMateriasByAnyoByPeriodoMultiple);
+        this.router.post('/asignarMultiAsignacion/:idProfesor', MateriasController_1.materiasController.asignarMultiAsignacion);
+        this.router.get('/listMateriasByPlanByPeriodoConProfesores/:idPlan/:AnyoI/:AnyoF', MateriasController_1.materiasController.listMateriasByPlanByPeriodoConProfesores);
     }
 }
 const materiasRouter = new MateriasRouter();

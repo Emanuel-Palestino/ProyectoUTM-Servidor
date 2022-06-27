@@ -61,6 +61,48 @@ class MateriasController {
 		}
         res.json(respuesta)
 	}
+
+	public async listMateriasByPlanByPeriodoConProfesores(req:Request, res: Response):Promise<void>{
+		const {idPlan,AnyoI,AnyoF} = req.params;
+		let materias = await pool.query(`SELECT idMateria,nombreMateria,semestre FROM materias WHERE idPlan = ${idPlan}`);
+
+		for(let i = 0;i < materias.length;i++){
+			let profesores:any[]=[];
+			let profesor = await pool.query(`SELECT pf.nombreProfesor,pdo.nombre,pdo.anyo FROM profesorYmateria AS pym INNER JOIN profesores AS pf ON pym.idProfesor = pf.idProfesor INNER JOIN periodo AS pdo ON pdo.idPeriodo = pym.idPeriodo WHERE pym.idMateria = ${materias[i].idMateria} AND pdo.anyo >='${AnyoI}' AND pdo.anyo<='${AnyoF}' ORDER BY pdo.anyo ASC`);
+			profesores.push(profesor);
+
+			delete materias[i].idMateria;
+			materias[i].profesores = profesores[0];
+		}
+		
+		res.json(materias);
+
+	}
+
+	public async asignarMultiAsignacion(req:Request, res:Response):Promise <void>{
+		const {idProfesor} = req.params;
+		let periodo = await pool.query('SELECT idPeriodo FROM periodo WHERE  actual = 1');
+		console.log("Periodo: "+periodo[0].idPeriodo)
+		const dat_pym = {
+			idMateria:req.body.idMateria,
+			idPeriodo:periodo[0].idPeriodo,
+			idProfesor:idProfesor
+		}
+
+		let createPyM =  await pool.query('INSERT INTO profesorYmateriaMultiple SET ?',dat_pym);
+		let carrera = await pool.query(`SELECT idCarrera FROM planes WHERE idPlan = ${req.body.idPlan}`);
+
+		const grup_multi = {			
+			idProfesorYMateriaMultiple:createPyM.insertId,
+			idCarrera:carrera[0].idCarrera,
+			idPlan:req.body.idPlan,
+			semestre:req.body.semestre,
+			grupo:req.body.grupo
+		}
+
+		let grupos = await pool.query('INSERT INTO gruposMultiples SET ?',grup_multi);
+		res.json(grupos);
+	}
 }
 
 export const materiasController = new MateriasController();
