@@ -203,6 +203,7 @@ class PatentesController {
             res.json(resp_tabla);
         });
     }
+
     addColaboradoresPatenteUTM(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPatente } = req.params;

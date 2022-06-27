@@ -78,6 +78,44 @@ class MateriasController {
         });
     }
 
+    listMateriasByPlanByPeriodoConProfesores(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPlan, AnyoI, AnyoF } = req.params;
+            let materias = yield database_1.default.query(`SELECT idMateria,nombreMateria,semestre FROM materias WHERE idPlan = ${idPlan}`);
+            for (let i = 0; i < materias.length; i++) {
+                let profesores = [];
+                let profesor = yield database_1.default.query(`SELECT pf.nombreProfesor,pdo.nombre,pdo.anyo FROM profesorYmateria AS pym INNER JOIN profesores AS pf ON pym.idProfesor = pf.idProfesor INNER JOIN periodo AS pdo ON pdo.idPeriodo = pym.idPeriodo WHERE pym.idMateria = ${materias[i].idMateria} AND pdo.anyo >='${AnyoI}' AND pdo.anyo<='${AnyoF}' ORDER BY pdo.anyo ASC`);
+                profesores.push(profesor);
+                delete materias[i].idMateria;
+                materias[i].profesores = profesores[0];
+            }
+            res.json(materias);
+        });
+    }
+    asignarMultiAsignacion(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProfesor } = req.params;
+            let periodo = yield database_1.default.query('SELECT idPeriodo FROM periodo WHERE  actual = 1');
+            console.log("Periodo: " + periodo[0].idPeriodo);
+            const dat_pym = {
+                idMateria: req.body.idMateria,
+                idPeriodo: periodo[0].idPeriodo,
+                idProfesor: idProfesor
+            };
+            let createPyM = yield database_1.default.query('INSERT INTO profesorYmateriaMultiple SET ?', dat_pym);
+            let carrera = yield database_1.default.query(`SELECT idCarrera FROM planes WHERE idPlan = ${req.body.idPlan}`);
+            const grup_multi = {
+                idProfesorYMateriaMultiple: createPyM.insertId,
+                idCarrera: carrera[0].idCarrera,
+                idPlan: req.body.idPlan,
+                semestre: req.body.semestre,
+                grupo: req.body.grupo
+            };
+            let grupos = yield database_1.default.query('INSERT INTO gruposMultiples SET ?', grup_multi);
+            res.json(grupos);
+         });
+    }
+
     listMateriasByPlanBySemestreByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPlan, semestre, AnyoI, AnyoF } = req.params;
