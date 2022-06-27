@@ -87,11 +87,11 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-    listArticulosByProfesorByPeriodoByTipo(req, res) {
+    listArticulosByCarreraBytipo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { idProfesor, fechaIni, fechaFin } = req.params;
+            const { idProfesor, fechaIni, fechaFin, tipo } = req.params;
             let respuestaAutores;
-            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}' ORDER BY A.tipoCRL ASC`);
+            let respuesta = yield database_1.default.query(`SELECT A.idArticulo, A.tipoCRL, A.titulo, A.fechaedicion, A.estado, A.anyo FROM articulos as A INNER JOIN profesorYarticulo PA ON PA.idArticulo=A.idArticulo WHERE PA.idProfesor=${idProfesor} AND fechaedicion >= '${fechaIni}' AND fechaedicion <= '${fechaFin}' AND tipoCRL = '${tipo}' ORDER BY A.tipoCRL ASC`);
             // Obtener los profesores participantes
             for (let i = 0; i < respuesta.length; i++) {
                 //Obtenemos los autores del articulo
@@ -205,7 +205,6 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
     listProfesoresByInstitutoNoAutores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idArticulo } = req.params;
@@ -230,7 +229,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     listArticulosByProfesorByPeriodoByAnyo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -253,7 +251,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     //listArticulosByProfesorByPeriodoByEstado
     listArticulosByProfesorByPeriodoByEstado(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -282,6 +279,5 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
 }
 exports.articulosController = new ArticulosController();

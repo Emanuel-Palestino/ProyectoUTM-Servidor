@@ -22,7 +22,7 @@ class ArticulosRoutes {
         this.router.get('/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listByPeriodo);
         this.router.get('/articulosByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getArticulosByInstitutoByFecha);
         this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodo);
-        this.router.get('/listArticulosByProfesorByPeriodoByTipo/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByTipo);
+        this.router.get('/listArticulosByCarreraBytipo/:idProfesor/:fechaIni/:fechaFin/:tipo', ArticulosController_1.articulosController.listArticulosByCarreraBytipo);
         this.router.get('/listArticulosByProfesorByPeriodoByEstado/:idProfesor/:fechaIni/:fechaFin', ArticulosController_1.articulosController.listArticulosByProfesorByPeriodoByEstado);
         this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoPorInsituto);
         this.router.get('/todoDividido/:fechaIni/:fechaFin', ArticulosController_1.articulosController.getTodoDivididoInstitutoPorFecha);

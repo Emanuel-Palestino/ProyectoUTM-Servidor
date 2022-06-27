@@ -18,6 +18,7 @@ class ProyectoRoutes {
         this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ProyectosController_1.proyectosController.listProyectosByProfesorByPeriodo);
         this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
         this.router.put('/updatePrioridadesOfColaboradoresByProyecto/:idProyecto', ProyectosController_1.proyectosController.updatePrioridadesOfColaboradoresByProyecto);
+        this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
         this.router.post('/createColaboradorExternoProyecto/:idProyecto', ProyectosController_1.proyectosController.createColaboradorExternoProyecto);
         this.router.post('/addColaboradoresProyectoUTM/:idProyec', ProyectosController_1.proyectosController.addColaboradoresProyectoUTM);
     }

@@ -77,5 +77,23 @@ class MateriasController {
             res.json(respuesta);
         });
     }
+    listMateriasMultiplesByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idPeriodo } = req.params;
+            let consulta = `SELECT p.idProfesor, p.nombreProfesor FROM profesores as p INNER JOIN profesorYmateriaMultiple as pymm on pymm.idProfesor = p.idProfesor INNER JOIN periodo as pe ON pe.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pla ON pla.idPlan = m.idPlan INNER JOIN carreras as ca ON ca.idCarrera = pla.idCarrera WHERE ca.idCarrera = ${idCarrera} AND pe.idPeriodo = ${idPeriodo}`;
+            const respuestaProfesores = yield database_1.default.query(consulta);
+            for (let i = 0; i < respuestaProfesores.length; i++) {
+                let consulta = `SELECT pymm.idMateria,pymm.idProfesorYMateriaMultiple,ma.semestre, pla.idPlan, ma.nombreMateria, ca.nombreCarrera, pe.nombre FROM profesorYmateriaMultiple as pymm INNER JOIN periodo as pe ON pymm.idPeriodo = pe.idPeriodo INNER JOIN materias as ma ON ma.idMateria = pymm.idMateria INNER JOIN planes as pla ON ma.idPlan = pla.idPlan INNER JOIN carreras as ca ON pla.idCarrera = ca.idCarrera WHERE pymm.idProfesor = ${respuestaProfesores[i].idProfesor}`;
+                const respuestaAtributos = yield database_1.default.query(consulta);
+                for (let j = 0; j < respuestaAtributos.length; j++) {
+                    let consulta = `SELECT * FROM gruposMultiples WHERE idProfesorYMateriaMultiple = ${respuestaAtributos[j].idProfesorYMateriaMultiple}`;
+                    const respuestaGrupos = yield database_1.default.query(consulta);
+                    respuestaAtributos[j].grupos = respuestaGrupos;
+                }
+                respuestaProfesores[i].atributos = respuestaAtributos;
+            }
+            res.json(respuestaProfesores);
+        });
+    }
 }
 exports.materiasController = new MateriasController();

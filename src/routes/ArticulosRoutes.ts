@@ -24,7 +24,7 @@ class ArticulosRoutes {
 		this.router.get('/:fechaIni/:fechaFin', articulosController.listByPeriodo)
 		this.router.get('/articulosByInstituto/:idInstituto/:fechaIni/:fechaFin', articulosController.getArticulosByInstitutoByFecha)
 		this.router.get('/listArticulosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodo)
-		this.router.get('/listArticulosByProfesorByPeriodoByTipo/:idProfesor/:fechaIni/:fechaFin', articulosController.listArticulosByProfesorByPeriodoByTipo)
+		this.router.get('/listArticulosByCarreraBytipo/:idProfesor/:fechaIni/:fechaFin/:tipo', articulosController.listArticulosByCarreraBytipo)
 		this.router.get('/listArticulosByProfesorByPeriodoByEstado/:idProfesor/:fechaIni/:fechaFin',articulosController.listArticulosByProfesorByPeriodoByEstado);
 		this.router.get('/todoByInstituto/:idInstituto/:fechaIni/:fechaFin', articulosController.getTodoPorInsituto)
 		this.router.get('/todoDividido/:fechaIni/:fechaFin', articulosController.getTodoDivididoInstitutoPorFecha)
