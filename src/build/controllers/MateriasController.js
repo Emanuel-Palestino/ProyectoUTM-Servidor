@@ -84,5 +84,23 @@ class MateriasController {
             res.json(resp);
         });
     }
+    listMateriasByPeriodoByProfesor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPeriodo, idProfesor } = req.params;
+            let profesor = yield database_1.default.query(`SELECT idProfesor, nombreProfesor FROM profesores where idProfesor = ${idProfesor}`);
+            const materias = yield database_1.default.query(`SELECT pym.idMateria,m.semestre,m.idPlan,m.nombreMateria,pym.grupo, c.nombreCarrera 
+		FROM profesorymateria AS pym 
+		INNER JOIN carreras AS c 
+		INNER JOIN materias AS m
+		INNER JOIN planes AS p 
+		where pym.idProfesor=${idProfesor} AND pym.idPeriodo=${idPeriodo} 
+		AND pym.idMateria=m.idMateria
+		AND m.idPlan=p.idPlan
+		AND p.idCarrera = c.idCarrera`);
+            var respuesta = { profesor, materias };
+            profesor[0].materias = materias;
+            res.json(profesor[0]);
+        });
+    }
 }
 exports.materiasController = new MateriasController();

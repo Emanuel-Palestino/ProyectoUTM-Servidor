@@ -67,6 +67,23 @@ class MateriasController {
 		let resp = await pool.query(`SELECT idMateria, nombreMateria, idPlan, semestre FROM materias where idPlan = ${idPlan} ORDER BY semestre`)
 		res.json(resp)
 	}
+	public async listMateriasByPeriodoByProfesor(req: Request, res: Response){
+		const {idPeriodo, idProfesor} = req.params
+		let profesor  = await pool.query(`SELECT idProfesor, nombreProfesor FROM profesores where idProfesor = ${idProfesor}`)
+		const materias = await pool.query(`SELECT pym.idMateria,m.semestre,m.idPlan,m.nombreMateria,pym.grupo, c.nombreCarrera 
+		FROM profesorymateria AS pym 
+		INNER JOIN carreras AS c 
+		INNER JOIN materias AS m
+		INNER JOIN planes AS p 
+		where pym.idProfesor=${idProfesor} AND pym.idPeriodo=${idPeriodo} 
+		AND pym.idMateria=m.idMateria
+		AND m.idPlan=p.idPlan
+		AND p.idCarrera = c.idCarrera`)
+		var respuesta = {profesor, materias}
+		profesor[0].materias = materias
+		
+		res.json(profesor[0])
+	}
 }
 
 export const materiasController = new MateriasController();
