@@ -79,10 +79,10 @@ class MateriasController {
 		AND pym.idMateria=m.idMateria
 		AND m.idPlan=p.idPlan
 		AND p.idCarrera = c.idCarrera`)
-		var respuesta = {profesor, materias}
+		//esos del cliente no train
 		profesor[0].materias = materias
 		
-		res.json(profesor[0])
+		res.json(materias)
 	}
 }
 
