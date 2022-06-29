@@ -45,7 +45,8 @@ class TesistasController {
 	public async listTesistasByProfesorByPeriodo(req: Request, res: Response): Promise<void>{
 		const {idProfesor, fechaIni, fechaFin} = req.params
 		let respNombres: ''
-		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}'`)
+		let aux2: any[] = []
+		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.esInterno = 1 and pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.fin <= '${fechaFin} '`)
 		for(var i=0; i<resp.length;i++){
 			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
 			console.log(respColab);
@@ -107,6 +108,15 @@ class TesistasController {
 		}
 		res.json(resp)
 	}
+
+	public async listCodirectoresExternosSugerencias(req: Request, res: Response): Promise<void>{
+		//Soym eml Leom Memmsim deml bamckemnd ᕦ(ò_óˇ)ᕤ
+		//metodo para obtener los coodirectores Externos que no han coincidido en alguna tesis con el el profesor obtenido a traves de su idProfesor
+		const {idProfesor} = req.params
+		const resp = await pool.query(`SELECT idExternoCodirector, nombreCodirector FROM externoCodirector where idExternoCodirector NOT IN (SELECT idProfesor FROM profesorytesis where idTesis IN (SELECT idTesis FROM profesorytesis where idProfesor=${idProfesor} and esInterno = 1) and esInterno = 0)`)
+		res.json(resp)
+	}
+
 	public async listTesistasByProfesorByPeriodoByNombreTesis(req: Request, res: Response): Promise<void>{
 		const {idProfesor, fechaIni, fechaFin} = req.params
 		let respNombres: ''

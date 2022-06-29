@@ -108,6 +108,30 @@ class MateriasController {
 		res.json(respuesta)
 	}
 
+	public async listMateriasByPlan(req: Request, res: Response): Promise<void>{
+		const {idPlan} = req.params
+		let resp = await pool.query(`SELECT idMateria, nombreMateria, idPlan, semestre FROM materias where idPlan = ${idPlan} ORDER BY semestre`)
+		res.json(resp)
+	}
+  
+	public async listMateriasByPeriodoByProfesor(req: Request, res: Response){
+		const {idPeriodo, idProfesor} = req.params
+		let profesor  = await pool.query(`SELECT idProfesor, nombreProfesor FROM profesores where idProfesor = ${idProfesor}`)
+		const materias = await pool.query(`SELECT pym.idMateria,m.semestre,m.idPlan,m.nombreMateria,pym.grupo, c.nombreCarrera 
+		FROM profesorymateria AS pym 
+		INNER JOIN carreras AS c 
+		INNER JOIN materias AS m
+		INNER JOIN planes AS p 
+		where pym.idProfesor=${idProfesor} AND pym.idPeriodo=${idPeriodo} 
+		AND pym.idMateria=m.idMateria
+		AND m.idPlan=p.idPlan
+		AND p.idCarrera = c.idCarrera`)
+		//esos del cliente no train
+		profesor[0].materias = materias
+		
+		res.json(materias)
+	}
+
 	public async listMateriasByPlanByPeriodoConProfesores(req:Request, res: Response):Promise<void>{
 		const {idPlan,AnyoI,AnyoF} = req.params;
 		let materias = await pool.query(`SELECT idMateria,nombreMateria,semestre FROM materias WHERE idPlan = ${idPlan}`);

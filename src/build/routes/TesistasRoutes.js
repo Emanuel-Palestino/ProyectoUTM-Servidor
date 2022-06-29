@@ -13,6 +13,7 @@ class TesistasRoutes {
         this.router.post('/create/:idProfesor', TesistasController_1.tesistasController.create);
         this.router.delete('/delete/:id', TesistasController_1.tesistasController.delete);
         this.router.put('/update/:id', TesistasController_1.tesistasController.update);
+        this.router.get('/listCodirectoresExternosSugerencias/:idProfesor', TesistasController_1.tesistasController.listCodirectoresExternosSugerencias);
         this.router.get('/listCodirectoresExternos/:idProfesor', TesistasController_1.tesistasController.listCodirectoresExternos);
         this.router.get('/listTesistasByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodo);
         this.router.get('/listTesistasByProfesorByPeriodoByInicio/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodoByInicio);

@@ -78,6 +78,33 @@ class MateriasController {
         });
     }
 
+    listMateriasByPlan(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPlan } = req.params;
+            let resp = yield database_1.default.query(`SELECT idMateria, nombreMateria, idPlan, semestre FROM materias where idPlan = ${idPlan} ORDER BY semestre`);
+            res.json(resp);
+        });
+    }
+    listMateriasByPeriodoByProfesor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPeriodo, idProfesor } = req.params;
+            let profesor = yield database_1.default.query(`SELECT idProfesor, nombreProfesor FROM profesores where idProfesor = ${idProfesor}`);
+            const materias = yield database_1.default.query(`SELECT pym.idMateria,m.semestre,m.idPlan,m.nombreMateria,pym.grupo, c.nombreCarrera 
+		FROM profesorymateria AS pym 
+		INNER JOIN carreras AS c 
+		INNER JOIN materias AS m
+		INNER JOIN planes AS p 
+		where pym.idProfesor=${idProfesor} AND pym.idPeriodo=${idPeriodo} 
+		AND pym.idMateria=m.idMateria
+		AND m.idPlan=p.idPlan
+		AND p.idCarrera = c.idCarrera`);
+            //esos del cliente no train
+            profesor[0].materias = materias;
+            res.json(materias);
+        });
+    }
+
+
     listMateriasMultiplesByCarreraByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, idPeriodo } = req.params;
