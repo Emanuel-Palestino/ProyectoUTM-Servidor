@@ -20,6 +20,7 @@ class ProyectoRoutes {
 		this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', proyectosController.listProyectosByProfesorByPeriodo);
 		this.router.get('/listColaboradoresInternosProyectos/:idProfesor', proyectosController.listColaboradoresInternosProyectos);
 		this.router.get('/listProfesoresByInstitutoSinColaboradoresInternosByProyecto/:idProyecto/:idInstituto', proyectosController.listProfesoresByInstitutoSinColaboradoresInternosByProyecto)
+		this.router.get('/listProyectosByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', proyectosController.listProyectosByCarreraByPeriodo)
 	}
 
 }

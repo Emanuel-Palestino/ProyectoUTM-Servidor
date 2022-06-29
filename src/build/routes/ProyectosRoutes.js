@@ -18,6 +18,7 @@ class ProyectoRoutes {
         this.router.get('/listProyectosByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', ProyectosController_1.proyectosController.listProyectosByProfesorByPeriodo);
         this.router.get('/listColaboradoresInternosProyectos/:idProfesor', ProyectosController_1.proyectosController.listColaboradoresInternosProyectos);
         this.router.get('/listProfesoresByInstitutoSinColaboradoresInternosByProyecto/:idProyecto/:idInstituto', ProyectosController_1.proyectosController.listProfesoresByInstitutoSinColaboradoresInternosByProyecto);
+        this.router.get('/listProyectosByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', ProyectosController_1.proyectosController.listProyectosByCarreraByPeriodo);
     }
 }
 const proyectoRoutes = new ProyectoRoutes();
