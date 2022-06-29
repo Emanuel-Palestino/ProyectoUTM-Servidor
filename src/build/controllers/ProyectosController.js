@@ -96,16 +96,71 @@ class ProyectosController {
                 let colabs = [];
                 for (let j = 0; j < respuestaProyectos.length; j++) {
                     if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
+                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
                     }
                     else { //Si no es un colaborador externo
-                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
+                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
                     }
                     colabs.push(respuestaColaboradores[0]);
                 }
                 respuesta[i].colaboradores = colabs;
             }
             res.json(respuesta);
+        });
+    }
+
+    listProfesoresByInstitutoSinColaboradoresInternosByProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto, idInstituto } = req.params;
+            const respuesta = yield database_1.default.query(`SELECT DISTINCT * FROM profesores  WHERE idProfesor NOT IN (SELECT DISTINCT CE.idProfesor FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProyecto = ${idProyecto}) AND idInstituto =${idInstituto}`);
+            res.json(respuesta);
+         });
+    }
+
+    updatePrioridadesOfColaboradoresByProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto } = req.params;
+            let resp;
+            for (let i = 0; i < req.body.length; i++) {
+                const utm = req.body[i];
+                resp = yield database_1.default.query('UPDATE profesorYproyecto set ? WHERE idProyecto = ? AND idProfesor = ? AND esInterno = ?', [utm, idProyecto, utm.idProfesor, utm.esInterno]);
+            }
+            res.json(resp);
+        });
+    }
+    createColaboradorExternoProyecto(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyecto } = req.params;
+            let datoE = {
+                nombreExterno: req.body.nombreExterno,
+                correoExterno: req.body.correoExterno
+            };
+            const resp = yield database_1.default.query('INSERT INTO externosProyecto SET ?', [datoE]);
+            console.log("INFO EXTERNO", resp);
+            let dato = {
+                idProfesor: resp.insertId,
+                idProyecto: idProyecto,
+                pos: req.body.pos,
+                esInterno: 0
+            };
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYproyecto SET ?', dato);
+            res.json(resp2);
+        });
+    }
+    addColaboradoresProyectoUTM(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idProyec } = req.params;
+            const colaboradores = req.body;
+            for (let i = 0; i < colaboradores.length; i++) {
+                let dato = {
+                    idProfesor: colaboradores[i].idProfesor,
+                    idProyecto: idProyec,
+                    pos: colaboradores[i].pos,
+                    esInterno: 1
+                };
+                const resp2 = yield database_1.default.query('INSERT INTO profesorYproyecto SET ?', dato);
+            }
+            res.json(colaboradores);
         });
     }
 }

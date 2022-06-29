@@ -30,6 +30,7 @@ import PlanesRoutes from './routes/PlanesRoutes'
 import PeriodosRoutes from './routes/PeriodosRoutes'
 import ExternosApaRoutes from './routes/ExternosApaRoutes'
 import ExternosCodirectorRoutes from './routes/ExternosCodirectorRoutes'
+import ProfesorYMateriaRoutes from './routes/ProfesorYMateriaRoutes'
 
 class Server {
 
@@ -78,6 +79,7 @@ class Server {
 		this.app.use('/api/periodos', PeriodosRoutes);
 		this.app.use('/api/externosApa', ExternosApaRoutes);
 		this.app.use('/api/externosCodirector',ExternosCodirectorRoutes);
+		this.app.use('api/profesorYMateria', ProfesorYMateriaRoutes)
 	}
 
 	start(): void {

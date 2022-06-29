@@ -18,16 +18,7 @@ class ComisionesController{
     }
 
     public async create(req: Request, res: Response): Promise<void> {
-        const { idProfesor, fechaFinal } = req.params
-        let resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
-        let dato = {
-            idProfesor: idProfesor,
-            idComision: resp.insertId,
-            pos: 1,
-            final: fechaFinal,
-            comprobante: ''
-        }
-        resp = await pool.query('INSERT INTO profesorYcomision SET ?', dato);
+        const resp = await pool.query('INSERT INTO comisiones SET ?', [req.body]);
 		res.json(resp);
     }
 
@@ -45,7 +36,7 @@ class ComisionesController{
     }
     public async listComisionesByProfesoByPeriodo(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT C.nombre,C.asignacion,C.periodo,C.inicio FROM comisiones as C INNER JOIN profesorYcomision PC ON PC.idComision=C.idComision WHERE PC.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT C.nombre,C.asignacion,C.periodo,C.inicio, C.descripcion FROM comisiones as C INNER JOIN profesorYcomision PC ON PC.idComision=C.idComision WHERE PC.idProfesor=${idProfesor} AND inicio >= '${fechaIni}' AND fin <= '${fechaFin}'`)
 		res.json(respuesta)
 	}
 
