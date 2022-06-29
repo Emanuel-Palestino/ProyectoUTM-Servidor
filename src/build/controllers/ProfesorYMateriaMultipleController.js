@@ -12,63 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.planesController = void 0;
+exports.profesorYMateriaMultipleController = void 0;
 const database_1 = __importDefault(require("../database"));
-class PlanesController {
+class ProfesorYMateriaMultipleController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield database_1.default.query('SELECT * FROM planes order by idPlan');
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYmateriaMultiple ORDER BY idProfesorYMateriaMultiple');
             res.json(respuesta);
         });
     }
     listOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            let consulta = 'SELECT * FROM planes WHERE idPlan = ' + id;
-            const respuesta = yield database_1.default.query(consulta);
+            const { idProfesorYMateriaMultiple } = req.params;
+            const respuesta = yield database_1.default.query('SELECT * FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple = ?', [idProfesorYMateriaMultiple]);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'Plan no encontrado' });
+            res.status(404).json({ 'mensaje': 'profesorYmateria no encontrado' });
         });
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
-            const resp = yield database_1.default.query("INSERT INTO planes set ?", [req.body]);
+            const resp = yield database_1.default.query('INSERT INTO profesorYmateriaMultiple SET ?', [req.body]);
             res.json(resp);
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM planes WHERE idPlan = ${id}`);
+            const { idProfesorYMateriaMultiple } = req.params;
+            const resp = yield database_1.default.query(`DELETE FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`);
             res.json(resp);
         });
     }
-    actualizar(req, res) {
+    update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const resp = yield database_1.default.query("UPDATE planes set ? WHERE idPlan= ?", [req.body, id]);
-            res.json(resp);
-        });
-    }
-
-    listPlanesByCarrera(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera } = req.params;
-            const respuesta = yield database_1.default.query('SELECT * FROM planes WHERE idCarrera=?', [idCarrera]);
-            res.json(respuesta);
-        });
-    }
-
-    getPlanesByCarrera(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera } = req.params;
-            const resp = yield database_1.default.query(`SELECT * FROM planes WHERE idCarrera=${idCarrera}`);
+            const { idProfesorYMateriaMultiple } = req.params;
+            const resp = yield database_1.default.query('UPDATE profesorYmateriaMultiple set ? WHERE idProfesorYMateriaMultiple=?', [req.body, idProfesorYMateriaMultiple]);
             res.json(resp);
         });
     }
 }
-exports.planesController = new PlanesController();
+exports.profesorYMateriaMultipleController = new ProfesorYMateriaMultipleController();

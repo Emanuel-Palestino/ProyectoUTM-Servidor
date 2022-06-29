@@ -38,7 +38,7 @@ class TutoradoController
 		}
 		public async listTutoradosByPeriodo(req: Request, res: Response): Promise<void> {
 			const { idProfesor, fechaIni, fechaFin } = req.params
-			let respuesta = await pool.query(`SELECT idTutorado,numero,nivel,idCarrera,estado,inicio,fin,comprobante FROM tutorado WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`)
+			let respuesta = await pool.query(`SELECT idProfesor, idTutorado,numero,nivel,idCarrera,estado,inicio,fin,comprobante FROM tutorado WHERE idProfesor='${idProfesor}' AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`)
 			res.json(respuesta)
 		
 		}
