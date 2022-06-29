@@ -53,9 +53,9 @@ class ProfesoresController {
 
 				const resp = await pool.query("INSERT INTO profesores set ?", [req.body]);
 				res.json(resp);
-			} catch(error: any) {
+			} catch (error: any) {
 				console.log('\n***Ocurrió un Error:***\nError:\n', error.sqlMessage, '\nSQL:\n', error.sql, '\n')
-				res.status(500).json({errorSQL: error.sqlMessage})
+				res.status(500).json({ errorSQL: error.sqlMessage })
 			}
 		})
 	}
@@ -103,26 +103,27 @@ class ProfesoresController {
 		})
 	}
 
-	public async updateDatosPersonales(req: Request, res: Response): Promise<void>{
-		const {idProfesor} = req.params;
+	public async updateDatosPersonales(req: Request, res: Response): Promise<void> {
+		const { idProfesor } = req.params;
 
 		const correoNuevo = req.body.correo;
 		const nombreProfesorNuevo = req.body.nombreProfesor;
 		const gradoNuevo = req.body.grado;
 
-		const resp = await pool.query('UPDATE profesores SET nombreProfesor=?,correo = ?,grado = ? WHERE idProfesor = ?', [nombreProfesorNuevo,correoNuevo,gradoNuevo,idProfesor])
-	
+		const resp = await pool.query('UPDATE profesores SET nombreProfesor=?,correo = ?,grado = ? WHERE idProfesor = ?', [nombreProfesorNuevo, correoNuevo, gradoNuevo, idProfesor])
+
 		res.json(resp);
 	}
+
 	public async listProfesorByInstituto(req: Request, res: Response): Promise<void> {
 		let resp = await pool.query(`SELECT * FROM institutos ORDER BY codigoInstituto`);
-		for (let i=0; i<resp.length; i++)
-		{
-			resp[i].profesores =  await pool.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
+		for (let i = 0; i < resp.length; i++) {
+			resp[i].profesores = await pool.query(`SELECT * FROM profesores WHERE profesores.idInstituto=${resp[i].idInstituto} ORDER BY idProfesor`);
 
 		}
 		res.json(resp)
 	}
+
 }
 
 export const profesoresController = new ProfesoresController()

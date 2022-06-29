@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import pool from '../database';
 
 class PlanesController {
+
 	public async list(req: Request, res: Response): Promise<void> {
 		const respuesta = await pool.query('SELECT * FROM planes order by idPlan');
 		res.json(respuesta);
@@ -36,11 +37,10 @@ class PlanesController {
 		res.json(resp);
 	}
 
-	public async listPlanesByCarrera(req: Request, res: Response ): Promise<void>
-	{
-		const {idCarrera}=req.params
-		const respuesta = await pool.query('SELECT * FROM planes WHERE idCarrera=?',[idCarrera]);
-		res.json( respuesta );
+	public async listPlanesByCarrera(req: Request, res: Response): Promise<void> {
+		const { idCarrera } = req.params
+		const respuesta = await pool.query('SELECT * FROM planes WHERE idCarrera=?', [idCarrera]);
+		res.json(respuesta);
 	}
 
 	public async getPlanesByCarrera(req: Request, res: Response): Promise<void> {
@@ -50,4 +50,5 @@ class PlanesController {
 	}
 
 }
+
 export const planesController = new PlanesController();

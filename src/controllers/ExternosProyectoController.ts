@@ -18,12 +18,12 @@ class ExternosProyectoController {
 		res.status(404).json({ 'mensaje': 'Externo no encontrado' })
 	}
 
-	public async create(req:Request, res: Response): Promise<void> {
+	public async create(req: Request, res: Response): Promise<void> {
 		const resp = await pool.query('INSERT INTO externosProyecto SET ?', [req.body])
 		res.json(resp)
 	}
 
-	public async delete(req:Request, res: Response): Promise<void> {
+	public async delete(req: Request, res: Response): Promise<void> {
 		const { idExterno } = req.params
 		const resp = await pool.query(`DELETE FROM externosProyecto WHERE idExternoProyecto=${idExterno}`)
 		res.json(resp)

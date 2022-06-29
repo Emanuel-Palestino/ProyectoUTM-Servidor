@@ -18,12 +18,12 @@ class InstitutosController {
 		res.status(404).json({ 'mensaje': 'Instituto no encontrado' })
 	}
 
-	public async create(req:Request, res: Response): Promise<void> {
+	public async create(req: Request, res: Response): Promise<void> {
 		const resp = await pool.query('INSERT INTO institutos SET ?', [req.body])
 		res.json(resp)
 	}
 
-	public async delete(req:Request, res: Response): Promise<void> {
+	public async delete(req: Request, res: Response): Promise<void> {
 		const { idInstituto } = req.params
 		const resp = await pool.query(`DELETE FROM institutos WHERE idInstituto=${idInstituto}`)
 		res.json(resp)

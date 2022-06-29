@@ -18,12 +18,12 @@ class RevisorController {
 		res.status(404).json({ 'mensaje': 'Revisor no encontrado' })
 	}
 
-	public async create(req:Request, res: Response): Promise<void> {
+	public async create(req: Request, res: Response): Promise<void> {
 		const resp = await pool.query('INSERT INTO revisor SET ?', [req.body])
 		res.json(resp)
 	}
 
-	public async delete(req:Request, res: Response): Promise<void> {
+	public async delete(req: Request, res: Response): Promise<void> {
 		const { idRevisor } = req.params
 		const resp = await pool.query(`DELETE FROM revisor WHERE idRevisor=${idRevisor}`)
 		res.json(resp)
@@ -37,7 +37,7 @@ class RevisorController {
 
 	public async listRevisionByProfesor(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		console.log(idProfesor+" "+fechaIni +" "+ fechaFin);
+		console.log(idProfesor + " " + fechaIni + " " + fechaFin);
 		const resp = await pool.query(`SELECT tipoRP,nombreRI,fecha,tituloRP,idRevisor FROM revisor WHERE idProfesor = ${idProfesor} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`)
 		res.json(resp)
 	}

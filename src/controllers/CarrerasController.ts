@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import pool from '../database'
 
 class CarrerasController {
-	public async create(req:Request, res: Response): Promise<void> {
-			const resp = await pool.query('INSERT INTO carreras SET ?', [req.body])
-			res.json(resp)
+
+	public async create(req: Request, res: Response): Promise<void> {
+		const resp = await pool.query('INSERT INTO carreras SET ?', [req.body])
+		res.json(resp)
 	}
 
 	public async list(req: Request, res: Response): Promise<void> {
@@ -23,12 +24,12 @@ class CarrerasController {
 	}
 
 	public async update(req: Request, res: Response): Promise<void> {
-			const { idCarrera } = req.params
-			const resp = await pool.query('UPDATE carreras set ? WHERE idCarrera=?', [req.body, idCarrera])
-			res.json(resp)
+		const { idCarrera } = req.params
+		const resp = await pool.query('UPDATE carreras set ? WHERE idCarrera=?', [req.body, idCarrera])
+		res.json(resp)
 	}
 
-	public async delete(req:Request, res: Response): Promise<void> {
+	public async delete(req: Request, res: Response): Promise<void> {
 		const { idCarrera } = req.params
 		const resp = await pool.query(`DELETE FROM carreras WHERE idCarrera=${idCarrera}`)
 		res.json(resp)

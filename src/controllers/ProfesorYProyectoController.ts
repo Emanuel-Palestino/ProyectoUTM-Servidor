@@ -18,12 +18,12 @@ class ProfesorYProyectoController {
 		res.status(404).json({ 'mensaje': 'Profesor y proyecto no encontrado' })
 	}
 
-	public async create(req:Request, res: Response): Promise<void> {
+	public async create(req: Request, res: Response): Promise<void> {
 		const resp = await pool.query('INSERT INTO profesorYproyecto SET ?', [req.body])
 		res.json(resp)
 	}
 
-	public async delete(req:Request, res: Response): Promise<void> {
+	public async delete(req: Request, res: Response): Promise<void> {
 		const { idProyecto, idProfesor } = req.params
 		const resp = await pool.query(`DELETE FROM profesorYproyecto WHERE idProyecto=${idProyecto} AND idProfesor=${idProfesor}`)
 		res.json(resp)
