@@ -16,6 +16,7 @@ class TesistasRoutes {
         this.router.get('/listCodirectoresExternosSugerencias/:idProfesor', TesistasController_1.tesistasController.listCodirectoresExternosSugerencias);
         this.router.get('/listCodirectoresExternos/:idProfesor', TesistasController_1.tesistasController.listCodirectoresExternos);
         this.router.get('/listTesistasByProfesorByPeriodo/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodo);
+        this.router.get('/listTesistasByCarreraByPeriodo/:idCarrera/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByCarreraByPeriodo);
         this.router.get('/listTesistasByProfesorByPeriodoByInicio/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodoByInicio);
         this.router.get('/listTesistasByProfesorByPeriodoByStatus/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodoByStatus);
         this.router.get('/listTesistasByProfesorByPeriodoByNombreTesis/:idProfesor/:fechaIni/:fechaFin', TesistasController_1.tesistasController.listTesistasByProfesorByPeriodoByNombreTesis);

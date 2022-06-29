@@ -109,6 +109,29 @@ class TesistasController {
 		res.json(resp)
 	}
 
+	public async listTesistasByCarreraByPeriodo(req: Request, res: Response): Promise<void>{
+		const {idCarrera, fechaIni, fechaFin} = req.params
+		let respNombres: ''
+		let aux2: any[] = []
+		const resp = await pool.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=p.idProfesor AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' AND t.inicio <= '${fechaFin}' AND p.idCarrera = ${idCarrera} AND pyt.esInterno=1`)
+		for(var i=0; i<resp.length;i++){
+			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`)
+			console.log(respColab);
+      let aux: any[] = []
+			for(var j=0; j<respColab.length;j++){
+				if (respColab[j].esInterno == "0"){
+					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
+				}
+				else{
+					respNombres =  await pool.query(`SELECT nombreProfesor, rol, pos, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
+				}
+				aux.push(respNombres[0]);
+			}
+			resp[i].profesores = aux;
+		}
+		res.json(resp)
+	}
+
 	public async listCodirectoresExternosSugerencias(req: Request, res: Response): Promise<void>{
 		//Soym eml Leom Memmsim deml bamckemnd ᕦ(ò_óˇ)ᕤ
 		//metodo para obtener los coodirectores Externos que no han coincidido en alguna tesis con el el profesor obtenido a traves de su idProfesor
@@ -131,7 +154,7 @@ class TesistasController {
 					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
 				}
 				else{
-					respNombres =  await pool.query(`SELECT profesores.idProfesor,nombreProfesor AS Nombre,rol,esInterno,pos FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
+					respNombres =  await pool.query(`SELECT nombreProfesor, rol, pos, esInterno FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
 				}
 				aux.push(respNombres[0]);
 			}

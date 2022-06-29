@@ -93,6 +93,31 @@ class ProyectosController {
 		res.json(respuesta)
 	}
 
+	public async listProyectosByCarreraByPeriodo(req: Request, res: Response): Promise<void>{
+		const {idCarrera, fechaIni, fechaFin} = req.params
+		let respuestaColaboradores: ''
+		let aux2: any[] = []
+		const respuesta = await pool.query(`SELECT DISTINCT PP.* FROM proyectos AS PP INNER JOIN profesorYproyecto AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=p.idProfesor AND PP.idProyecto=pyt.idProyecto AND PP.inicio >= '${fechaIni}' AND PP.inicio <= '${fechaFin}' AND p.idCarrera = ${idCarrera}`)
+		//Obtenemos los profesores participantes
+		for(let i = 0; i < respuesta.length; i++) {
+			//Obtenemos los colaboradores del proyecto
+			const respuestaProyectos = await pool.query ('SELECT PP.idProfesor, PP.esInterno FROM profesorYproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos' , respuesta[i].idProyecto);
+			let colabs: any[]=[];	
+			for(let j = 0; j < respuestaProyectos.length; j++){
+				if(respuestaProyectos[j].esInterno == 1){			//Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
+					respuestaColaboradores = await pool.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?',respuestaProyectos[j].idProfesor);
+				}else{												//Si no es un colaborador externo
+					respuestaColaboradores = await pool.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?',respuestaProyectos[j].idProfesor);
+				}
+				colabs.push(respuestaColaboradores[0]);
+			}
+			respuesta[i].colaboradores=colabs;
+		}
+		console.log(aux2)
+		//console.log(aux)
+		res.json(respuesta)
+	}
+
     public async updatePrioridadesOfColaboradoresByProyecto(req: Request, res: Response): Promise<void> {
         const {idProyecto} = req.params;
             let resp
