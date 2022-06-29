@@ -37,7 +37,6 @@ class RevisorController {
 
 	public async listRevisionByProfesor(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		console.log(idProfesor + " " + fechaIni + " " + fechaFin);
 		const resp = await pool.query(`SELECT tipoRP,nombreRI,fecha,tituloRP,idRevisor FROM revisor WHERE idProfesor = ${idProfesor} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`)
 		res.json(resp)
 	}

@@ -18,7 +18,6 @@ class PeriodosController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM periodo order by idPeriodo ');
-            console.log(respuesta);
             res.json(respuesta);
         });
     }
@@ -27,7 +26,6 @@ class PeriodosController {
             const { id } = req.params;
             let consulta = 'SELECT * FROM periodo WHERE idPeriodo = ' + id;
             const respuesta = yield database_1.default.query(consulta);
-            console.log(consulta);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -37,7 +35,6 @@ class PeriodosController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             const resp = yield database_1.default.query("INSERT INTO periodo set ?", [req.body]);
             res.json(resp);
         });

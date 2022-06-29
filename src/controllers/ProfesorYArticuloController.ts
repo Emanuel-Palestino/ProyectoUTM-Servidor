@@ -75,7 +75,6 @@ class ProfesorYArticuloController {
 	public async createExterno(req: Request, res: Response): Promise<void> {
 		const { idArticulo, pos } = req.params
 		const resp = await pool.query('INSERT INTO externosAPA SET ?', [req.body])
-		console.log(resp.insertId);
 		let hoy = new Date();
 		let dato = {
 			idProfesor: resp.insertId,
@@ -85,7 +84,6 @@ class ProfesorYArticuloController {
 			fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
 			esInterno: 0,
 		}
-		console.log(dato);
 		const resp2 = await pool.query('INSERT INTO profesorYarticulo SET ?', dato)
 		res.json(resp2)
 	}
@@ -94,7 +92,6 @@ class ProfesorYArticuloController {
 		const { idArticulo } = req.params
 		let profesores = req.body
 		let resp: any;
-		console.log(profesores)
 
 		let hoy = new Date();
 		let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));

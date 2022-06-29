@@ -71,7 +71,6 @@ class TesistasController {
             const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.esInterno = 1 and pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.fin <= '${fechaFin} '`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`);
-                console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
@@ -94,7 +93,6 @@ class TesistasController {
             const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.inicio ASC`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT * FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
-                console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == 0) {
@@ -118,7 +116,6 @@ class TesistasController {
             const resp = yield database_1.default.query(`SELECT DISTINCT t.idTesis,t.nombreTesis,t.nombreEstudiante,t.nivel,t.matricula,t.status,t.inicio,t.fin,t.comprobante FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.status ASC`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
-                //console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
@@ -142,7 +139,6 @@ class TesistasController {
             const resp = yield database_1.default.query(`SELECT DISTINCT t.* FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=p.idProfesor AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' AND t.inicio <= '${fechaFin}' AND p.idCarrera = ${idCarrera} AND pyt.esInterno=1`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY pos ASC`);
-                console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {
@@ -175,7 +171,6 @@ class TesistasController {
             const resp = yield database_1.default.query(`SELECT DISTINCT t.idTesis,t.nombreTesis,t.nombreEstudiante,t.nivel,t.matricula,t.status,t.inicio,t.fin,t.comprobante FROM tesistas AS t INNER JOIN profesorYtesis AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idTesis=pyt.idTesis AND t.inicio >= '${fechaIni}' and t.inicio <= '${fechaFin}' ORDER BY t.nombreTesis ASC`);
             for (var i = 0; i < resp.length; i++) {
                 const respColab = yield database_1.default.query(`SELECT idProfesor,esInterno FROM profesorYtesis where profesorYtesis.idTesis=${resp[i].idTesis} ORDER BY rol ASC`);
-                //console.log(respColab);
                 let aux = [];
                 for (var j = 0; j < respColab.length; j++) {
                     if (respColab[j].esInterno == "0") {

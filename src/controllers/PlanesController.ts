@@ -20,7 +20,6 @@ class PlanesController {
 	}
 
 	public async create(req: Request, res: Response): Promise<void> {
-		console.log(req.body);
 		const resp = await pool.query("INSERT INTO planes set ?", [req.body]);
 		res.json(resp);
 	}

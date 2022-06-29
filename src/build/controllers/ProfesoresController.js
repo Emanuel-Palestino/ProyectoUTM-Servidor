@@ -69,7 +69,6 @@ class ProfesoresController {
                     res.json(resp);
                 }
                 catch (error) {
-                    console.log('\n***Ocurrió un Error:***\nError:\n', error.sqlMessage, '\nSQL:\n', error.sql, '\n');
                     res.status(500).json({ errorSQL: error.sqlMessage });
                 }
             }));
@@ -118,7 +117,6 @@ class ProfesoresController {
             bcryptjs_1.default.hash(password, salt).then(function (nuevoPassword) {
                 req.body.password = nuevoPassword;
                 let consulta = `UPDATE profesores SET password='${req.body.password}' WHERE correo='${correo}'`;
-                console.log('Consulta Contra:', consulta);
                 const resp = database_1.default.query(consulta);
                 res.json(resp);
             });

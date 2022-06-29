@@ -18,7 +18,6 @@ class TutoradoController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM tutorado order by idTutorado');
-            console.log(respuesta);
             res.json(respuesta);
         });
     }
@@ -27,7 +26,6 @@ class TutoradoController {
             const { id } = req.params;
             let consulta = 'SELECT * FROM tutorado WHERE idTutorado = ' + id;
             const respuesta = yield database_1.default.query(consulta);
-            console.log(consulta);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -37,7 +35,6 @@ class TutoradoController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             const resp = yield database_1.default.query("INSERT INTO tutorado set ?", [req.body]);
             res.json(resp);
         });
@@ -52,7 +49,6 @@ class TutoradoController {
     actualizar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idTutorado } = req.params;
-            console.log(req.params);
             const resp = yield database_1.default.query("UPDATE tutorado set ? WHERE idTutorado= ?", [req.body, idTutorado]);
             res.json(resp);
         });

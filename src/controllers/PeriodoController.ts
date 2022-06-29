@@ -5,7 +5,6 @@ class PeriodosController {
 
 	public async list(req: Request, res: Response): Promise<void> {
 		const respuesta = await pool.query('SELECT * FROM periodo order by idPeriodo ');
-		console.log(respuesta);
 		res.json(respuesta);
 	}
 
@@ -13,7 +12,6 @@ class PeriodosController {
 		const { id } = req.params;
 		let consulta = 'SELECT * FROM periodo WHERE idPeriodo = ' + id;
 		const respuesta = await pool.query(consulta);
-		console.log(consulta);
 		if (respuesta.length > 0) {
 			res.json(respuesta[0]);
 			return;
@@ -22,7 +20,6 @@ class PeriodosController {
 	}
 
 	public async create(req: Request, res: Response): Promise<void> {
-		console.log(req.body);
 		const resp = await pool.query("INSERT INTO periodo set ?", [req.body]);
 		res.json(resp);
 	}

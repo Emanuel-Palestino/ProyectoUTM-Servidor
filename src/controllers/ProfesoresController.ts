@@ -54,7 +54,6 @@ class ProfesoresController {
 				const resp = await pool.query("INSERT INTO profesores set ?", [req.body]);
 				res.json(resp);
 			} catch (error: any) {
-				console.log('\n***Ocurrió un Error:***\nError:\n', error.sqlMessage, '\nSQL:\n', error.sql, '\n')
 				res.status(500).json({ errorSQL: error.sqlMessage })
 			}
 		})
@@ -97,7 +96,6 @@ class ProfesoresController {
 		bcrypt.hash(password, salt).then(function (nuevoPassword) {
 			req.body.password = nuevoPassword
 			let consulta = `UPDATE profesores SET password='${req.body.password}' WHERE correo='${correo}'`
-			console.log('Consulta Contra:', consulta)
 			const resp = pool.query(consulta)
 			res.json(resp)
 		})

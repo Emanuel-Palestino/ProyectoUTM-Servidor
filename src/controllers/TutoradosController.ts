@@ -5,7 +5,6 @@ class TutoradoController {
 
 	public async list(req: Request, res: Response): Promise<void> {
 		const respuesta = await pool.query('SELECT * FROM tutorado order by idTutorado');
-		console.log(respuesta);
 		res.json(respuesta);
 	}
 
@@ -13,7 +12,6 @@ class TutoradoController {
 		const { id } = req.params;
 		let consulta = 'SELECT * FROM tutorado WHERE idTutorado = ' + id;
 		const respuesta = await pool.query(consulta);
-		console.log(consulta);
 		if (respuesta.length > 0) {
 			res.json(respuesta[0]);
 			return;
@@ -22,7 +20,6 @@ class TutoradoController {
 	}
 
 	public async create(req: Request, res: Response): Promise<void> {
-		console.log(req.body);
 		const resp = await pool.query("INSERT INTO tutorado set ?", [req.body]);
 		res.json(resp);
 	}
@@ -35,7 +32,6 @@ class TutoradoController {
 
 	public async actualizar(req: Request, res: Response): Promise<void> {
 		const { idTutorado } = req.params;
-		console.log(req.params);
 		const resp = await pool.query("UPDATE tutorado set ? WHERE idTutorado= ?", [req.body, idTutorado]);
 		res.json(resp);
 	}

@@ -191,7 +191,6 @@ class ArticulosController {
 		const { fechaIni, fechaFin } = req.params;
 		const respuesta = await pool.query(`SELECT * FROM articulos WHERE fechaedicion >= "${fechaIni}" AND fechaedicion <= "${fechaFin}"`)
 		if (respuesta.length > 0) {
-			console.log(respuesta.length)
 			res.json(respuesta)
 			return;
 		}
@@ -301,14 +300,12 @@ class ArticulosController {
 	//listArticulosByProfesorByPeriodoByEstado
 
 	public async listArticulosByProfesorByPeriodoByEstado(req: Request, res: Response): Promise<void> {
-		console.log('hola');
 		const { idProfesor, fechaIni, fechaFin } = req.params
 		let respNombres: ''
 		let aux2: any[] = []
 		const resp = await pool.query(`SELECT DISTINCT t.* FROM Articulos AS t INNER JOIN profesorYarticulo AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=${idProfesor} AND t.idArticulo=pyt.idArticulo AND t.fechaedicion >= '${fechaIni}' and t.fechaedicion <= '${fechaFin}' AND pyt.esInterno=1 ORDER BY t.estado`)
 		for (var i = 0; i < resp.length; i++) {
 			const respColab = await pool.query(`SELECT idProfesor,esInterno FROM profesorYarticulo where profesorYarticulo.idArticulo=${resp[i].idArticulo} ORDER BY pos ASC`)
-			console.log(respColab);
 			let aux: any[] = []
 			for (var j = 0; j < respColab.length; j++) {
 				if (respColab[j].esInterno == "0") {
@@ -321,8 +318,6 @@ class ArticulosController {
 			}
 			resp[i].profesores = aux;
 		}
-		console.log(aux2)
-		//console.log(aux)
 		res.json(resp)
 	}
 

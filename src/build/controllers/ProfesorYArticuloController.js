@@ -96,7 +96,6 @@ class ProfesorYArticuloController {
         return __awaiter(this, void 0, void 0, function* () {
             const { idArticulo, pos } = req.params;
             const resp = yield database_1.default.query('INSERT INTO externosAPA SET ?', [req.body]);
-            console.log(resp.insertId);
             let hoy = new Date();
             let dato = {
                 idProfesor: resp.insertId,
@@ -106,7 +105,6 @@ class ProfesorYArticuloController {
                 fechaModificacion: hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2),
                 esInterno: 0,
             };
-            console.log(dato);
             const resp2 = yield database_1.default.query('INSERT INTO profesorYarticulo SET ?', dato);
             res.json(resp2);
         });
@@ -116,7 +114,6 @@ class ProfesorYArticuloController {
             const { idArticulo } = req.params;
             let profesores = req.body;
             let resp;
-            console.log(profesores);
             let hoy = new Date();
             let fecha = (hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2));
             for (var i = 0; i < profesores.length; i++) {

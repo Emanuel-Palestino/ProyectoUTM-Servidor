@@ -18,7 +18,6 @@ class ExternosPatenteController {
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const respuesta = yield database_1.default.query('SELECT * FROM externosPatente order by idExternoPatente');
-            console.log(respuesta);
             res.json(respuesta);
         });
     }
@@ -27,7 +26,6 @@ class ExternosPatenteController {
             const { id } = req.params;
             let consulta = 'SELECT * FROM externosPatente WHERE idExternoPatente = ' + id;
             const respuesta = yield database_1.default.query(consulta);
-            console.log(consulta);
             if (respuesta.length > 0) {
                 res.json(respuesta[0]);
                 return;
@@ -37,7 +35,6 @@ class ExternosPatenteController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(req.body);
             const resp = yield database_1.default.query("INSERT INTO externosPatente set ?", [req.body]);
             res.json(resp);
         });
@@ -52,7 +49,6 @@ class ExternosPatenteController {
     actualizar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idExternoPatente } = req.params;
-            console.log(req.params);
             const resp = yield database_1.default.query("UPDATE externosPatente set ? WHERE idExternoPatente= ?", [req.body, idExternoPatente]);
             res.json(resp);
         });

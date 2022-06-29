@@ -55,7 +55,6 @@ class RevisorController {
     listRevisionByProfesor(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
-            console.log(idProfesor + " " + fechaIni + " " + fechaFin);
             const resp = yield database_1.default.query(`SELECT tipoRP,nombreRI,fecha,tituloRP,idRevisor FROM revisor WHERE idProfesor = ${idProfesor} AND fecha>= '${fechaIni}' AND fecha<='${fechaFin}'`);
             res.json(resp);
         });

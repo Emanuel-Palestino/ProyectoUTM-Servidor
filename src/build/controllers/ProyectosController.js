@@ -137,8 +137,6 @@ class ProyectosController {
                 }
                 respuesta[i].colaboradores = colabs;
             }
-            console.log(aux2);
-            //console.log(aux)
             res.json(respuesta);
         });
     }
@@ -161,7 +159,6 @@ class ProyectosController {
                 correoExterno: req.body.correoExterno
             };
             const resp = yield database_1.default.query('INSERT INTO externosProyecto SET ?', [datoE]);
-            console.log("INFO EXTERNO", resp);
             let dato = {
                 idProfesor: resp.insertId,
                 idProyecto: idProyecto,
