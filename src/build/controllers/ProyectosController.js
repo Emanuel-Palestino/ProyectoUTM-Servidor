@@ -96,10 +96,10 @@ class ProyectosController {
                 let colabs = [];
                 for (let j = 0; j < respuestaProyectos.length; j++) {
                     if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
+                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS nombreProfesor, PP.idProfesor, PP.esInterno, PP.pos FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
                     }
                     else { //Si no es un colaborador externo
-                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno, PP.pos FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
+                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS nombreProfesor, PP.idProfesor, PP.esInterno, PP.pos FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
                     }
                     colabs.push(respuestaColaboradores[0]);
                 }
@@ -108,15 +108,40 @@ class ProyectosController {
             res.json(respuesta);
         });
     }
-
     listProfesoresByInstitutoSinColaboradoresInternosByProyecto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProyecto, idInstituto } = req.params;
             const respuesta = yield database_1.default.query(`SELECT DISTINCT * FROM profesores  WHERE idProfesor NOT IN (SELECT DISTINCT CE.idProfesor FROM profesores AS CE INNER JOIN profesorYproyecto PYP ON CE.idProfesor = PYP.idProfesor INNER JOIN profesorYproyecto P ON P.idProyecto = PYP.idProyecto WHERE PYP.esInterno = 1  AND P.esInterno = 1 AND P.idProyecto = ${idProyecto}) AND idInstituto =${idInstituto}`);
             res.json(respuesta);
-         });
+        });
     }
-
+    listProyectosByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, fechaIni, fechaFin } = req.params;
+            let respuestaColaboradores;
+            let aux2 = [];
+            const respuesta = yield database_1.default.query(`SELECT DISTINCT PP.* FROM proyectos AS PP INNER JOIN profesorYproyecto AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=p.idProfesor AND PP.idProyecto=pyt.idProyecto AND PP.inicio >= '${fechaIni}' AND PP.inicio <= '${fechaFin}' AND p.idCarrera = ${idCarrera}`);
+            //Obtenemos los profesores participantes
+            for (let i = 0; i < respuesta.length; i++) {
+                //Obtenemos los colaboradores del proyecto
+                const respuestaProyectos = yield database_1.default.query('SELECT PP.idProfesor, PP.esInterno FROM profesorYproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
+                let colabs = [];
+                for (let j = 0; j < respuestaProyectos.length; j++) {
+                    if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
+                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS nombreProfesor, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
+                    }
+                    else { //Si no es un colaborador externo
+                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS nombreProfesor, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
+                    }
+                    colabs.push(respuestaColaboradores[0]);
+                }
+                respuesta[i].colaboradores = colabs;
+            }
+            console.log(aux2);
+            //console.log(aux)
+            res.json(respuesta);
+        });
+    }
     updatePrioridadesOfColaboradoresByProyecto(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProyecto } = req.params;
@@ -161,33 +186,6 @@ class ProyectosController {
                 const resp2 = yield database_1.default.query('INSERT INTO profesorYproyecto SET ?', dato);
             }
             res.json(colaboradores);
-        });
-    }
-    listProyectosByCarreraByPeriodo(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera, fechaIni, fechaFin } = req.params;
-            let respuestaColaboradores;
-            let aux2 = [];
-            const respuesta = yield database_1.default.query(`SELECT DISTINCT PP.* FROM proyectos AS PP INNER JOIN profesorYproyecto AS pyt INNER JOIN profesores AS p WHERE pyt.idProfesor=p.idProfesor AND PP.idProyecto=pyt.idProyecto AND PP.inicio >= '${fechaIni}' AND PP.inicio <= '${fechaFin}' AND p.idCarrera = ${idCarrera}`);
-            //Obtenemos los profesores participantes
-            for (let i = 0; i < respuesta.length; i++) {
-                //Obtenemos los colaboradores del proyecto
-                const respuestaProyectos = yield database_1.default.query('SELECT PP.idProfesor, PP.esInterno FROM profesorYproyecto AS PP WHERE PP.idProyecto = ? ORDER BY PP.pos', respuesta[i].idProyecto);
-                let colabs = [];
-                for (let j = 0; j < respuestaProyectos.length; j++) {
-                    if (respuestaProyectos[j].esInterno == 1) { //Comprobamos si el colaborador es interno de la UTM si el campo esInterno == 1
-                        respuestaColaboradores = yield database_1.default.query('SELECT P.nombreProfesor AS Nombre, PP.idProfesor, PP.esInterno FROM profesores as P INNER JOIN profesorYproyecto as PP ON PP.idProfesor = P.idProfesor WHERE PP.idProfesor = ?', respuestaProyectos[j].idProfesor);
-                    }
-                    else { //Si no es un colaborador externo
-                        respuestaColaboradores = yield database_1.default.query('SELECT E.nombreExterno AS Nombre, PP.idProfesor, PP.esInterno FROM externosProyecto as E INNER JOIN profesorYproyecto as PP ON PP.idProfesor = E.idExternoProyecto WHERE E.idExternoProyecto = ?', respuestaProyectos[j].idProfesor);
-                    }
-                    colabs.push(respuestaColaboradores[0]);
-                }
-                respuesta[i].colaboradores = colabs;
-            }
-            console.log(aux2);
-            //console.log(aux)
-            res.json(respuesta);
         });
     }
 }

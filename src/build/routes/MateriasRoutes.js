@@ -21,6 +21,7 @@ class MateriasRouter {
         this.router.get('/listMateriasByAnyoByPeriodoMultiple/:idProfesor/:anyoIni/:anyoFin', MateriasController_1.materiasController.listMateriasByAnyoByPeriodoMultiple);
         this.router.post('/asignarMultiAsignacion/:idProfesor', MateriasController_1.materiasController.asignarMultiAsignacion);
         this.router.get('/listMateriasByPlanByPeriodoConProfesores/:idPlan/:AnyoI/:AnyoF', MateriasController_1.materiasController.listMateriasByPlanByPeriodoConProfesores);
+        this.router.get('/listMateriasMultiasignacionByPeriodoByProfesor/:idPeriodo/:idProfesor', MateriasController_1.materiasController.listMateriasMultiasignacionByPeriodoByProfesor);
         this.router.get('/listMateriasByPlanBySemestreByPeriodo/:idPlan/:semestre/:AnyoI/:AnyoF', MateriasController_1.materiasController.listMateriasByPlanBySemestreByPeriodo);
     }
 }

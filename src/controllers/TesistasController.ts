@@ -75,10 +75,10 @@ class TesistasController {
 			let aux: any[] = []
 			for(var j=0; j<respColab.length;j++){
 				if (respColab[j].esInterno == 0){
-					respNombres = await pool.query(`SELECT PT.idProfesor, EC.nombreCodirector AS Nombre, PT.rol, PT.pos, PT.esInterno FROM externoCodirector AS EC INNER JOIN profesorYtesis AS PT ON EC.idExternoCodirector=PT.idProfesor WHERE idExternoCodirector = ${respColab[j].idProfesor} AND PT.esInterno=0 AND PT.idTesis=${resp[i].idTesis}`)
+					respNombres = await pool.query(`SELECT PT.idProfesor, EC.nombreCodirector AS nombreProfesor, PT.rol, PT.pos, PT.esInterno FROM externoCodirector AS EC INNER JOIN profesorYtesis AS PT ON EC.idExternoCodirector=PT.idProfesor WHERE idExternoCodirector = ${respColab[j].idProfesor} AND PT.esInterno=0 AND PT.idTesis=${resp[i].idTesis}`)
 				}
 				else{
-					respNombres = await pool.query(`SELECT PT.idProfesor, P.nombreProfesor AS Nombre, PT.rol, PT.pos, PT.esInterno FROM profesores AS P INNER JOIN profesorYtesis AS PT ON P.idProfesor=PT.idProfesor WHERE P.idProfesor=${respColab[j].idProfesor} AND PT.esInterno=1 AND PT.idTesis=${resp[i].idTesis}`)
+					respNombres = await pool.query(`SELECT PT.idProfesor, P.nombreProfesor AS nombreProfesor, PT.rol, PT.pos, PT.esInterno FROM profesores AS P INNER JOIN profesorYtesis AS PT ON P.idProfesor=PT.idProfesor WHERE P.idProfesor=${respColab[j].idProfesor} AND PT.esInterno=1 AND PT.idTesis=${resp[i].idTesis}`)
 				}
 				aux.push(respNombres[0]);
 			}
@@ -100,7 +100,7 @@ class TesistasController {
 					respNombres = await pool.query(`SELECT nombreCodirector AS nombreProfesor, rol, pos, esInterno FROM externoCodirector INNER JOIN profesorYtesis WHERE idExternoCodirector = ${respColab[j].idProfesor} AND idProfesor=${respColab[j].idProfesor}`)
 				}
 				else{
-					respNombres =  await pool.query(`SELECT profesores.idProfesor,nombreProfesor AS Nombre,rol,esInterno,pos FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
+					respNombres =  await pool.query(`SELECT profesores.idProfesor,nombreProfesor AS nombreProfesor,rol,esInterno,pos FROM profesores INNER JOIN profesorYtesis WHERE profesores.idProfesor=${respColab[j].idProfesor} AND profesorYtesis.idProfesor=${respColab[j].idProfesor}`)
 				}
 				aux.push(respNombres[0]);
 			}

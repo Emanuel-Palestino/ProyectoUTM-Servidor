@@ -77,7 +77,53 @@ class MateriasController {
             res.json(respuesta);
         });
     }
-
+    listMateriasByCarreraByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idCarrera, idPeriodo } = req.params;
+            let respuestaMaterias;
+            let consulta = yield database_1.default.query(`SELECT DISTINCT P.idProfesor, P.nombreProfesor FROM profesores AS P INNER JOIN profesorYmateria AS PM ON PM.idProfesor=P.idProfesor INNER JOIN materias M ON PM.idMateria=M.idMateria INNER JOIN planes AS PL ON PL.idPlan=M.idPlan WHERE PM.idPeriodo=${idPeriodo} AND PL.idCarrera=${idCarrera}`);
+            for (let i = 0; i < consulta.length; i++) {
+                let resp = yield database_1.default.query(`SELECT PM.idMateria FROM profesorYmateria AS PM WHERE PM.idProfesor=${consulta[i].idProfesor}`);
+                let aux = [];
+                for (let j = 0; j < resp.length; j++) {
+                    respuestaMaterias = yield database_1.default.query(`SELECT M.*, PM.idProfesorYMateria, PM.grupo, C.nombreCarrera FROM materias AS M INNER JOIN profesorYmateria AS PM ON M.idMateria=PM.idMateria INNER JOIN planes AS P ON M.idPlan=P.idPlan INNER JOIN carreras AS C ON P.idCarrera=C.idCarrera WHERE PM.idMateria=${resp[j].idMateria}`);
+                    aux.push(respuestaMaterias[0]);
+                }
+                consulta[i].materias = aux;
+            }
+            res.json(consulta);
+        });
+    }
+    listMateriasByPlanBySemestreByPeriodo(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPlan, semestre, AnyoI, AnyoF } = req.params;
+            let resp;
+            let consulta = `SELECT DISTINCT M.nombreMateria, M.semestre FROM profesorYmateria PM INNER JOIN materias AS M ON M.idPlan=${idPlan} AND M.semestre=${semestre} AND M.idMateria=PM.idMateria`;
+            //console.log(consulta)
+            let respuesta2 = [];
+            const respuesta = yield database_1.default.query(consulta);
+            console.log(respuesta.length);
+            //res.json(respuesta)
+            for (let i = 0; i < respuesta.length; i++) {
+                respuesta[0].profesores = yield database_1.default.query(`SELECT PR.nombreProfesor,P.anyo,P.nombre FROM ((profesorYmateria AS PM INNER JOIN materias AS M ON M.nombreMateria="${respuesta[i].nombreMateria}" AND M.semestre=${semestre} AND PM.idMateria=M.idMateria) INNER JOIN profesores AS PR ON PM.idProfesor=PR.idProfesor) INNER JOIN periodo AS P ON P.fechaInicio>='${AnyoI}' AND P.fechaFin<='${AnyoF}' AND P.idPeriodo=PM.idPeriodo`);
+                //console.log("profes",resp)
+                //respuesta[0].profesores=resp;
+            }
+            //console.log(respuesta)
+            res.json(respuesta);
+        });
+    }
+    listMateriasMultiasignacionByPeriodoByProfesor(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idPeriodo, idProfesor } = req.params;
+            const respuesta = yield database_1.default.query('SELECT p.idProfesor,p.nombreProfesor FROM `profesores`  AS p WHERE p.idProfesor=?', [idProfesor]);
+            const materias = yield database_1.default.query('SELECT m.idMateria,pymm.idProfesorYMateriaMultiple,m.semestre,m.idPlan,m.nombreMateria,c.nombreCarrera,pe.nombre FROM gruposMultiples  JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gruposMultiples.idProfesorYMateriaMultiple JOIN materias AS m ON m.idMateria=pymm.idMateria JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo JOIN carreras AS c ON c.idCarrera=gruposMultiples.idCarrera WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
+            const grupos = yield database_1.default.query('SELECT gp.idProfesorYMateriaMultiple,gp.idCarrera,gp.idPlan,gp.semestre,gp.grupo FROM `gruposMultiples` AS gp JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gp.idProfesorYMateriaMultiple JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
+            respuesta[0].materias = materias;
+            respuesta[0].grupos = grupos;
+            res.json(respuesta);
+        });
+    }
     listMateriasByPlan(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPlan } = req.params;
@@ -103,27 +149,6 @@ class MateriasController {
             res.json(materias);
         });
     }
-
-
-    listMateriasMultiplesByCarreraByPeriodo(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idCarrera, idPeriodo } = req.params;
-            let consulta = `SELECT p.idProfesor, p.nombreProfesor FROM profesores as p INNER JOIN profesorYmateriaMultiple as pymm on pymm.idProfesor = p.idProfesor INNER JOIN periodo as pe ON pe.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pla ON pla.idPlan = m.idPlan INNER JOIN carreras as ca ON ca.idCarrera = pla.idCarrera WHERE ca.idCarrera = ${idCarrera} AND pe.idPeriodo = ${idPeriodo}`;
-            const respuestaProfesores = yield database_1.default.query(consulta);
-            for (let i = 0; i < respuestaProfesores.length; i++) {
-                let consulta = `SELECT pymm.idMateria,pymm.idProfesorYMateriaMultiple,ma.semestre, pla.idPlan, ma.nombreMateria, ca.nombreCarrera, pe.nombre FROM profesorYmateriaMultiple as pymm INNER JOIN periodo as pe ON pymm.idPeriodo = pe.idPeriodo INNER JOIN materias as ma ON ma.idMateria = pymm.idMateria INNER JOIN planes as pla ON ma.idPlan = pla.idPlan INNER JOIN carreras as ca ON pla.idCarrera = ca.idCarrera WHERE pymm.idProfesor = ${respuestaProfesores[i].idProfesor}`;
-                const respuestaAtributos = yield database_1.default.query(consulta);
-                for (let j = 0; j < respuestaAtributos.length; j++) {
-                    let consulta = `SELECT * FROM gruposMultiples WHERE idProfesorYMateriaMultiple = ${respuestaAtributos[j].idProfesorYMateriaMultiple}`;
-                    const respuestaGrupos = yield database_1.default.query(consulta);
-                    respuestaAtributos[j].grupos = respuestaGrupos;
-                }
-                respuestaProfesores[i].atributos = respuestaAtributos;
-            }
-            res.json(respuestaProfesores);
-        });
-    }
-
     listMateriasByPlanByPeriodoConProfesores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idPlan, AnyoI, AnyoF } = req.params;
@@ -159,56 +184,24 @@ class MateriasController {
             };
             let grupos = yield database_1.default.query('INSERT INTO gruposMultiples SET ?', grup_multi);
             res.json(grupos);
-         });
-    }
-
-    listMateriasByPlanBySemestreByPeriodo(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idPlan, semestre, AnyoI, AnyoF } = req.params;
-            let resp;
-            let consulta = `SELECT DISTINCT M.nombreMateria, M.semestre FROM profesorYmateria PM INNER JOIN materias AS M ON M.idPlan=${idPlan} AND M.semestre=${semestre} AND M.idMateria=PM.idMateria`;
-            //console.log(consulta)
-            let respuesta2 = [];
-            const respuesta = yield database_1.default.query(consulta);
-            console.log(respuesta.length);
-            //res.json(respuesta)
-            for (let i = 0; i < respuesta.length; i++) {
-                respuesta[0].profesores = yield database_1.default.query(`SELECT PR.nombreProfesor,P.anyo,P.nombre FROM ((profesorYmateria AS PM INNER JOIN materias AS M ON M.nombreMateria="${respuesta[i].nombreMateria}" AND M.semestre=${semestre} AND PM.idMateria=M.idMateria) INNER JOIN profesores AS PR ON PM.idProfesor=PR.idProfesor) INNER JOIN periodo AS P ON P.fechaInicio>='${AnyoI}' AND P.fechaFin<='${AnyoF}' AND P.idPeriodo=PM.idPeriodo`);
-                //console.log("profes",resp)
-                //respuesta[0].profesores=resp;
-            }
-            //console.log(respuesta)
-            res.json(respuesta);
         });
     }
-
-    listMateriasMultiasignacionByPeriodoByProfesor(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { idPeriodo, idProfesor } = req.params;
-            const respuesta = yield database_1.default.query('SELECT p.idProfesor,p.nombreProfesor FROM `profesores`  AS p WHERE p.idProfesor=?', [idProfesor]);
-            const materias = yield database_1.default.query('SELECT m.idMateria,pymm.idProfesorYMateriaMultiple,m.semestre,m.idPlan,m.nombreMateria,c.nombreCarrera,pe.nombre FROM gruposMultiples  JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gruposMultiples.idProfesorYMateriaMultiple JOIN materias AS m ON m.idMateria=pymm.idMateria JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo JOIN carreras AS c ON c.idCarrera=gruposMultiples.idCarrera WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
-            const grupos = yield database_1.default.query('SELECT gp.idProfesorYMateriaMultiple,gp.idCarrera,gp.idPlan,gp.semestre,gp.grupo FROM `gruposMultiples` AS gp JOIN profesorYmateriaMultiple AS pymm ON pymm.idProfesorYMateriaMultiple=gp.idProfesorYMateriaMultiple JOIN periodo AS pe ON pe.idPeriodo=pymm.idPeriodo WHERE pe.idPeriodo=? AND pymm.idProfesor=?', [idPeriodo, idProfesor]);
-            respuesta[0].materias = materias;
-            respuesta[0].grupos = grupos;
-            res.json(respuesta);
-         });
-    }
-
-    listMateriasByCarreraByPeriodo(req, res) {
+    listMateriasMultiplesByCarreraByPeriodo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera, idPeriodo } = req.params;
-            let respuestaMaterias;
-            let consulta = yield database_1.default.query(`SELECT DISTINCT P.idProfesor, P.nombreProfesor FROM profesores AS P INNER JOIN profesorYmateria AS PM ON PM.idProfesor=P.idProfesor INNER JOIN materias M ON PM.idMateria=M.idMateria INNER JOIN planes AS PL ON PL.idPlan=M.idPlan WHERE PM.idPeriodo=${idPeriodo} AND PL.idCarrera=${idCarrera}`);
-            for (let i = 0; i < consulta.length; i++) {
-                let resp = yield database_1.default.query(`SELECT PM.idMateria FROM profesorYmateria AS PM WHERE PM.idProfesor=${consulta[i].idProfesor}`);
-                let aux = [];
-                for (let j = 0; j < resp.length; j++) {
-                    respuestaMaterias = yield database_1.default.query(`SELECT M.*, PM.idProfesorYMateria, PM.grupo, C.nombreCarrera FROM materias AS M INNER JOIN profesorYmateria AS PM ON M.idMateria=PM.idMateria INNER JOIN planes AS P ON M.idPlan=P.idPlan INNER JOIN carreras AS C ON P.idCarrera=C.idCarrera WHERE PM.idMateria=${resp[j].idMateria}`);
-                    aux.push(respuestaMaterias[0]);
+            let consulta = `SELECT p.idProfesor, p.nombreProfesor FROM profesores as p INNER JOIN profesorYmateriaMultiple as pymm on pymm.idProfesor = p.idProfesor INNER JOIN periodo as pe ON pe.idPeriodo = pymm.idPeriodo INNER JOIN materias as m ON m.idMateria = pymm.idMateria INNER JOIN planes as pla ON pla.idPlan = m.idPlan INNER JOIN carreras as ca ON ca.idCarrera = pla.idCarrera WHERE ca.idCarrera = ${idCarrera} AND pe.idPeriodo = ${idPeriodo}`;
+            const respuestaProfesores = yield database_1.default.query(consulta);
+            for (let i = 0; i < respuestaProfesores.length; i++) {
+                let consulta = `SELECT pymm.idMateria,pymm.idProfesorYMateriaMultiple,ma.semestre, pla.idPlan, ma.nombreMateria, ca.nombreCarrera, pe.nombre FROM profesorYmateriaMultiple as pymm INNER JOIN periodo as pe ON pymm.idPeriodo = pe.idPeriodo INNER JOIN materias as ma ON ma.idMateria = pymm.idMateria INNER JOIN planes as pla ON ma.idPlan = pla.idPlan INNER JOIN carreras as ca ON pla.idCarrera = ca.idCarrera WHERE pymm.idProfesor = ${respuestaProfesores[i].idProfesor}`;
+                const respuestaAtributos = yield database_1.default.query(consulta);
+                for (let j = 0; j < respuestaAtributos.length; j++) {
+                    let consulta = `SELECT * FROM gruposMultiples WHERE idProfesorYMateriaMultiple = ${respuestaAtributos[j].idProfesorYMateriaMultiple}`;
+                    const respuestaGrupos = yield database_1.default.query(consulta);
+                    respuestaAtributos[j].grupos = respuestaGrupos;
                 }
-                consulta[i].materias = aux;
+                respuestaProfesores[i].atributos = respuestaAtributos;
             }
-            res.json(consulta);
+            res.json(respuestaProfesores);
         });
     }
 }

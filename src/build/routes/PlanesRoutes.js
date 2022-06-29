@@ -14,6 +14,7 @@ class PlanRoutes {
         this.router.delete('/delete/:id', PlanesController_1.planesController.delete);
         this.router.put('/actualizar/:id', PlanesController_1.planesController.actualizar);
         this.router.get('/listPlanesByCarrera/:idCarrera', PlanesController_1.planesController.listPlanesByCarrera);
+        this.router.put('/actualizar/:id', PlanesController_1.planesController.actualizar);
         this.router.get('/planesByCarrera/:idCarrera', PlanesController_1.planesController.getPlanesByCarrera);
     }
 }

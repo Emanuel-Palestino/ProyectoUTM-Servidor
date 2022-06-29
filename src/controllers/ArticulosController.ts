@@ -138,9 +138,9 @@ class ArticulosController {
 			for(let j = 0; j < respuestaProfesores.length ; j++){
 
 				if(respuestaProfesores[j].esInterno == 1){
-					respuestaAutores = await pool.query(`SELECT P.idProfesor, P.nombreProfesor AS Nombre, P.nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
+					respuestaAutores = await pool.query(`SELECT P.idProfesor, P.nombreProfesor AS nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
 				}else{ 
-					respuestaAutores = await pool.query(`SELECT PA.idProfesor, EA.nombre AS Nombre, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
+					respuestaAutores = await pool.query(`SELECT PA.idProfesor, EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
 				}
 				aux.push(respuestaAutores[0]);
 			}

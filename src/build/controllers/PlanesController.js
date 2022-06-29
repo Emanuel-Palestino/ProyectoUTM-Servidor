@@ -54,7 +54,6 @@ class PlanesController {
             res.json(resp);
         });
     }
-
     listPlanesByCarrera(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera } = req.params;
@@ -62,7 +61,6 @@ class PlanesController {
             res.json(respuesta);
         });
     }
-
     getPlanesByCarrera(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idCarrera } = req.params;

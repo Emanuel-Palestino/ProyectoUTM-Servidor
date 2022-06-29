@@ -147,10 +147,10 @@ class ArticulosController {
                 let aux = []; //Usamos un arreglo auxiliar para meter los autores 
                 for (let j = 0; j < respuestaProfesores.length; j++) {
                     if (respuestaProfesores[j].esInterno == 1) {
-                        respuestaAutores = yield database_1.default.query(`SELECT P.idProfesor, P.nombreProfesor AS Nombre, P.nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
+                        respuestaAutores = yield database_1.default.query(`SELECT P.idProfesor, P.nombreProfesor AS nombreProfesor, P.nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM profesores as P INNER JOIN profesorYarticulo PA ON PA.idProfesor = P.idProfesor WHERE PA.idArticulo = ${respuesta[i].idArticulo} AND PA.idProfesor = ${respuestaProfesores[j].idProfesor}`);
                     }
                     else {
-                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, EA.nombre AS Nombre, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
+                        respuestaAutores = yield database_1.default.query(`SELECT PA.idProfesor, EA.nombre AS nombreProfesor, EA.nombreAPA AS nombreApa, PA.pos, PA.validado, PA.esInterno, PA.fechaModificacion FROM externosAPA as EA INNER JOIN profesorYarticulo PA ON PA.idProfesor = EA.idExternoAPA WHERE PA.idProfesor = '${respuestaProfesores[j].idProfesor}' AND PA.idArticulo = '${respuesta[i].idArticulo}'`);
                     }
                     aux.push(respuestaAutores[0]);
                 }
@@ -229,7 +229,6 @@ class ArticulosController {
             res.json(resp);
         });
     }
-
     listArticulosByProfesorByPeriodoByTitulo(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesor, fechaIni, fechaFin } = req.params;
@@ -254,7 +253,6 @@ class ArticulosController {
             res.json(respuesta);
         });
     }
-
     listProfesoresByInstitutoNoAutores(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idInstituto, idArticulo } = req.params;
