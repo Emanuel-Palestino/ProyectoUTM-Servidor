@@ -15,7 +15,7 @@ class ProfesorYMateriaMultipleController {
 			res.json(respuesta[0])
 			return;
 		}
-		res.status(404).json({ 'mensaje': 'profesorYmateria no encontrado' })
+		res.status(404).json({ 'mensaje': 'profesorYmateriaMultiple no encontrado' })
 	}
 
 	public async create(req: Request, res: Response): Promise<void> {
@@ -25,7 +25,8 @@ class ProfesorYMateriaMultipleController {
 
 	public async delete(req: Request, res: Response): Promise<void> {
 		const { idProfesorYMateriaMultiple } = req.params
-		const resp = await pool.query(`DELETE FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`)
+		let resp = await pool.query(`DELETE FROM gruposMultiples WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`)
+		resp = await pool.query(`DELETE FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`)
 		res.json(resp)
 	}
 

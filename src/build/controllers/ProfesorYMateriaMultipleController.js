@@ -29,7 +29,7 @@ class ProfesorYMateriaMultipleController {
                 res.json(respuesta[0]);
                 return;
             }
-            res.status(404).json({ 'mensaje': 'profesorYmateria no encontrado' });
+            res.status(404).json({ 'mensaje': 'profesorYmateriaMultiple no encontrado' });
         });
     }
     create(req, res) {
@@ -41,7 +41,8 @@ class ProfesorYMateriaMultipleController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idProfesorYMateriaMultiple } = req.params;
-            const resp = yield database_1.default.query(`DELETE FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`);
+            let resp = yield database_1.default.query(`DELETE FROM gruposMultiples WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`);
+            resp = yield database_1.default.query(`DELETE FROM profesorYmateriaMultiple WHERE idProfesorYMateriaMultiple=${idProfesorYMateriaMultiple}`);
             res.json(resp);
         });
     }

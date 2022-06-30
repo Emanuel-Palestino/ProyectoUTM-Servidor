@@ -35,6 +35,8 @@ const PeriodosRoutes_1 = __importDefault(require("./routes/PeriodosRoutes"));
 const ExternosApaRoutes_1 = __importDefault(require("./routes/ExternosApaRoutes"));
 const ExternosCodirectorRoutes_1 = __importDefault(require("./routes/ExternosCodirectorRoutes"));
 const ProfesorYMateriaRoutes_1 = __importDefault(require("./routes/ProfesorYMateriaRoutes"));
+const ProfesorYMateriaMultipleRoutes_1 = __importDefault(require("./routes/ProfesorYMateriaMultipleRoutes"));
+const GruposMultiplesRoutes_1 = __importDefault(require("./routes/GruposMultiplesRoutes"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -78,6 +80,8 @@ class Server {
         this.app.use('/api/externosApa', ExternosApaRoutes_1.default);
         this.app.use('/api/externosCodirector', ExternosCodirectorRoutes_1.default);
         this.app.use('api/profesorYMateria', ProfesorYMateriaRoutes_1.default);
+        this.app.use('api/profesorYMateriaMultiple', ProfesorYMateriaMultipleRoutes_1.default);
+        this.app.use('api/gruposMultiples', GruposMultiplesRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
