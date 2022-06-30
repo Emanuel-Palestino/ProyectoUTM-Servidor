@@ -50,11 +50,10 @@ class ProfesoresController {
 		bcrypt.hash(password, salt).then(async (nuevoPassword) => {
 			req.body.password = nuevoPassword;
 			try {
-
 				const resp = await pool.query("INSERT INTO profesores set ?", [req.body]);
 				res.json(resp);
 			} catch (error: any) {
-				res.status(500).json({ errorSQL: error.sqlMessage })
+				res.status(500).json({ errorSQL: error.sqlMessage, sql: error.sql })
 			}
 		})
 	}

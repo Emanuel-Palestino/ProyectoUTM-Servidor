@@ -69,7 +69,7 @@ class ProfesoresController {
                     res.json(resp);
                 }
                 catch (error) {
-                    res.status(500).json({ errorSQL: error.sqlMessage });
+                    res.status(500).json({ errorSQL: error.sqlMessage, sql: error.sql });
                 }
             }));
         });
