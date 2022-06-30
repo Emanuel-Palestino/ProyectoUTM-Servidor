@@ -19,7 +19,7 @@ class ProfesorYMateriaController {
 	}
 
 	public async create(req: Request, res: Response): Promise<void> {
-		let resp = await pool.query('SELECT idPeriodo FROM profesorYmateria WHERE actual=1')
+		let resp = await pool.query('SELECT idPeriodo FROM periodo WHERE actual=1')
 		req.body.idPeriodo = resp[0].idPeriodo
 		resp = await pool.query('INSERT INTO profesorYmateria SET ?', [req.body])
 		res.json(resp)

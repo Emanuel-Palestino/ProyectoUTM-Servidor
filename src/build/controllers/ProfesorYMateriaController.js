@@ -34,7 +34,7 @@ class ProfesorYMateriaController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let resp = yield database_1.default.query('SELECT idPeriodo FROM profesorYmateria WHERE actual=1');
+            let resp = yield database_1.default.query('SELECT idPeriodo FROM periodo WHERE actual=1');
             req.body.idPeriodo = resp[0].idPeriodo;
             resp = yield database_1.default.query('INSERT INTO profesorYmateria SET ?', [req.body]);
             res.json(resp);
