@@ -34,7 +34,9 @@ class ProfesorYMateriaController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resp = yield database_1.default.query('INSERT INTO profesorYmateria SET ?', [req.body]);
+            let resp = yield database_1.default.query('SELECT idPeriodo WHERE actual=1');
+            req.body.idPeriodo = resp[0].idPeriodo;
+            resp = yield database_1.default.query('INSERT INTO profesorYmateria SET ?', [req.body]);
             res.json(resp);
         });
     }
