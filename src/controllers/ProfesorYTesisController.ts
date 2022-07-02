@@ -28,7 +28,7 @@ class ProfesorYTesisController {
 			nombreExterno: req.body.nombreExterno,
 			correoExterno: req.body.correoExterno
 		}
-		const resp = await pool.query('INSERT INTO externosProyecto SET ?', [datoE])
+		const resp = await pool.query('INSERT INTO externosCodirector SET ?', [datoE])
 		let dato = {
 			idProfesor: resp.insertId,
 			idTesis: idTesis,
