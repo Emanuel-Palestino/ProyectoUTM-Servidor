@@ -22,6 +22,23 @@ class ProfesorYTesisController {
 		const resp = await pool.query("INSERT INTO profesorYtesis set ?", [req.body]);
 		res.json(resp);
 	}
+	public async createCodirectorExternoTesista(req: Request, res: Response): Promise<void> {
+        const { idTesis } = req.params
+		let datoE = {
+			nombreExterno: req.body.nombreExterno,
+			correoExterno: req.body.correoExterno
+		}
+		const resp = await pool.query('INSERT INTO externosProyecto SET ?', [datoE])
+		let dato = {
+			idProfesor: resp.insertId,
+			idTesis: idTesis,
+			pos: req.body.pos,
+			esInterno: 0
+		}
+		const resp2 = await pool.query('INSERT INTO profesorYtesis SET ?', dato)
+		res.json(resp2);
+	
+	}
 
 	public async delete(req: Request, res: Response): Promise<void> {
 		const { idTesis, idProfesor } = req.params

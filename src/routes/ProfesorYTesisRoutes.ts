@@ -13,6 +13,7 @@ class TesistasRoutes {
 		this.router.get('/',profesorYTesisController.list );
 		this.router.get('/:idTesis/:idProfesor',profesorYTesisController.listOne);
 		this.router.post('/create', profesorYTesisController.create);
+		this.router.post('/createCodirectorExternoTesista/:idTesis', profesorYTesisController.createCodirectorExternoTesista);
 		this.router.delete('/delete/:idTesis/:idProfesor', profesorYTesisController.delete);
 		this.router.put('/update/:idTesis/:idProfesor',profesorYTesisController.update);
     }
