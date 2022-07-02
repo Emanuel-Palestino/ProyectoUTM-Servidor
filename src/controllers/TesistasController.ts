@@ -226,6 +226,26 @@ class TesistasController {
 		res.json(respuesta);
 	}
 
+	public async listProfesoresbyInstitutoNoCodirectores(req: Request, res: Response) {
+		const { idInstituto, idTesis } = req.params
+		let respuesta: any = [];
+		let profesores;
+		let coodirectoresTesis;
+		let coodirectores: any[] = [];
+		coodirectoresTesis = await pool.query(`SELECT P.idProfesor,P.nombreProfesor,P.correo,P.nivel,P.idCarrera,P.grado,P.tipo,P.nombreApa,P.idInstituto FROM profesores AS P INNER JOIN profesorYtesis PT ON P.idProfesor = PT.idProfesor WHERE PT.idTesis = ${idTesis} AND P.idInstituto = ${idInstituto} AND PT.esInterno = 1 ORDER BY P.idProfesor`);
+		coodirectoresTesis.forEach((element: any) => {
+			coodirectores.push(element.idProfesor);
+		});
+		profesores = await pool.query(`SELECT DISTINCT * FROM profesores WHERE idInstituto = ${idInstituto} ORDER BY idProfesor`);
+		for (let i = 0; i < profesores.length; i++) {
+			const element = profesores[i];
+			if (!coodirectores.includes(element.idProfesor)) {
+				respuesta.push(element);
+			}
+		}
+		res.json(respuesta);
+	}
+
 }
 
 export const tesistasController = new TesistasController()
