@@ -37,19 +37,19 @@ class EventosController {
 
 	public async getEventosByProfesor(req: Request, res: Response): Promise<void> {
 		const { idProfesor, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor, P.idProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor, P.idProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idProfesor=${idProfesor} AND inicio>='${fechaIni}' AND fin<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 
 	public async getEventosByInstituto(req: Request, res: Response): Promise<void> {
 		const { idInstituto, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idInstituto=${idInstituto} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idInstituto=${idInstituto} AND E.inicio>='${fechaIni}' AND E.fin<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 
 	public async getEventosByCarrera(req: Request, res: Response): Promise<void> {
 		const { idCarrera, fechaIni, fechaFin } = req.params
-		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idCarrera=${idCarrera} AND E.inicio>='${fechaIni}' AND E.inicio<='${fechaFin}'`)
+		let respuesta = await pool.query(`SELECT E.*, P.nombreProfesor FROM eventos as E INNER JOIN profesores P ON P.idProfesor=E.idProfesor WHERE P.idCarrera=${idCarrera} AND E.inicio>='${fechaIni}' AND E.fin<='${fechaFin}'`)
 		res.json(respuesta)
 	}
 	public async listEventosByPeriodo(req: Request, res: Response): Promise<void> {
