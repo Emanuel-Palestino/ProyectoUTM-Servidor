@@ -211,6 +211,21 @@ class TesistasController {
 		res.json(respuesta);
 	}
 
+	public async addCodirectoresTesistaUTM(req: Request, res: Response): Promise<void> {
+		let respuesta;
+		const { idTesis } = req.params;
+
+		//Recorremos el body con los JSON de la consulta
+		for (let i = 0; i < req.body.length; i++) {
+			const profesorYTesis = req.body[i];
+			profesorYTesis.idTesis =idTesis;
+			profesorYTesis.esInterno = 1;
+			//Creamos 
+			respuesta = await pool.query('INSERT INTO profesorYTesis SET ?', [profesorYTesis]);
+		}
+		res.json(respuesta);
+	}
+
 }
 
 export const tesistasController = new TesistasController()

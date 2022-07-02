@@ -230,5 +230,20 @@ class TesistasController {
             res.json(respuesta);
         });
     }
+    addCodirectoresTesistaUTM(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let respuesta;
+            const { idTesis } = req.params;
+            //Recorremos el body con los JSON de la consulta
+            for (let i = 0; i < req.body.length; i++) {
+                const profesorYTesis = req.body[i];
+                profesorYTesis.idTesis = idTesis;
+                profesorYTesis.esInterno = 1;
+                //Creamos 
+                respuesta = yield database_1.default.query('INSERT INTO profesorYTesis SET ?', [profesorYTesis]);
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.tesistasController = new TesistasController();
