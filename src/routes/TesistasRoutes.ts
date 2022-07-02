@@ -24,7 +24,7 @@ class TesistasRoutes {
 		this.router.get('/listTesistasByProfesorByPeriodoByNombreTesis/:idProfesor/:fechaIni/:fechaFin',tesistasController.listTesistasByProfesorByPeriodoByNombreTesis);		
 		this.router.put('/updatePrioridadesTestistas/:idTesis',tesistasController.updatePrioridadesTestistas);
 		this.router.get('/listNoColaboradoresUTMByCarreraByTesis/:idCarrera/:idTesis',tesistasController.listNoColaboradoresUTMByCarreraByTesis);
-		this.router.put('/addCodirectoresTesistaUTM/:idTesis', tesistasController.addCodirectoresTesistaUTM);
+		this.router.post('/addCodirectoresTesistaUTM/:idTesis', tesistasController.addCodirectoresTesistaUTM);
 		this.router.get('/listProfesoresbyInstitutoNoCodirectores/:idInstituto/:idTesis',tesistasController.listProfesoresbyInstitutoNoCodirectores);
 	}
 
