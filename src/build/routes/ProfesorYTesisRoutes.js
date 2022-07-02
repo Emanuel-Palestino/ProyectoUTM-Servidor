@@ -11,6 +11,7 @@ class TesistasRoutes {
         this.router.get('/', ProfesorYTesisController_1.profesorYTesisController.list);
         this.router.get('/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.listOne);
         this.router.post('/create', ProfesorYTesisController_1.profesorYTesisController.create);
+        this.router.post('/createCodirectorExternoTesista/:idTesis', ProfesorYTesisController_1.profesorYTesisController.createCodirectorExternoTesista);
         this.router.delete('/delete/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.delete);
         this.router.put('/update/:idTesis/:idProfesor', ProfesorYTesisController_1.profesorYTesisController.update);
     }

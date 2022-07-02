@@ -245,5 +245,26 @@ class TesistasController {
             res.json(respuesta);
         });
     }
+    listProfesoresbyInstitutoNoCodirectores(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idInstituto, idTesis } = req.params;
+            let respuesta = [];
+            let profesores;
+            let coodirectoresTesis;
+            let coodirectores = [];
+            coodirectoresTesis = yield database_1.default.query(`SELECT P.idProfesor,P.nombreProfesor,P.correo,P.nivel,P.idCarrera,P.grado,P.tipo,P.nombreApa,P.idInstituto FROM profesores AS P INNER JOIN profesorYtesis PT ON P.idProfesor = PT.idProfesor WHERE PT.idTesis = ${idTesis} AND P.idInstituto = ${idInstituto} AND PT.esInterno = 1 ORDER BY P.idProfesor`);
+            coodirectoresTesis.forEach((element) => {
+                coodirectores.push(element.idProfesor);
+            });
+            profesores = yield database_1.default.query(`SELECT DISTINCT * FROM profesores WHERE idInstituto = ${idInstituto} ORDER BY idProfesor`);
+            for (let i = 0; i < profesores.length; i++) {
+                const element = profesores[i];
+                if (!coodirectores.includes(element.idProfesor)) {
+                    respuesta.push(element);
+                }
+            }
+            res.json(respuesta);
+        });
+    }
 }
 exports.tesistasController = new TesistasController();

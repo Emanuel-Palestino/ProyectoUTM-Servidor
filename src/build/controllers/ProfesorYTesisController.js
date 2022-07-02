@@ -38,6 +38,24 @@ class ProfesorYTesisController {
             res.json(resp);
         });
     }
+    createCodirectorExternoTesista(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { idTesis } = req.params;
+            let datoE = {
+                nombreCodirector: req.body.nombreCodirector,
+                correo: req.body.correo
+            };
+            const resp = yield database_1.default.query('INSERT INTO externosCodirector SET ?', [datoE]);
+            let dato = {
+                idProfesor: resp.insertId,
+                idTesis: idTesis,
+                pos: req.body.pos,
+                esInterno: 0
+            };
+            const resp2 = yield database_1.default.query('INSERT INTO profesorYtesis SET ?', dato);
+            res.json(resp2);
+        });
+    }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { idTesis, idProfesor } = req.params;
