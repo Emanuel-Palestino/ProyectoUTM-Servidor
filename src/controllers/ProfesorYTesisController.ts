@@ -25,8 +25,8 @@ class ProfesorYTesisController {
 	public async createCodirectorExternoTesista(req: Request, res: Response): Promise<void> {
         const { idTesis } = req.params
 		let datoE = {
-			nombreExterno: req.body.nombreExterno,
-			correoExterno: req.body.correoExterno
+			nombreCodirector: req.body.nombreCodirector,
+			correo: req.body.correo
 		}
 		const resp = await pool.query('INSERT INTO externosCodirector SET ?', [datoE])
 		let dato = {
